@@ -50,7 +50,7 @@ class EmployeeAccount extends Authenticatable
                 'created_by'=>$user_id
             ]);
 
-            HrisUserRole::create([
+            ImsUserRole::create([
                 'emp_id' => $employee->id,
                 'role_id' => 2,
                 'is_active' => 1,
@@ -76,7 +76,7 @@ class EmployeeAccount extends Authenticatable
     }
 
     public function user_roles(){
-       return $this->hasOne(HrisUserRole::class,'emp_id','emp_id');
+       return $this->hasOne(ImsUserRole::class,'emp_id','emp_id');
     }
 
     public function employee(){

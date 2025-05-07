@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ims_material_issuance_items', function (Blueprint $table) {
-            $$table->id();
+            $table->id();
 
             $table->integer('material_issuance_id');
             $table->integer('item_inventory_id');
 
             $table->tinyInteger('status')->comment('1=issued , 2=returned');
             $table->text('remarks');
-            
+
             $table->tinyInteger('is_deleted')->nullable();
             $table->tinyInteger('deleted_by')->nullable();
             $table->dateTime('deleted_at')->nullable();

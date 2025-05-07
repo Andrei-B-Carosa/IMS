@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ims_accountability_items', function (Blueprint $table) {
-            $$table->id();
+            $table->id();
 
             $table->integer('accountability_id');
             $table->integer('item_inventory_id');
 
             $table->tinyInteger('status')->comment('1=issued , 2=returned');
+            $table->date('issued_at')->nullable();
+            $table->date('removed_at')->nullable();
             $table->text('remarks');
 
             $table->tinyInteger('is_deleted')->nullable();

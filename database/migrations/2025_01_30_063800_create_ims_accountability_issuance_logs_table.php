@@ -15,16 +15,17 @@ return new class extends Migration
             $table->id();
 
             $table->integer('accountability_id');
+            $table->integer('emp_id');
             $table->tinyInteger('activity_logs');
 
-            $table->string('old_value');
-            $table->string('new_value');
+            // $table->string('old_value');
+            // $table->string('new_value');
 
-            $table->timestamp('created_at')->useCurrent();
-            $table->unsignedBigInteger('created_by')->nullable();
-            
-            $table->unsignedBigInteger('updated_by')->nullable();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->nullable();
+            // $table->timestamp('created_at')->useCurrent();
+            // $table->unsignedBigInteger('created_by')->nullable();
+
+            // $table->unsignedBigInteger('updated_by')->nullable();
+            // $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->nullable();
         });
     }
 

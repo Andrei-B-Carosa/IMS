@@ -6,5 +6,69 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImsAccountability extends Model
 {
-    //ImsAccountability
+
+    /**
+    * 1= Active accountability
+    * 2= Inactive accountability
+
+    **/
+
+    protected static function booted()
+    {
+        static::creating(function ($item) {
+            if (is_null($item->status)) {
+                $item->status = 1;
+            }
+        });
+
+        // static::updating(function ($item) {
+        //     if ($item->is_deleted == 1) {
+        //         $item->is_active = 0;
+        //     }
+        // });
+
+    }
+
+    protected $fillable = [
+        'form_no',
+        'issued_at',
+        'issued_by',
+        'received_by',
+        'signature',
+        'status',
+        'created_by',
+        'updated_by',
+        'updated_at',
+        'created_at',
+    ];
+
+    public function issued_to()
+    {
+        return $this->hasMany(ImsAccountabilityIssuedTo::class,'accountability_id');
+    }
+
+    public function accountability_item()
+    {
+        return $this->hasMany(ImsAccountabilityItem::class,'accountability_id');
+    }
+
+    public function updated_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'updated_by')->withDefault();
+    }
+
+    public function created_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'created_by')->withDefault();
+    }
+
+    public function deleted_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'deleted_by');
+    }
+
+    public function issued_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'issued_by')->withDefault();
+    }
 }

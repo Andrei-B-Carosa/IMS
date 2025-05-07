@@ -16,8 +16,14 @@ return new class extends Migration
 
             $table->integer('accountability_id');
             $table->integer('emp_id');
+            $table->integer('department_id')->nullable();
+            $table->integer('position_id')->nullable();
 
             $table->tinyInteger('status');
+            $table->date('issued_at')->nullable();
+            $table->date('removed_at')->nullable();
+
+            $table->text('remarks')->nullable();
 
             $table->tinyInteger('is_deleted')->nullable();
             $table->tinyInteger('deleted_by')->nullable();
