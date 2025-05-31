@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('item_number')->nullable();
             $table->text('description')->nullable();
+            $table->string('item_code')->nullable();
 
             $table->tinyInteger('is_active')->nullable();
             $table->tinyInteger('display_to')->nullable();

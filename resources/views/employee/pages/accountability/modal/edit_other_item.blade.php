@@ -24,7 +24,7 @@
                             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                         </div>
                         <div class="d-flex fv-row flex-column mb-7" id="">
-                            <label class="fs-6 required fw-semibold mb-2">Remarks</label>
+                            <label class="fs-6 fw-semibold mb-2">Remarks</label>
                             <textarea class="form-control form-control-solid" rows="5" name="remarks" placeholder="Remarks">{{ $query->remarks }}</textarea>
                         </div>
                     </div>

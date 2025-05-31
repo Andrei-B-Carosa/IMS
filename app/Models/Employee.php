@@ -89,19 +89,9 @@ class Employee extends Model
         return $this->hasOne(EmployeeAccount::class,'emp_id');
     }
 
-    public function documents()
-    {
-        return $this->HasMany(HrisEmployeeDocument::class,'emp_id');
-    }
-
     public function fullname()
     {
         return $this->fname.' '.$this->lname;
-    }
-
-    public function emp_leave_balance()
-    {
-        return $this->hasMany(HrisEmployeeLeaveBalance::class,'emp_id');
     }
 
     public function updated_by_emp()
@@ -124,18 +114,13 @@ class Employee extends Model
         return $this->hasOne(HrisEmployeePosition::class,'emp_id')->withDefault();
     }
 
-    public function group_member()
-    {
-        return $this->hasMany(HrisGroupMember::class,'emp_id');
-    }
-
-    public function group_approver()
-    {
-        return $this->hasMany(HrisGroupApprover::class,'emp_id');
-    }
-
     public function user_roles()
     {
-        return $this->hasMany(HrisUserRole::class,'emp_id');
+        return $this->hasMany(ImsUserRole::class,'emp_id');
+    }
+
+    public function ims_accountable_to()
+    {
+        return $this->hasMany(ImsAccountabilityIssuedTo::class,'emp_id');
     }
 }

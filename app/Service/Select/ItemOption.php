@@ -26,6 +26,7 @@ class ItemOption
         $html = '<option></option>';
 
         return match($rq->type){
+            'get_item'=> $this->get_item($query,$search,$html),
             'monitor' => $this->get_monitor($query,$search,$html),
             'accessories' => $this->get_other_accessories($query,$search,$html),
             'search_ram'=> $this->search_ram($rq,$query,$html),
@@ -34,6 +35,20 @@ class ItemOption
         };
     }
 
+    public function get_item($query,$search,$html)
+    {
+        $data = $query->get();
+        if ($data->isEmpty()) {
+            return '<option disabled>No Available Option</option>';
+        }
+        foreach ($data as $row) {
+            $selected = $search === $row->id ? 'selected' : '';
+            $id = Crypt::encrypt($row->id);
+            $name = $row->name??$row->description;
+            $html .= '<option value="'.e($id).'"'.e($selected).'>'.e($name).'</option>';
+        }
+        return $html;
+    }
 
     public function get_monitor($query,$search,$html)
     {
@@ -109,7 +124,6 @@ class ItemOption
     {
         $names = ['ssd', 'hdd', 'nvme'];
         $storage_ids = ImsItemType::whereIn(DB::raw('LOWER(name)'), $names)->where('is_active', 1)->pluck('id');
-
         // ->where(function ($query) use ($names) {
         //     foreach ($names as $name) {
         //         $query->orWhere('name', 'LIKE', "%$name%");
@@ -120,6 +134,7 @@ class ItemOption
         }
 
         $data = $query->whereIn('item_type_id',$storage_ids)->get();
+
         if ($data->isEmpty()) {
             return '<option disabled>No Available Option</option>';
         }

@@ -1,8 +1,18 @@
 'use strict';
 
 import { AccountabilityListController } from './fn_controller/accountability/accountability.js';
-import { AccountabilityDetailsController } from './fn_controller/accountability/details.js';
+import { AccountabilityDetailsController } from './fn_controller/accountability/accountability_details.js';
 import { NewAccountabilityController } from './fn_controller/accountability/new_accountability.js';
+import { InventoryListController } from './fn_controller/inventory/inventory.js';
+import { InventoryDetailsController } from './fn_controller/inventory/inventory_details.js';
+import { NewInventoryController } from './fn_controller/inventory/new_inventory.js';
+import { MaterialIssuanceListController } from './fn_controller/material_issuance/material_issuance.js';
+import { MaterialIssuanceDetailsController } from './fn_controller/material_issuance/material_issuance_details.js';
+import { NewMaterialIssuanceController } from './fn_controller/material_issuance/new_material_issuance.js';
+import { FileMaintenanceController } from './fn_controller/settings/file_maintenance/file_maintenance.js';
+import { ItemDetailsController } from './fn_controller/settings/file_maintenance/item_details.js';
+import { NewItemController } from './fn_controller/settings/file_maintenance/new_item.js';
+import { UserManagementController } from './fn_controller/settings/user_management/user_management.js';
 import { page_content } from './page.js';
 
 async function init_page(_default) {
@@ -51,7 +61,17 @@ const _handlers = {
     // dashboard: (page, param) => HomeController(page, param),
     accountability: (page, param) => AccountabilityListController(page, param),
     accountability_details: (page, param) => AccountabilityDetailsController(page, param),
-    new_accountability:(page,param) => NewAccountabilityController(page,param,)
+    new_accountability:(page,param) => NewAccountabilityController(page,param),
+    inventory:(page,param) => InventoryListController(page,param),
+    inventory_details:(page,param) => InventoryDetailsController(page,param),
+    new_inventory:(page,param) => NewInventoryController(page,param),
+    material_issuance:(page,param) => MaterialIssuanceListController(page,param),
+    new_material_issuance:(page,param) => NewMaterialIssuanceController(page,param),
+    material_issuance_details:(page,param) => MaterialIssuanceDetailsController(page,param),
+    file_maintenance:(page,param)=>FileMaintenanceController(page,param),
+    item_details:(page,param)=>ItemDetailsController(page,param),
+    new_item:(page,param)=>NewItemController(page,param),
+    user_management:(page,param)=>UserManagementController(page,param),
 };
 
 jQuery(document).ready(function() {

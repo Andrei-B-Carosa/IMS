@@ -18,6 +18,8 @@ return new class extends Migration
             $table->integer('item_inventory_id');
 
             $table->tinyInteger('status')->comment('1=issued , 2=returned');
+            $table->date('issued_at')->nullable();
+            $table->date('removed_at')->nullable();
             $table->text('remarks');
 
             $table->tinyInteger('is_deleted')->nullable();

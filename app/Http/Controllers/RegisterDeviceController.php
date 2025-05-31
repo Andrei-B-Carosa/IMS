@@ -57,7 +57,7 @@ class RegisterDeviceController extends Controller
 
             $register_device = match($device_type){
                 'system unit' =>$this->register_desktop($data),
-                // 'laptop' =>$this->register_laptop($data),
+                'laptop' =>$this->register_laptop($data),
                 default => false
             };
             if($register_device === false){
@@ -167,7 +167,83 @@ class RegisterDeviceController extends Controller
 
     public function register_laptop($data)
     {
+        $array_storage = [];
+        foreach($data['storage'] as $storage)
+        {
+            $array_storage[]=[
+                'name'=>$storage['model'].' '.$storage['type'],
+                'description'=>$storage['size_gb'].'GB '.$storage['type'],
+                'serial_number'=>$storage['serial_number'],
+            ];
+            ImsItem::registerItem([
+                'name'=>$storage['model'].' '.$storage['type'],
+                'description'=>$storage['size_gb'].'GB '.$storage['type'],
+                'brand'=>false,
+            ],$storage['type']);
+        }
 
+        $array_ram = [];
+        foreach($data['ram']['sticks'] as $ram)
+        {
+            $array_ram[]=[
+                'name'=>$ram['manufacturer'].' '.$ram['size_gb'].'GB RAM',
+                'description'=>$ram['manufacturer'].' RAM',
+                'serial_number'=>$ram['serial_number'],
+            ];
+
+            ImsItem::registerItem([
+                'name'=>$ram['manufacturer'].' '.$ram['size_gb'].'GB RAM',
+                'description'=>$ram['manufacturer'].' RAM',
+                'brand'=>$ram['manufacturer'],
+            ],'RAM');
+        }
+
+        $array_gpu = [];
+        foreach($data['gpu'] as $gpu)
+        {
+            $array_gpu[]=[
+                'name'=>$gpu['name'],
+                'description'=>$gpu['name'],
+                'type' =>$gpu['type']
+            ];
+            if(strtolower($gpu['type']) != 'integrated'){
+                ImsItem::registerItem([
+                    'name'=>$gpu['name'],
+                    'description'=>$gpu['name'],
+                    'brand'=>$gpu['vendor']
+                ],'GPU');
+            }
+        }
+
+        $name = $data['model'];
+        $description = json_encode([
+            'model'=>$data['model'],
+            'brand'=>$data['brand'],
+            'serial_number'=>$data['serial_number'],
+            'cpu'=>$data['cpu'],
+            'ram'=>json_encode($array_ram),
+            'storage'=>json_encode($array_storage),
+            'gpu'=>json_encode($array_gpu),
+            'device_name'=>$data['device_name'],
+            'os_installed_date'=>$data['os_installed_date'],
+            'windows_version'=>$data['windows_version'],
+        ]);
+
+        $brand_id = ImsItemBrand::getBrandId($data['brand']);
+        $laptop_id = ImsItemType::getLaptopId();
+        if(!$laptop_id){
+            return false;
+        }
+
+        return ImsItemInventory::create([
+            'item_type_id' => $laptop_id,
+            'item_brand_id' => $brand_id,
+            'name' =>$name,
+            'description'=>$description,
+            'serial_number'=>$data['serial_number'],
+            'status' =>2,
+            'remarks' => 'Data came from online registration'
+        ]);
     }
 
     public function register_accessories($rq,$dataParam,$device_type)

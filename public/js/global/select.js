@@ -178,3 +178,35 @@ export async function get_item(_element,param='',type,view='all') {
     });
 }
 
+export async function get_company_location(_element,param='',type,view='all') {
+    return new Promise((resolve, reject) => {
+        let element = $(_element);
+        let modal = element.closest('.modal');
+
+        element.attr('disabled', true);
+
+        let formData = new FormData();
+        formData.append('id', param);
+        formData.append('type',type);
+        formData.append('view',view);
+
+
+        (new RequestHandler).post("/select/company-location", formData)
+            .then((res) => {
+                element.empty().append(res);
+                element.attr('data-select2-initialized',true);
+                element.select2({
+                    dropdownParent: modal.length ? '#'+modal.attr('id') : null,
+                    width: '100%',
+                });
+                resolve(true);
+            })
+            .catch((error) => {
+                console.error(error);
+                resolve(false);
+            })
+            .finally(() => {
+                element.attr('disabled', false);
+            });
+    });
+}

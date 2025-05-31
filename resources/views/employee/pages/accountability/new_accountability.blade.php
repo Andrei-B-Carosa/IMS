@@ -37,6 +37,10 @@
                             {!! $employee_option !!}
                         </select>
                     </div>
+                    <div class="d-flex fv-row flex-column mb-7" id="">
+                        <label class="fs-6 fw-semibold mb-2">Remarks</label>
+                        <textarea class="form-control form-control-solid" rows="5" name="remarks" placeholder="Remarks"></textarea>
+                    </div>
                 </div>
             </div>
         </form>
@@ -54,7 +58,7 @@
                 <div data-repeater-list="issued-item">
                     <div data-repeater-item>
                         <div class="form-group row mb-5">
-                            <div class="col-md-7 fv-row">
+                            <div class="col-md-10 fv-row">
                                 <label class="form-label">Accessories</label>
                                 <select class="form-select form-accessories" data-kt-repeater="select2" name="accessories" data-allow-clear="true"
                                 data-placeholder="Select an option">
@@ -62,10 +66,10 @@
 
                                 </select>
                             </div>
-                            <div class="col-md-3 fv-row">
+                            {{-- <div class="col-md-3 fv-row">
                                 <label class="form-label">Serial Number / Device ID</label>
                                 <input type="text" class="form-control"  name="serial_number" placeholder="Enter serial number" />
-                            </div>
+                            </div> --}}
                             <div class="col-md-2 d-none">
                                 <a href="javascript:;" data-repeater-delete class="btn btn-flex btn-sm btn-light-danger mt-3 mt-md-9">
                                     <i class="ki-duotone ki-trash fs-3">

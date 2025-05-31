@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ims_suppliers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('location')->nullable();
+            $table->text('description')->nullable();
 
             $table->tinyInteger('is_active')->nullable();
 

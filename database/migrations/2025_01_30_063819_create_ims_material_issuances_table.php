@@ -14,13 +14,17 @@ return new class extends Migration
         Schema::create('ims_material_issuances', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('form_no');
+            $table->integer('form_no')->nullable();
+            $table->string('mrs_no')->nullable();
 
             $table->dateTime('issued_at')->nullable();
-            $table->dateTime('issued_by');
+            $table->integer('issued_by')->nullable();
 
-            $table->integer('received_by');
-            $table->text('signature')->nullable();
+            $table->integer('received_by')->nullable();
+            $table->binary('signature')->nullable();
+
+            $table->text('remarks')->nullable();
+            $table->tinyInteger('status')->nullable();
 
             $table->tinyInteger('is_deleted')->nullable();
             $table->tinyInteger('deleted_by')->nullable();

@@ -178,7 +178,7 @@
                 <form class="repeater-other-accessories">
                     <div data-repeater-list="other-accessories">
                         <div data-repeater-item>
-                            <div class="form-group row mb-5">
+                            <div class="form-group row mb-7">
                                 <div class="col-md-7 fv-row">
                                     <label class="form-label">Accessories</label>
                                     <select class="form-select form-accessories" data-kt-repeater="select2" name="accessories" data-allow-clear="true" data-placeholder="Select an option">
@@ -223,16 +223,16 @@
                         <h2>Issued To</h2>
                     </div>
                     <div class="card-toolbar">
-                        <a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
+                        {{-- <a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
                             <i class="ki-duotone ki-plus fs-3"></i>
                             Add Employee
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
                 <div class="card-body pt-10">
-                    <div data-repeater-list="issued-to" class="">
+                    <div data-repeater-list="issued-to" class="mb-5">
                         <div data-repeater-item>
-                            <div class="form-group row">
+                            <div class="form-group row mb-7">
                                 <div class="col-md-10 fv-row">
                                     <label class="form-label required">Name</label>
                                     <select class="form-select" data-kt-repeater="select2" data-placeholder="Select an option" name="employee">
@@ -251,8 +251,13 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="separator my-5"></div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
+                            <i class="ki-duotone ki-plus fs-3"></i>
+                            Add Accessories
+                        </a>
                     </div>
                 </div>
             </form>
@@ -269,7 +274,7 @@
                 <div class="card-body pt-10">
                     <div class="form-group">
                         <div class="col-md-12 fv-row mb-7">
-                            <label class="form-label required">Name</label>
+                            <label class="form-label required">Issued By</label>
                             <select class="form-select" data-kt-repeater="select2" data-placeholder="Select an option" name="issued_by">
                             </select>
                         </div>

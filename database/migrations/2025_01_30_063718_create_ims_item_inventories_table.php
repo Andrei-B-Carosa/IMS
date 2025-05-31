@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('item_brand_id')->nullable();
             $table->integer('item_type_id')->nullable();
             $table->string('name')->nullable();
+            $table->string('tag_number')->nullable();
             $table->text('description')->nullable();
             $table->text('serial_number')->nullable();
 

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('received_by')->nullable();
             $table->binary('signature')->nullable();
 
+            $table->text('remarks')->nullable();
             $table->tinyInteger('status')->nullable();
 
             $table->tinyInteger('is_deleted')->nullable();

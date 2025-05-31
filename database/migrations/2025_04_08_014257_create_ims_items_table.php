@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('price')->nullable();
 
             $table->tinyInteger('is_active')->nullable();
+            $table->text('remarks')->nullable();
 
             $table->tinyInteger('is_deleted')->nullable();
             $table->tinyInteger('deleted_by')->nullable();

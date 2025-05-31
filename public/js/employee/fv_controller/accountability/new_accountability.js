@@ -2,8 +2,6 @@
 import {Alert} from "../../../global/alert.js"
 import {RequestHandler} from "../../../global/request.js"
 import {modal_state,fv_validator, initFormValidation} from "../../../global.js"
-import { dtAccountabilityController } from "../../dt_controller/accountability.js";
-import { dtIssuedItems } from "../../dt_controller/accountability/issued_items.js";
 import { get_employee } from "../../../global/select.js";
 
 export var fvNewAccountabilityController =  function (page,param) {
@@ -220,7 +218,7 @@ export var fvNewAccountabilityController =  function (page,param) {
                 onConfirm:()=>{
                     page_block.block();
                     let formData = buildFormData();
-                    _request.post('/new-accountability/register',formData).then((res) => {
+                    _request.post('/accountability/update',formData).then((res) => {
                         if(res.status == 'success'){
                             Alert.loading(res.status,res.message+'<br> Website is reloading ...', {
                                 didOpen: ()=>{
@@ -250,6 +248,5 @@ export var fvNewAccountabilityController =  function (page,param) {
         });
 
     });
-
 
 }

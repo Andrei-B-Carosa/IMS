@@ -18,6 +18,7 @@ class ImsItemInventory extends Model
         'item_type_id',
         'item_brand_id',
         'name',
+        'tag_number',
         'description',
         'serial_number',
         'price',
@@ -42,5 +43,25 @@ class ImsItemInventory extends Model
     public function item_type()
     {
         return $this->belongsTo(ImsItemType::class,'item_type_id');
+    }
+
+    public function updated_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'updated_by')->withDefault();
+    }
+
+    public function created_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'created_by')->withDefault();
+    }
+
+    public function deleted_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'deleted_by');
+    }
+
+    public function received_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'received_by')->withDefault();
     }
 }

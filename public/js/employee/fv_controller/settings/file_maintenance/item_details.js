@@ -1,9 +1,118 @@
 "use strict";
-import {Alert} from "../../../global/alert.js"
-import {RequestHandler} from "../../../global/request.js"
-import {modal_state,fv_validator, initFormValidation} from "../../../global.js"
-import { dtAccountabilityController } from "../../dt_controller/accountability.js";
-import { dtIssuedItems } from "../../dt_controller/accountability/issued_items.js";
+import {Alert} from "../../../../global/alert.js"
+import {RequestHandler} from "../../../../global/request.js"
+import {modal_state,fv_validator, initFormValidation} from "../../../../global.js"
+
+export function fvGeneralDetails(_table=false,param=false){
+
+    var init_fvGeneralDetails = (function () {
+
+        var _handlefvGeneralDetails = function(){
+
+            let fv;
+            const _request = new RequestHandler;
+
+            let form = document.querySelector("#form-general-details");
+            // let url = form.getAttribute('action');
+
+            let card_id = '#card-general-details';
+            let cardContent = document.querySelector(`${card_id}`);
+
+            let blockUI = new KTBlockUI(cardContent, {
+                message: '<div class="blockui-message"><span class="spinner-border text-primary"></span> Loading...</div>',
+            });
+
+            if (!form.hasAttribute('data-fv-initialized')) {
+                fv = FormValidation.formValidation(form, {
+                    fields: {
+                        'name':fv_validator(),
+                        'item_type':fv_validator(),
+                        // 'item_brand':fv_validator(),
+                        'price':fv_validator(),
+                        'is_active':fv_validator(),
+                    },
+                    plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap5({
+                        rowSelector: ".fv-row",
+                        eleInvalidClass: "",
+                        eleValidClass: "",
+                    }),
+                    },
+                })
+
+                if ($('textarea[name="description"]').length) {
+                    // Only add the field if it exists and not yet added
+                    if (!fv.getFields().hasOwnProperty('description')) {
+                        fv.addField('description',fv_validator());
+                    }
+                }
+                form.setAttribute('data-fv-initialized', 'true');
+            }
+
+            $(card_id).on('click','.cancel',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+            })
+
+            $(card_id).on('click','.submit',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+
+                let _this = $(this);
+                let url = form.getAttribute('action');
+                fv && fv.validate().then(function (v) {
+                    if(v == "Valid"){
+                        Alert.confirm("question","Save Changes ?", {
+                            onConfirm: function() {
+                                blockUI.block();
+                                _this.attr("data-kt-indicator","on");
+                                _this.attr("disabled",true);
+
+                                let formData = new FormData(form);
+                                formData.append('encrypted_id',param);
+
+                                _request.post(url,formData).then((res) => {
+                                    Alert.toast(res.status,res.message);
+                                    if(res.status == 'success'){
+                                        fv.resetForm();
+                                    }
+                                })
+
+                                .catch((error) => {
+                                    console.log(error)
+                                    Alert.alert('error',"Something went wrong. Try again later", false);
+                                })
+                                .finally(() => {
+                                    _this.attr("data-kt-indicator","off");
+                                    _this.attr("disabled",false);
+                                    setTimeout(() => {
+                                        blockUI.release();
+                                    }, 500);
+                                });
+                            },
+                        });
+                    }
+                })
+            })
+
+
+        }
+
+        return {
+            init: function () {
+                _handlefvGeneralDetails();
+            },
+        };
+
+    })();
+
+    KTUtil.onDOMContentLoaded(function () {
+        init_fvGeneralDetails.init();
+    });
+
+
+}
 
 export function fvSystemUnitDetails(_table=false,param=false){
 
@@ -11,23 +120,23 @@ export function fvSystemUnitDetails(_table=false,param=false){
 
         var fvSystemUnitDetails;
 
-        var _handlefvAccountability = function(){
+        var _handlefvSystemUnitDetails = function(){
             const _request = new RequestHandler;
 
-            let form = document.querySelector("#form-edit-system-unit");
+            let form = document.querySelector("#form-item-details");
+            if(!form){ return; }
             let url = form.getAttribute('action');
 
-            let modal_id = form.getAttribute('modal-id');
-            let modalContent = document.querySelector(`${modal_id} .modal-content`);
+            let card_id = '#card-item-details';
+            let cardContent = document.querySelector(`${card_id}`);
 
-            let blockUI = new KTBlockUI(modalContent, {
+            let blockUI = new KTBlockUI(cardContent, {
                 message: '<div class="blockui-message"><span class="spinner-border text-primary"></span> Loading...</div>',
             });
 
             if (!form.hasAttribute('data-fv-initialized')) {
                 fvSystemUnitDetails = FormValidation.formValidation(form, {
                     fields: {
-                        'item':fv_validator(),
                         'cpu':fv_validator(),
                         'device_name':fv_validator(),
                         'windows_version':fv_validator(),
@@ -48,23 +157,17 @@ export function fvSystemUnitDetails(_table=false,param=false){
                 form.setAttribute('data-fv-initialized', 'true');
             }
 
-            $(modal_id).on('click','.cancel',function(e){
+            $(card_id).on('click','.cancel',function(e){
                 e.preventDefault()
                 e.stopImmediatePropagation()
-                Alert.confirm('question',"Close this form ?",{
-                    onConfirm: () => {
-                        modal_state(modal_id);
-                        $(modal_id).remove();
-                    }
-                })
             })
 
-            $(modal_id).on('click','.submit',function(e){
+            $(card_id).on('click','.submit',function(e){
                 e.preventDefault()
                 e.stopImmediatePropagation()
 
                 let _this = $(this);
-                let url = form.getAttribute('action');
+
                 fvSystemUnitDetails && fvSystemUnitDetails.validate().then(function (v) {
                     if(v == "Valid"){
                         Alert.confirm("question","Submit this form?", {
@@ -74,13 +177,12 @@ export function fvSystemUnitDetails(_table=false,param=false){
                                 _this.attr("disabled",true);
 
                                 let formData = handleConstructForm(form);
-                                formData.append('encrypted_id',_this.attr('data-id'));
-                                formData.append('update_type','system unit');
+                                formData.append('encrypted_id',param);
                                 _request.post(url,formData).then((res) => {
                                     Alert.toast(res.status,res.message);
+
                                     if(res.status == 'success'){
                                         fvSystemUnitDetails.resetForm();
-                                        modal_state(modal_id);
                                     }
                                 })
                                 .catch((error) => {
@@ -90,9 +192,9 @@ export function fvSystemUnitDetails(_table=false,param=false){
                                 .finally(() => {
                                     _this.attr("data-kt-indicator","off");
                                     _this.attr("disabled",false);
-                                    blockUI.release();
-                                    $(modal_id).remove();
-                                    dtIssuedItems().init();
+                                    setTimeout(() => {
+                                        blockUI.release();
+                                    }, 500);
                                 });
                             },
                         });
@@ -228,7 +330,7 @@ export function fvSystemUnitDetails(_table=false,param=false){
 
         return {
             init: function () {
-                _handlefvAccountability();
+                _handlefvSystemUnitDetails();
             },
         };
 
@@ -237,113 +339,5 @@ export function fvSystemUnitDetails(_table=false,param=false){
     KTUtil.onDOMContentLoaded(function () {
         init_fvSystemUnitDetails.init();
     });
-
-}
-
-
-export function fvOtherItemDetails(_table=false,param=false){
-
-    var init_fvOtherItemDetails = (function () {
-
-        var _handlefvOtherItemDetails = function(){
-
-            let fv;
-            const _request = new RequestHandler;
-
-            let form = document.querySelector("#form-edit-other-item");
-            let url = form.getAttribute('action');
-
-            let modal_id = form.getAttribute('modal-id');
-            let modalContent = document.querySelector(`${modal_id} .modal-content`);
-
-            let blockUI = new KTBlockUI(modalContent, {
-                message: '<div class="blockui-message"><span class="spinner-border text-primary"></span> Loading...</div>',
-            });
-
-            if (!form.hasAttribute('data-fv-initialized')) {
-                fv = FormValidation.formValidation(form, {
-                    fields: {
-                        'item':fv_validator(),
-                        'description':fv_validator(),
-                    },
-                    plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    bootstrap: new FormValidation.plugins.Bootstrap5({
-                        rowSelector: ".fv-row",
-                        eleInvalidClass: "",
-                        eleValidClass: "",
-                    }),
-                    },
-                })
-                form.setAttribute('data-fv-initialized', 'true');
-            }
-
-            $(modal_id).on('click','.cancel',function(e){
-                e.preventDefault()
-                e.stopImmediatePropagation()
-                Alert.confirm('question',"Close this form ?",{
-                    onConfirm: () => {
-                        modal_state(modal_id);
-                        $(modal_id).remove();
-                    }
-                })
-            })
-
-            $(modal_id).on('click','.submit',function(e){
-                e.preventDefault()
-                e.stopImmediatePropagation()
-
-                let _this = $(this);
-                let url = form.getAttribute('action');
-                fv && fv.validate().then(function (v) {
-                    if(v == "Valid"){
-                        Alert.confirm("question","Submit this form?", {
-                            onConfirm: function() {
-                                blockUI.block();
-                                _this.attr("data-kt-indicator","on");
-                                _this.attr("disabled",true);
-
-                                let formData = new FormData(form);
-                                formData.append('encrypted_id',_this.attr('data-id'));
-                                formData.append('update_type','other_item');
-                                _request.post(url,formData).then((res) => {
-                                    Alert.toast(res.status,res.message);
-                                    if(res.status == 'success'){
-                                        fv.resetForm();
-                                        modal_state(modal_id);
-                                    }
-                                })
-                                .catch((error) => {
-                                    console.log(error)
-                                    Alert.alert('error',"Something went wrong. Try again later", false);
-                                })
-                                .finally(() => {
-                                    _this.attr("data-kt-indicator","off");
-                                    _this.attr("disabled",false);
-                                    blockUI.release();
-                                    $(modal_id).remove();
-                                    dtIssuedItems().init();
-                                });
-                            },
-                        });
-                    }
-                })
-            })
-
-
-        }
-
-        return {
-            init: function () {
-                _handlefvOtherItemDetails();
-            },
-        };
-
-    })();
-
-    KTUtil.onDOMContentLoaded(function () {
-        init_fvOtherItemDetails.init();
-    });
-
 
 }

@@ -10,7 +10,9 @@ class ImsItemType extends Model
         'name',
         'description',
         'item_number',
+        'item_code',
         'is_active',
+        'display_to',
         'created_by',
         'updated_by',
         'updated_at',
@@ -27,6 +29,13 @@ class ImsItemType extends Model
     public static function getDesktopId()
     {
         return self::whereRaw('LOWER(name) = ?', ['system unit'])
+                   ->where('is_active', 1)
+                   ->value('id');
+    }
+
+    public static function getLaptopId()
+    {
+        return self::whereRaw('LOWER(name) = ?', ['laptop'])
                    ->where('is_active', 1)
                    ->value('id');
     }
@@ -57,6 +66,21 @@ class ImsItemType extends Model
             'description'=>null,
             'is_active' => 1
         ])->id;
+    }
+
+    public function updated_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'updated_by')->withDefault();
+    }
+
+    public function created_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'created_by')->withDefault();
+    }
+
+    public function deleted_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'deleted_by');
     }
 
 }

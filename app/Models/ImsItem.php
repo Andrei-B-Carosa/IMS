@@ -13,6 +13,8 @@ class ImsItem extends Model
         'description',
         'price',
         'is_active',
+        'remarks',
+        'supplier_id',
         'created_by',
         'updated_by',
         'updated_at',
@@ -33,6 +35,11 @@ class ImsItem extends Model
             }
         });
 
+    }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtoupper($value);
     }
 
     public static function getItemId($name)
@@ -66,5 +73,20 @@ class ImsItem extends Model
         [
             'description' => $array['description']
         ]);
+    }
+
+    public function updated_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'updated_by')->withDefault();
+    }
+
+    public function created_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'created_by')->withDefault();
+    }
+
+    public function deleted_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'deleted_by');
     }
 }

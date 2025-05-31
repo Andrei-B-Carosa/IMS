@@ -24,6 +24,7 @@ class InventoryOption
 
         return match($rq->type){
             'accountability_items' => $this->get_accountability_items($query,$search,$html),
+            'material_issuance_items' => $this->get_material_issuance_items($query,$search,$html),
         };
     }
 
@@ -46,6 +47,36 @@ class InventoryOption
                         .e($name).
                     '</option>';
         }
+        return $html;
+    }
+
+
+    public function get_material_issuance_items($query,$search,$html)
+    {
+        $data = $query->whereHas('item_type', function ($q) {
+            $q->where('display_to', 2)->orWhereNull('display_to');
+        })->get();
+
+        if ($data->isEmpty()) {
+            return '<option disabled>No Available Option</option>';
+        }
+
+        // Group the data by 'name'
+        $grouped = $data->groupBy('name');
+        $html = '<option></option>'; // Optional empty option
+
+        foreach ($grouped as $name => $items) {
+            $first = $items->first(); // Get one representative record
+            $count = $items->count();
+            $value = Crypt::encrypt($first->id); // Use the first item's ID for value
+            $selected = $search === $first->id ? 'selected' : '';
+            $displayName = $name ?? $first->description;
+
+            $html .= '<option value="'.e($value).'" '.$selected.'>'
+                        .e($displayName).' ( Available : X'.$count.')'
+                    .'</option>';
+        }
+
         return $html;
     }
 }

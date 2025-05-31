@@ -34,6 +34,7 @@ class ImsAccountability extends Model
         'issued_at',
         'issued_by',
         'received_by',
+        'remarks',
         'signature',
         'status',
         'created_by',
@@ -70,5 +71,10 @@ class ImsAccountability extends Model
     public function issued_by_emp()
     {
         return $this->belongsTo(Employee::class,'issued_by')->withDefault();
+    }
+
+    public function received_by_emp()
+    {
+        return $this->belongsTo(Employee::class,'received_by')->withDefault();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Reusable\Select;
+namespace App\Service\Select;
 
 use App\Models\HrisCompanyLocation;
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ class CompanyLocationOptions
 
     public function list(Request $rq)
     {
-        $query = HrisCompanyLocation::where([['is_deleted',null],['is_active',1]]);
+        $query = HrisCompanyLocation::where('is_deleted',null)->when($rq->view!='all', fn($q) => $q->where('is_active', $rq->view));
         return match($rq->type){
             'options' => $this->options($rq,$query),
         };

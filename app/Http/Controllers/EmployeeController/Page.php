@@ -87,29 +87,37 @@ class Page extends Controller
         $pages = [
             'accountability-details' => fn() => $page->accountability_details($rq),
             'new-accountability' => fn() => $page->new_accountability($rq),
+            'inventory-details' => fn() => $page->inventory_details($rq),
+            'new-inventory' => fn() => $page->new_inventory($rq),
+            'new-material-issuance' => fn() => $page->new_material_issuance($rq),
+            'material-issuance-details' => fn() => $page->material_issuance_details($rq),
+            'item-details' => fn() => $page->item_details($rq),
+            'new-item' => fn() => $page->new_item($rq),
         ];
 
         if (array_key_exists($view, $pages)) {
             return response(['page' => $pages[$view]()], 200);
         }
 
-        $row = ImsSystemFile::with('file_layer.system_layer')
-        ->where(function ($q) use ($view) {
-                $q->where("status", 1)
-                ->whereRaw("LOWER(href) = ?", [strtolower($view)]);
-        })
-        ->Orwhere(function ($query) use ($view) {
-            $query->where([["status", 1], ["href", $view]])
-                ->orWhereHas("file_layer.system_layer", function ($q) use ($view) {
-                    $q->where([["status", 1], ["href", $view]]);
-                });
+        $row = ImsSystemFile::with(['file_layer' => function ($query) use ($view) {
+            $query->whereHas('system_layer', function ($q) use ($view) {
+                $q->where([['status', 1],['href', $view]]);
+            })
+            ->with(['system_layer' => function ($q) use ($view) {
+                $q->where([['status', 1],['href', $view]]);
+            }]);
+        }])
+        ->where(function ($query) use ($view) {
+            $query->where([['status', 1],['href', $view]])
+            ->orWhereHas('file_layer.system_layer', function ($q) use ($view) {
+                $q->where([['status', 1],['href', $view]]);
+            });
         })
         ->first();
 
         if (!$row || !$row->file_layer) {
             return view("$role.not_found");
         }
-
         $folders = !$row->file_layer->isEmpty()
             ? $row->folder.'.'.$row->file_layer[0]->system_layer->folder
             : $row->folder;

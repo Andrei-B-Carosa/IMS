@@ -1,14 +1,9 @@
 'use strict';
-import { modal_state } from "../../../global.js";
+import { modal_state, page_state } from "../../../global.js";
 import {Alert} from "../../../global/alert.js";
 import {RequestHandler} from "../../../global/request.js";
-import { dtAccountabilityController } from "../../dt_controller/accountability.js";
-import { fvAccountabilityController } from "../../fv_controller/accountability/accountability.js";
 
 export var AccountabilityListController = function (page, param) {
-
-    // dtAccountabilityController();
-    // fvAccountabilityController();
 
     let _page = $('.page-accountability');
 
@@ -23,27 +18,61 @@ export var AccountabilityListController = function (page, param) {
             }))
         );
 
+        let filter_status = $('input[name="filter_status"]:checked').val();
+        let search = $('input[name="search"]').val();
+
         formData.append('page',paginate_page);
+        formData.append('filter_status',filter_status);
+        formData.append('search',search);
+
         formData.append('array_search',array_search);
 
         request.post('/accountability/list',formData)
         .then((res) => {
 
-            let html = '';
             let div = $('.accountability-list').empty();
+            $('#empty_state_wrapper').remove();
+            $('.pagination').empty();
+
+            let html = '';
             if(res.status != 'success'){
-                div.append(html);
+                div.parent().append(
+                    `<div id="empty_state_wrapper" >
+                        <div class="card-px text-center pt-15 pb-15">
+                            <h2 class="fs-2x fw-bold mb-0" id="empty_state_title">Nothing in here</h2>
+                            <p class="text-gray-400 fs-4 fw-semibold py-7" id="empty_state_subtitle">
+                                No results found
+                            </p>
+
+                        </div>
+                        <div class="text-center pb-15 px-5">
+                            <img src="${asset_url+'/media/illustrations/sketchy-1/16.png'}" alt="" class="mw-100 h-200px h-sm-325px">
+                        </div>
+                    </div>`
+                );
                 return;
             }
 
             let payload = JSON.parse(window.atob(res.payload));
             if(payload.data.length <= 0){
-                div.append(html);
+                div.parent().append(
+                    `<div id="empty_state_wrapper" >
+                        <div class="card-px text-center pt-15 pb-15">
+                            <h2 class="fs-2x fw-bold mb-0" id="empty_state_title">Nothing in here</h2>
+                            <p class="text-gray-400 fs-4 fw-semibold py-7" id="empty_state_subtitle">
+                                No results found
+                            </p>
+
+                        </div>
+                        <div class="text-center pb-15 px-5">
+                            <img src="${asset_url+'/media/illustrations/sketchy-1/16.png'}" alt="" class="mw-100 h-200px h-sm-325px">
+                        </div>
+                    </div>`
+                );
                 return;
             }
 
             payload.data.forEach(item => {
-
                 let issued_item = item.issued_item;
                 let issued_item_html = '';
                 let limit = 4;
@@ -71,10 +100,10 @@ export var AccountabilityListController = function (page, param) {
 
                 html+=`
                 <div class="col-md-4">
-                    <a href="/accountability-details/${item.encrypted_id}" class="card card-flush h-md-100 border border-2 border-${item.status ==1?`success`:`danger`} border-hover">
+                    <a href="/accountability-details/${item.encrypted_id}" class="card card-flush h-md-100 border border-2 border-${item.status ==1?`success`:`danger`} border-hover shadow-sm">
                         <div class="card-header border-0 pt-9">
                             <div class="card-title">
-                                <h2>Accountability No. ${item.form_no ??1094}</h2>
+                                <h2>Accountability No. ${item.form_no ??'--'}</h2>
                             </div>
                             <div class="card-toolbar">
                                 <span class="badge badge-light-${item.status ==1?`success`:`danger`} fw-bold me-auto px-4 py-3">${item.status ==1?`Active`:`Inactive`}</span>
@@ -138,33 +167,44 @@ export var AccountabilityListController = function (page, param) {
 
     }
 
-
-
     $(async function () {
 
         page_block.block();
+        await loadAccountabilityList(1,'all');
 
-        await loadAccountabilityList();
+        setTimeout(() => {
+            page_block.release();
+        }, 500);
 
+        _page.on('click','.filter',function(e){
+            e.preventDefault();
+            e.stopImmediatePropagation();
 
-        // _page.on('click','.edit-accountable',async function(e){
-        //     e.preventDefault();
-        //     e.stopImmediatePropagation();
+            let filter_status = $('input[name="filter_status"]:checked').val();
 
-        //     $(this).attr('disabled',true);
-        //     await loadAccountableList($(this).attr('data-id'));
-        //     $(this).attr('disabled',false);
-        // })
+            page_block.block();
+            loadAccountabilityList();
+            setTimeout(() => {
+                page_block.release();
+            }, 500);
+        })
 
-        // _page.on('click','.edit-item',function(e){
-        //     e.preventDefault();
-        //     e.stopImmediatePropagation();
+        _page.on('keyup','.input-search',function(e){
+            e.preventDefault()
+            e.stopImmediatePropagation()
 
-
-        // })
-
-        page_block.release();
-        // KTComponents.init();
+            let searchTerm = $(this).val().trim();
+            if ((e.key === 'Enter' || e.keyCode === 13) && searchTerm !== '') {
+                loadAccountabilityList();
+            } else if ((e.keyCode === 8 || e.key === 'Backspace')) {
+                setTimeout(() => {
+                    let updatedSearchTerm = $(this).val().trim();
+                    if (updatedSearchTerm === '') {
+                        loadAccountabilityList();
+                    }
+                }, 0);
+            }
+        })
 
     });
 }

@@ -9,10 +9,8 @@
                    </div>
                </div>
                <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-18">
-                   <a href="index.html">
-                       <img alt="Logo" src="assets/media/logos/demo34-small.svg" class="h-25px d-sm-none" />
-                       <img alt="Logo" src="assets/media/logos/demo34.png" class="h-25px d-none d-sm-block" />
-                   </a>
+                <div class="symbol symbol-label fs-3 bg-primary text-white">
+                </div>
                </div>
                <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1"
                    id="kt_app_header_wrapper">
@@ -54,7 +52,7 @@
                             <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-0 py-lg-4 w-lg-200px">
                                 @foreach ($data['file_layer'] as $layer)
                                     <div class="menu-item">
-                                        <a class="menu-link navbar py-3 sub-menu" id="{{$layer['href']}}" data-page="{{$layer['href']}}" data-link="employee/{{$layer['href']}}" href="javascript:;">
+                                        <a class="menu-link navbar py-3 sub-menu" id="{{$layer['href']}}" data-page="{{$layer['href']}}" data-link="{{$layer['href']}}" href="javascript:;">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -84,7 +82,6 @@
                                <div class="menu-item px-3">
                                    <div class="menu-content d-flex align-items-center px-3">
                                     <div class="symbol symbol-50px me-5">
-                                        <img alt="Logo" src="assets/media/avatars/300-13.jpg"/>
                                     </div>
                                        <div class="d-flex flex-column">
                                             <div class="fw-bold d-flex align-items-center fs-5">

@@ -12,6 +12,7 @@ class HrisCompanyLocation extends Model
     protected $fillable=[
         'name',
         'description',
+        'location_code',
         'is_active',
         'created_by',
         'updated_by',

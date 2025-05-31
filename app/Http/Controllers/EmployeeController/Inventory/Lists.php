@@ -3,9 +3,221 @@
 namespace App\Http\Controllers\EmployeeController\Inventory;
 
 use App\Http\Controllers\Controller;
+use App\Models\HrisCompanyLocation;
+use App\Models\ImsItem;
+use App\Models\ImsItemInventory;
+use App\Models\ImsItemType;
+use App\Service\Reusable\Datatable;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class Lists extends Controller
 {
-    //
+    public function dt(Request $rq)
+    {
+
+        $filter_status = $rq->filter_status != 'all' ? $rq->filter_status : false;
+        $id = $rq->id?Crypt::decrypt($rq->id):'';
+
+        $data = ImsItemInventory::with('item_type')
+        ->when($filter_status,function($q) use($filter_status){
+            $q->where('status',$filter_status);
+        })
+        ->where([['is_deleted',null]])
+        ->get();
+
+        $data->transform(function ($item, $key) {
+
+            $last_updated_by = null;
+            $last_update_at = null;
+            if($item->updated_by != null){
+                $last_updated_by = optional($item->updated_by_emp)->fullname();
+                $last_update_at = Carbon::parse($item->updated_at)->format('m-d-Y');
+            }elseif($item->created_by !=null){
+                $last_updated_by = optional($item->created_by_emp)->fullname();
+                $last_update_at = Carbon::parse($item->created_at)->format('m-d-Y');
+            }
+
+            $received_by_emp = optional($item->received_by_emp)->fullname();
+            $received_at = Carbon::parse($item->received_at)->format('M d, Y') ?? '--';
+
+            $name = $item->name;
+            $description = $item->description;
+            $item_type = $item->item_type_id;
+
+            if($item_type == 1 || $item_type == 8) {
+                $array = json_decode($description,true);
+                $ram = json_decode($array['ram']);
+
+                $storage = json_decode($array['storage'],true);
+                $storage_html = '';
+                foreach($storage as $row){
+                    $storage_html .= 'Storage: '.$row['description'].'<br>';
+                };
+
+                $ram = json_decode($array['ram'],true);
+                $ram_html = collect($ram)
+                ->groupBy('name')
+                ->map(function ($items, $size) {
+                    return (count($items) > 1 ? count($items) . 'x' : '') . $size;
+                })
+                ->implode(', ');
+
+                $gpu = json_decode($array['gpu'],true);
+                $gpu_html = '';
+                foreach($gpu as $row){
+                    if($row['type'] == 'Integrated'){
+                        continue;
+                    }
+                    $gpu_html .= 'GPU: '.$row['description'].'<br>';
+                };
+
+                $description = '<div class="fs-6">'
+                . ($item->item_type_id == 8 ? 'Model: ' . $array['model'] . '<br>' : '')
+                . 'CPU: ' . $array['cpu'] . '<br>'
+                . 'RAM: ' . $ram_html . '<br>'
+                . $storage_html
+                . 'OS: ' . $array['windows_version'] . '<br>'
+                . $gpu_html
+                . 'Device Name: ' . $array['device_name'] . '<br>'
+                . ($item->item_type_id == 8 ? 'Serial Number: ' . $array['serial_number'] . '<br>' : '')
+                . '</div>';
+            }
+
+            $item->count = $key + 1;
+            $item->last_updated_by = $last_updated_by;
+            $item->last_update_at = $last_update_at;
+
+            $item->received_date = $received_at;
+            $item->received_by = $received_by_emp;
+
+            $item->name =  $name ?? $description;
+            $item->description = $description;
+            $item->item_number = $item->item_type->item_number;
+            $item->item_name = $item->item_type->name;
+
+            $item->encrypted_id = Crypt::encrypt($item->id);
+            return $item;
+        });
+
+        $table = new Datatable($rq, $data);
+        $table->renderTable();
+
+        return response()->json([
+            'draw' => $table->getDraw(),
+            'recordsTotal' => $table->getRecordsTotal(),
+            'recordsFiltered' =>  $table->getRecordsFiltered(),
+            'data' => $table->getRows()
+        ]);
+    }
+
+    public function update(Request $rq)
+    {
+        try {
+            DB::beginTransaction();
+
+            $item_id = Crypt::decrypt($rq->item);
+            $created_by = Auth::user()->emp_id;
+
+            $query = ImsItem::find($item_id);
+
+            $description = $query->description;
+            if($query->item_type_id == 1 || $query->item_type_id == 8){
+                $description = json_decode($description,true);
+                $description['brand'] = $query->item_brand->name;
+                $description['serial_number'] = $rq->serial_number;
+                $description = json_encode($description);
+            }
+
+            $create = [
+                'item_brand_id'=> $query->item_brand_id,
+                'item_type_id'=> $query->item_type_id,
+                'name'=> $query->name,
+                'tag_number'=> $rq->tag_number,
+                'description'=> $description,
+                'price'=> $query->price,
+                'serial_number'=> $rq->serial_number,
+                'received_at'=> Carbon::createFromFormat('m-d-Y',$rq->received_at)->format('Y-m-d'),
+                'received_by'=> Crypt::decrypt($rq->received_by),
+                'supplier_id'=> isset($rq->supplier) ? Crypt::decrypt($rq->supplier):null,
+                'remarks'=> $rq->remarks,
+                'status'=> $rq->status,
+                'created_by'=> $created_by,
+            ];
+
+            ImsItemInventory::insert($create);
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message'=>'New Inventory is saved']);
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+
+        }
+    }
+
+    public function delete(Request $rq)
+    {
+        try{
+            DB::beginTransaction();
+            $user_id = Auth::user()->emp_id;
+            $id =  Crypt::decrypt($rq->encrypted_id);
+
+            $query = ImsItemInventory::find($id);
+            $query->status = 0;
+            $query->is_deleted = 1;
+            $query->remarks = $rq->remarks;
+            $query->deleted_by = $user_id;
+            $query->deleted_at = Carbon::now();
+            $query->save();
+
+            DB::commit();
+            return response()->json([
+                'status' => 'info',
+                'message'=>'Item is removed',
+                'payload' => ImsItemInventory::where('is_deleted',null)->count()
+            ]);
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function check_item_tag(Request $rq)
+    {
+        try{
+            $location_id = Crypt::decrypt($rq->location_id);
+            $item_id = Crypt::decrypt($rq->item_id);
+
+            $location = HrisCompanyLocation::find($location_id);
+            $item = ImsItem::find($item_id);
+
+            $item_type_id = $item->item_type_id;
+            $count = ImsItemInventory::where('item_type_id',$item_type_id)->count();
+            $count = str_pad($count+1, 5, '0', STR_PAD_LEFT);
+
+            $item_tag = config('company.item_code').'-'.$location->location_code.'-'.$item->item_type->item_code.'-'.$count;
+
+            return response()->json([
+                'status' => 'success',
+                'message'=>'Success',
+                'payload' => $item_tag
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 }
