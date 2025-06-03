@@ -183,7 +183,7 @@
         </div>
     </div>
 </div>
-
+{{-- 
 <x-elements.modal
     id="add-item-type"
     title="Item Type Details"
@@ -376,22 +376,6 @@
     title="Company Location Details"
     action="/file-maintenance/company-location/update" >
     <div class="d-flex flex-column px-5 px-lg-10" style="max-height: 670px;">
-        {{-- <div class="fv-row mb-8 fv-plugins-icon-container">
-            <x-elements.select
-                id="company_id"
-                name="company_id"
-                label="Company"
-                :options="[]"
-                placeholder="Select an option"
-                selected=""
-                class="fw-bold form-select-solid"
-                data-control="select2"
-                data-placeholder="Select an option"
-                data-minimum-results-for-search="Infinity"
-                disabled="false"
-            />
-            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-        </div> --}}
         <div class="row">
             <div class="fv-row mb-7 col-6 fv-plugins-icon-container">
                 <x-elements.input
@@ -449,4 +433,4 @@
             </x-elements.textarea>
         </div>
     </div>
-</x-elements.modal>
+</x-elements.modal> --}}
