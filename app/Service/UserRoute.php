@@ -32,8 +32,7 @@ class UserRoute
                 ])->whereIn('id',$file_id)->where('status',1)->get();
             });
         } catch (\Exception $e) {
-
-            Log::error('Error retrieving '.$role->name.' routes: ' . $e->getMessage());
+            Log::error('Error retrieving routes: ' . $e->getMessage());
             return array();
         }
     }
