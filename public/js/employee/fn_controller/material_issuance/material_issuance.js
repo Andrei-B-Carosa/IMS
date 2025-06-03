@@ -183,7 +183,7 @@ export var MaterialIssuanceListController = function (page, param) {
             let filter_status = $('input[name="filter_status"]:checked').val();
 
             page_block.block();
-            loadAccountabilityList();
+            loadMaterialIssuanceList();
             setTimeout(() => {
                 page_block.release();
             }, 500);

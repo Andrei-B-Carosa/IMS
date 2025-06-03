@@ -35,7 +35,7 @@ export async function load_page(page, param=null){
     try {
         const pageContent = await page_content(page, param);
         if (pageContent) {
-            $('.current-directory').text(page);
+            // $('.current-directory').text(page);
             await page_handler(page, param);
             return true;
         } else {

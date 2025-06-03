@@ -15,9 +15,8 @@ export function page_content(page, param=null) {
                     let tt = page.replace(/[^A-Z0-9]+/ig, " ");
                     let url = window.location.pathname;
                     $("head > title").empty().append("IMS | " + tt.split('/')[0].replace(/\b\w/g, char => char.toUpperCase()));
-                    $('#page-heading').text(
-                        tt.split('/')[0].replace(/\b\w/g, char => char.toUpperCase())
-                    );
+                    // $('#page-heading').append(tt.split('/')[0].replace(/\b\w/g, char => char.toUpperCase()));
+                    $('.current-directory').text(tt.split('/')[0].replace(/\b\w/g, char => char.toUpperCase()));
                     if (param !== null && param !== false) {
                         if (url.split('/')[1] !== page) {
                             window.history.pushState(null, null, page + '/' + param);
