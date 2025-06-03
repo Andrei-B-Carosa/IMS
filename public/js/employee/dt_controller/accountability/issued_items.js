@@ -194,38 +194,6 @@ export var dtIssuedItems = function (table,param=false) {
                 modal_state('#modal-available-items','show');
             })
 
-            // $(`#${table}_table`).on('click','.view-system-unit',function(e){
-            //     e.preventDefault()
-            //     e.stopImmediatePropagation()
-
-            //     let _this = $(this);
-            //     let id    =_this.attr('data-id');
-            //     let modal_id = '#modal-edit-system-unit';
-            //     let form = $('#form-edit-system-unit');
-
-            //     // modal_state(modal_id,'show');
-
-            //     let formData = new FormData;
-            //     formData.append('id',id);
-            //     formData.append('modal_type',1);
-
-            //     _request.post('/'+_url+'info-issued-items',formData)
-            //     .then((res) => {
-            //         let payload = window.atob(res.payload);
-            //         $(modal_id).empty();
-            //         $(_page).append(payload);
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //         Alert.alert('error', "Something went wrong. Try again later", false);
-            //     })
-            //     .finally((error) => {
-            //         modal_state(modal_id,'show');
-            //         fvSystemUnitDetails('issued-to',param);
-            //     });
-
-            // })
-
             $(`#${table}_table`).on('click','.view',function(e){
                 let _this = $(this);
                 let id    =_this.attr('data-id');
@@ -482,7 +450,10 @@ export var dtAvailableItems = function (table,param=false) {
                         _request.post('/'+_url+'add-accountability-item',formData)
                         .then((res) => {
                             Alert.toast(res.status,res.message);
-                            initTable();
+                            if(res.status =='success'){
+                                initTable();
+                                dtIssuedItems('issued-item',param).init();
+                            }
                         })
                         .catch((error) => {
                             Alert.alert('error', "Something went wrong. Try again later", false);

@@ -99,11 +99,11 @@
                     <input type="text" class="form-control form-control-solid w-250px ps-12 search"
                         placeholder="Search here ..." />
                 </div> --}}
-                @if($data->status !=1)
+                {{-- @if($data->status !=1)
                     <button class="btn btn-primary align-self-center add-personnel" data-id="{{ Crypt::encrypt($data->id) }}">
                         Add Personnel
                     </button>
-                @endif
+                @endif --}}
             </div>
         </div>
 
@@ -113,7 +113,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal-material-issuance-details" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-focus="false">
+    <div class="modal fade" id="modal-material-issuance-details" tabindex="-1" aria-hidden="false" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-focus="false">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered mw-650px">
             <div class="modal-content">
                 <div class="modal-header justify-content-center" id="">

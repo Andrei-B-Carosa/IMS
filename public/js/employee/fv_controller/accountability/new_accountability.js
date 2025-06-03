@@ -57,7 +57,30 @@ export var fvNewAccountabilityController =  function (page,param) {
                 const currentIndex = repeaterList.find('[data-repeater-item]').index($(this));
                 const acccessories = `issued-item[${currentIndex}][accessories]`;
 
-                fvIssuedItem.addField(acccessories,fv_validator())
+                fvIssuedItem.addField(acccessories,{
+                    validators: {
+                        notEmpty:{
+                            message:'This field is required'
+                        },
+                        callback: {
+                            message: 'Each item must be unique',
+                            callback: function(input) {
+                                const $current = $(input.element);
+                                const currentValue = $current.val();
+
+                                const allSelects = formIssuedItem.querySelectorAll('select[name*="[accessories]"]');
+                                const values = Array.from(allSelects, el => el.value);
+                                const count = values.filter(v => v === currentValue).length;
+
+                                if(currentValue == ''){
+                                    return true;
+                                }
+
+                                return count === 1;
+                            }
+                        }
+                    },
+                })
 
                 $(`select[name="${acccessories}"]`).select2({
                     width: '100%',
@@ -88,7 +111,30 @@ export var fvNewAccountabilityController =  function (page,param) {
 
         fvIssuedItem = FormValidation.formValidation(formIssuedItem, {
             fields: {
-                'issued-item[0][accessories]':fv_validator(),
+                'issued-item[0][accessories]':{
+                    validators: {
+                        notEmpty:{
+                            message:'This field is required'
+                        },
+                        callback: {
+                            message: 'Each item must be unique',
+                            callback: function(input) {
+                                const $current = $(input.element);
+                                const currentValue = $current.val();
+
+                                const allSelects = formIssuedItem.querySelectorAll('select[name*="[accessories]"]');
+                                const values = Array.from(allSelects, el => el.value);
+                                const count = values.filter(v => v === currentValue).length;
+
+                                if(currentValue == ''){
+                                    return true;
+                                }
+
+                                return count === 1;
+                            }
+                        }
+                    },
+                },
             },
             plugins: {
             trigger: new FormValidation.plugins.Trigger(),
@@ -114,9 +160,37 @@ export var fvNewAccountabilityController =  function (page,param) {
 
                 const employee = `issued-to[${currentIndex}][employee]`;
 
-                fvEmployeeDetails.addField(employee,fv_validator())
+                fvEmployeeDetails.addField(employee,{
+                    validators: {
+                        notEmpty:{
+                            message:'This field is required'
+                        },
+                        callback: {
+                            message: 'Duplicate employee found',
+                            callback: function(input) {
+                                const $current = $(input.element);
+                                const currentValue = input.value;
 
-                await get_employee(`select[name="${employee}"]`,``,1);
+                                // collect all accessory <select>s
+                                const allSelects = formEmployeeDetails.querySelectorAll('select[name*="[employee]"]');
+                                const values = Array.from(allSelects, el => el.value);
+                                const count = values.filter(v => v === currentValue).length;
+
+                                if(currentValue == ''){
+                                    return true;
+                                }
+
+                                return count === 1;
+                            }
+                        }
+                    },
+                })
+
+                $(`select[name="${employee}"]`).select2({
+                    width: '100%',
+                });
+
+                // await get_employee(`select[name="${employee}"]`,``,1);
 
                 repeaterList.find('[data-repeater-delete]').parent().removeClass('d-none');
                 $(this).slideDown();
@@ -134,7 +208,7 @@ export var fvNewAccountabilityController =  function (page,param) {
             },
         });
 
-        await get_employee(`select[name="issued-to[0][employee]"]`,``,1);
+        // await get_employee(`select[name="issued-to[0][employee]"]`,``,1);
 
         if (formEmployeeDetails.hasAttribute('data-fv-initialized')) {
             return;
@@ -142,7 +216,31 @@ export var fvNewAccountabilityController =  function (page,param) {
 
         fvEmployeeDetails = FormValidation.formValidation(formEmployeeDetails, {
             fields: {
-                'issued-to[0][employee]':fv_validator(),
+                'issued-to[0][employee]':{
+                    validators: {
+                        notEmpty:{
+                            message:'This field is required'
+                        },
+                        callback: {
+                            message: 'Duplicate employee found',
+                            callback: function(input) {
+                                const $current = $(input.element);
+                                const currentValue = input.value;
+
+                                // collect all accessory <select>s
+                                const allSelects = formEmployeeDetails.querySelectorAll('select[name*="[employee]"]');
+                                const values = Array.from(allSelects, el => el.value);
+                                const count = values.filter(v => v === currentValue).length;
+
+                                if(currentValue == ''){
+                                    return true;
+                                }
+
+                                return count === 1;
+                            }
+                        }
+                    },
+                },
             },
             plugins: {
             trigger: new FormValidation.plugins.Trigger(),

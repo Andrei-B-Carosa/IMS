@@ -75,10 +75,11 @@ export function fvOtherMaterialIssuanceDetails(_table=false,param=false){
                                 formData.append('encrypted_id',_this.attr('data-id'));
                                 _request.post(url,formData).then((res) => {
                                     Alert.toast(res.status,res.message);
-                                    if(res.status == 'success'){
-                                        fv.resetForm();
-                                        form.reset();
-                                        modal_state(modal_id);
+                                    if(res.status == 'success' && res.payload =='reload'){
+                                        location.reload();
+                                        // fv.resetForm();
+                                        // form.reset();
+                                        // modal_state(modal_id);
                                     }
                                 })
                                 .catch((error) => {

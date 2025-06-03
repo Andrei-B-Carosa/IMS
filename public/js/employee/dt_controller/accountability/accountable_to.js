@@ -420,7 +420,11 @@ export var dtAvailablePersonnel = function (table,param=false) {
                         _request.post('/'+_url+'add-personnel',formData)
                         .then((res) => {
                             Alert.toast(res.status,res.message);
-                            initTable();
+                            if(res.status =='success')
+                            {
+                                initTable();
+                                dtIssuedTo('issued-to',param).init();
+                            }
                         })
                         .catch((error) => {
                             Alert.alert('error', "Something went wrong. Try again later", false);

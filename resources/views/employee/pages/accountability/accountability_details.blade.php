@@ -48,9 +48,9 @@
                 </div>
             </div>
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Total Item: </label>
+                <label class="col-lg-4 fw-semibold text-muted">Active Item: </label>
                 <div class="col-lg-8">
-                    <a href="#" class="fw-semibold fs-6 text-gray-800 text-hover-primary">{{ $data->accountability_item_status_1_count }} items</a>
+                    <a href="#" class="fw-semibold fs-6 text-gray-800 text-hover-primary">{{ $data->accountability_item_status_1_count }} item</a>
                 </div>
             </div>
             <div class="row mb-7">

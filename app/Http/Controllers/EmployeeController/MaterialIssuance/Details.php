@@ -237,7 +237,7 @@ class Details extends Controller
             $query->save();
 
             DB::commit();
-            return response()->json(['status' => 'success', 'message'=>'Success']);
+            return response()->json(['status' => 'success', 'message'=>'Success', 'payload'=>'reload']);
         }catch(Exception $e){
             DB::rollback();
             return response()->json([

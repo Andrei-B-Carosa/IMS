@@ -471,13 +471,13 @@ export var dtIssuedTo = function (table,param=false) {
                 }
             })
 
-            _card.on('click','.add-personnel',function(e){
-                e.preventDefault()
-                e.stopImmediatePropagation()
+            // _card.on('click','.add-personnel',function(e){
+            //     e.preventDefault()
+            //     e.stopImmediatePropagation()
 
-                dtAvailablePersonnel('available-personnel',$(this).attr('data-id')).init();
-                modal_state('#modal-available-personnel','show');
-            })
+            //     dtAvailablePersonnel('available-personnel',$(this).attr('data-id')).init();
+            //     modal_state('#modal-available-personnel','show');
+            // })
 
             $(`#${table}_table`).on('click','.view',function(e){
                 let _this = $(this);

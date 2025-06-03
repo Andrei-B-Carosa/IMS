@@ -103,10 +103,10 @@
                     <h2>Issued To</h2>
                 </div>
                 <div class="card-toolbar">
-                    <a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
+                    {{-- <a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
                         <i class="ki-duotone ki-plus fs-3"></i>
                         Add Employee
-                    </a>
+                    </a> --}}
                 </div>
             </div>
             <div class="card-body pt-10">
@@ -116,6 +116,7 @@
                             <div class="col-md-10 fv-row">
                                 <label class="form-label required">Personnel</label>
                                 <select class="form-select" data-kt-repeater="select2" data-placeholder="Select an option" name="employee" data-allow-clear="true">
+                                    {!! $employee_option !!}
                                 </select>
                             </div>
                             <div class="col-md-2 d-none">
@@ -132,6 +133,12 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
+                        <i class="ki-duotone ki-plus fs-3"></i>
+                        Add Employee
+                    </a>
                 </div>
             </div>
         </form>

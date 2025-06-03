@@ -204,7 +204,10 @@ class Details extends Controller
 
     public function dt_available_items(Request $rq)
     {
-        $data = ImsItemInventory::where([['status',1],['is_deleted',null]])->get();
+        $data = ImsItemInventory::where([['status',1],['is_deleted',null]])
+        ->whereHas('item_type',function($q){
+            $q->where('display_to',1);
+        })->get();
 
         $data->transform(function ($item, $key) {
 
@@ -538,7 +541,7 @@ class Details extends Controller
             $query->save();
 
             DB::commit();
-            return response()->json(['status' => 'success', 'message'=>'Success']);
+            return response()->json(['status' => 'success', 'message'=>'Success', 'payload'=>'reload']);
         }catch(Exception $e){
             DB::rollback();
             return response()->json([
