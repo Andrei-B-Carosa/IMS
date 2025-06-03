@@ -11,7 +11,7 @@
     >
         <option></option>
         @foreach ($options as $value => $text)
-            <option value="{{ $value }}" {{ (string) $value == (string) ($selected ?? '') ? 'selected' : '' }}>
+            <option value="{{ $value }}" {{ $value == $selected  ? 'selected' : '' }}>
                 {{ $text }}
             </option>
         @endforeach
