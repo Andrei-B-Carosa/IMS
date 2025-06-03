@@ -1,4 +1,12 @@
-@props(['options'])
+@props([
+    'id' => null,
+    'label' => null,
+    'class' => '',
+    'name',
+    'options' => [],
+    'selected' => null,
+    'disabled' => false,
+])
 <div class="mb-3">
     @if ($label ?? false)
         <label for="{{ $id ?? $name }}" class="fw-semibold fs-6 mb-2 required">{{ $label }}</label>
