@@ -1,3 +1,4 @@
+@props(['options'])
 <div class="mb-3">
     @if ($label ?? false)
         <label for="{{ $id ?? $name }}" class="fw-semibold fs-6 mb-2 required">{{ $label }}</label>
@@ -11,7 +12,7 @@
     >
         <option></option>
         @foreach ($options as $value => $text)
-            <option value="{{ $value }}" {{ $value == $selected  ? 'selected' : '' }}>
+            <option value="{{ $value }}" {{ (string) $value == (string) ($selected ) ? 'selected' : '' }}>
                 {{ $text }}
             </option>
         @endforeach
