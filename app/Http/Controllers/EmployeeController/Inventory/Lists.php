@@ -83,7 +83,6 @@ class Lists extends Controller
                     }
                     $gpu_html .= 'GPU: '.$row['description'].'<br>';
                 };
-
                 $description = '<div class="fs-6">'
                 . ($item->item_type_id == 8 ? 'Model: ' . $array['model'] . '<br>' : '')
                 . 'CPU: ' . $array['cpu'] . '<br>'
@@ -92,7 +91,7 @@ class Lists extends Controller
                 . 'OS: ' . $array['windows_version'] . '<br>'
                 . $gpu_html
                 . 'Device Name: ' . $array['device_name'] . '<br>'
-                . ($item->item_type_id == 8 ? 'Serial Number: ' . $array['serial_number'] . '<br>' : '')
+                // . ($item->item_type_id == 8 ? 'Serial Number: ' . (isset($array['serial_number'])? $array['serial_number']:($item->serial_number??'--')) . '<br>' : '')
                 . '</div>';
             }
 
