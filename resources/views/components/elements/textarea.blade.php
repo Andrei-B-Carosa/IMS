@@ -1,3 +1,10 @@
+@props([
+    'label' => null,
+    'id' => null,
+    'name',
+    'class' => '',
+])
+
 @if ($label ?? false)
 <label for="{{ $id ?? $name }}" class="form-label">{{ $label }}</label>
 @endif
