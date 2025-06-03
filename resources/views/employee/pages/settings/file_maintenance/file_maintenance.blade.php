@@ -183,7 +183,7 @@
         </div>
     </div>
 </div>
-{{-- 
+
 <x-elements.modal
     id="add-item-type"
     title="Item Type Details"
@@ -276,7 +276,7 @@
         </div>
     </div>
 </x-elements.modal>
-
+{{-- 
 <x-elements.modal
     id="add-item-brand"
     title="Item Brand Details"
