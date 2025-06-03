@@ -2,7 +2,13 @@
 
 use App\Http\Controllers\AccessController\EmployeeLogin;
 use App\Http\Controllers\RegisterDeviceController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/logtest', function () {
+    Log::info('Test log message!');
+    return 'Log written.';
+});
 
 Route::group(['prefix' => 'device','controller' => RegisterDeviceController::class], function () {
     Route::get('/fetch', 'fetch')->name('fetch.device');

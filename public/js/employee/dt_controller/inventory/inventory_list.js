@@ -21,7 +21,8 @@ export var dtInventoryList = function (table,param='') {
         dataTableHelper.initTable(
             _url+'dt',
             {
-                filter_status:'all',
+                filter_item:$('select[name="filter_item"]').val(),
+                filter_status:$('select[name="filter_status"]').val(),
                 id:param,
             },
             [
@@ -134,16 +135,26 @@ export var dtInventoryList = function (table,param='') {
                         return `${
                             row.is_deleted == 1 ? ``
                             :
-                            `<div class="d-flex"><a href="/inventory-details/${data}" class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up view" data-id="${data}"
-                                data-bs-toggle="tooltip" title="View item details">
-                                <i class="ki-duotone ki-pencil fs-2x">
+                            `<div class="d-flex">
+                                <a href="/inventory-details/${data}" class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up view" data-id="${data}"
+                                    data-bs-toggle="tooltip" title="View item details">
+                                    <i class="ki-duotone ki-pencil fs-2x">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                         <span class="path3"></span>
                                         <span class="path4"></span>
                                     </i>
                                 </a>
-                                <a href="javascript:;" class="btn btn-icon btn-icon btn-light-danger btn-sm me-1 hover-elevate-up remove" data-id="${data}"
+                                <button class="btn btn-icon btn-icon btn-light-dark btn-sm me-1 hover-elevate-up download-qr" data-id="${data}"
+                                    data-bs-toggle="tooltip" title="Download QR Code">
+                                    <i class="bi bi-qr-code fs-2 ">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                    </i>
+                                </button>
+                                <button class="btn btn-icon btn-icon btn-light-danger btn-sm me-1 hover-elevate-up remove" data-id="${data}"
                                 data-bs-toggle="tooltip" title="Remove item on inventory">
                                     <i class="ki-duotone ki-trash fs-2x">
                                         <span class="path1"></span>
@@ -152,7 +163,7 @@ export var dtInventoryList = function (table,param='') {
                                         <span class="path4"></span>
                                         <span class="path5"></span>
                                     </i>
-                                </a>
+                                </button>
                             </div>`}
                         `;
                     },
@@ -181,6 +192,12 @@ export var dtInventoryList = function (table,param='') {
                 }
             })
 
+            _card.on('click','button.filter',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+                initTable();
+            })
+
             $(`#${table}_table`).on('click','.remove',function(e){
                 e.preventDefault()
                 e.stopImmediatePropagation()
@@ -206,6 +223,31 @@ export var dtInventoryList = function (table,param='') {
                         .finally((error) => {
                         });
                     }
+                });
+            })
+
+            $(`#${table}_table`).on('click','.download-qr',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+
+                let _this = $(this);
+                let id    =_this.attr('data-id');
+                let formData = new FormData;
+                formData.append('encrypted_id',id);
+
+                _request.postBlob('/' + _url + 'download-qr', formData, true)
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "qr_code.png";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch((error) => {
+                    Alert.alert('error', "Something went wrong. Try again later", false);
                 });
             })
 

@@ -26,7 +26,7 @@ export function fvNewInventory(_table=false,param=false){
                 fv = FormValidation.formValidation(form, {
                     fields: {
                         'item':fv_validator(),
-                        'tag_number':fv_validator(),
+                        // 'tag_number':fv_validator(),
                         'received_by':fv_validator(),
                         'received_at':fv_validator(),
                         'supplier':fv_validator(),
@@ -89,36 +89,36 @@ export function fvNewInventory(_table=false,param=false){
                 })
             })
 
-            $(card_id).on('change','select[name="company_location"]',function(e){
-                e.preventDefault()
-                e.stopImmediatePropagation()
+            // $(card_id).on('change','select[name="company_location"]',function(e){
+            //     e.preventDefault()
+            //     e.stopImmediatePropagation()
 
-                let _this = $(this);
-                let item_id = $('select[name="item"]').val();
-                $('input[name="tag_number"]').val('');
+            //     let _this = $(this);
+            //     let item_id = $('select[name="item"]').val();
+            //     $('input[name="tag_number"]').val('');
 
-                if(item_id == ''){
-                    Alert.alert('info',"Please select an item first !", false);
-                    _this.val('').trigger('change.select2');;
-                    return;
-                }
+            //     if(item_id == ''){
+            //         Alert.alert('info',"Please select an item first !", false);
+            //         _this.val('').trigger('change.select2');;
+            //         return;
+            //     }
 
-                if(_this.val() != ''){
-                    let formData = new FormData();
-                    formData.append('location_id',_this.val());
-                    formData.append('item_id',item_id);
-                    _request.post('/inventory/check-item-tag',formData)
-                    .then((res) => {
-                        $('input[name="tag_number"]').val(res.payload);
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                        Alert.alert('error',"Something went wrong. Try again later", false);
-                    })
-                    .finally(() => {
-                    });
-                }
-            })
+            //     if(_this.val() != ''){
+            //         let formData = new FormData();
+            //         formData.append('location_id',_this.val());
+            //         formData.append('item_id',item_id);
+            //         _request.post('/inventory/check-item-tag',formData)
+            //         .then((res) => {
+            //             $('input[name="tag_number"]').val(res.payload);
+            //         })
+            //         .catch((error) => {
+            //             console.log(error)
+            //             Alert.alert('error',"Something went wrong. Try again later", false);
+            //         })
+            //         .finally(() => {
+            //         });
+            //     }
+            // })
 
         }
 

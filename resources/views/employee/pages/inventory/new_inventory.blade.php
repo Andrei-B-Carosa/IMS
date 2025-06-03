@@ -18,46 +18,42 @@
 
         <div class="card-body pt-0">
             <form id="form-new-inventory" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="inventory/update">
-                <div class="fv-row mb-7">
-                    <label class="form-label">Item</label>
-                    <select class="form-select mb-2" name="item"
-                        data-control="select2" data-hide-search="false" data-allow-clear="true"
-                        data-placeholder="Select an option">
-                        {!! $item_options !!}
-                    </select>
+                <div class="fv-row mb-7 col-12 fv-plugins-icon-container">
+                    <x-elements.select
+                        id="company_location"
+                        name="company_location"
+                        label="Company Location"
+                        :options="[]"
+                        placeholder="Select an option"
+                        selected="1"
+                        class="fw-bold "
+                        data-control="select2"
+                        data-placeholder="Select an option"
+                        data-minimum-results-for-search="Infinity"
+                        data-allow-clear="true"
+                        disabled="false"
+                    />
+                    <div class="alert-status"></div>
+                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                 </div>
                 <div class="row">
-                    <div class="fv-row mb-7 col-6 fv-plugins-icon-container">
-                        <x-elements.select
-                            id="company_location"
-                            name="company_location"
-                            label="Company Location"
-                            :options="[]"
-                            placeholder="Select an option"
-                            selected="1"
-                            class="fw-bold form-select-solid"
-                            data-control="select2"
-                            data-placeholder="Select an option"
-                            data-minimum-results-for-search="Infinity"
-                            data-allow-clear="true"
-                            disabled="false"
-                        />
-                        <div class="alert-status"></div>
-                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                    <div class="fv-row col-6 mb-7">
+                        <label class="form-label">Item</label>
+                        <select class="form-select mb-2" name="item"
+                            data-control="select2" data-hide-search="false" data-allow-clear="true"
+                            data-placeholder="Select an option">
+                            {!! $item_options !!}
+                        </select>
                     </div>
-                    <div class="mb-7 col-6  fv-row">
-                        <label class="form-label required">Item Tag</label>
-                        <input type="text" name="tag_number" class="form-control mb-2"  placeholder="Serial Number" value="" readonly/>
+                    <div class="mb-7 col-6 fv-row">
+                        <label class="form-label">Serial Number</label>
+                        <input type="text" name="serial_number" class="form-control mb-2"  placeholder="Serial Number" value="" />
                     </div>
-                </div>
-                <div class="mb-7 fv-row">
-                    <label class="form-label">Serial Number</label>
-                    <input type="text" name="serial_number" class="form-control mb-2"  placeholder="Serial Number" value="" />
                 </div>
                 <div class="row mb-7">
                     <div class="fv-row col-6 flex-md-root">
                         <label class="required fw-semibold fs-6 mb-2">Received At</label>
-                        <input type="text" name="received_at" input-control="date-picker" default-date="current" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
+                        <input type="text" name="received_at" input-control="date-picker" default-date="current" class="form-control  mb-3 mb-lg-0 flatpickr">
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                     </div>
 
@@ -70,10 +66,10 @@
                         </select>
                     </div>
                 </div>
-                <div class="fv-row mb-7 ">
-                    <label class="form-label">Supplier</label>
+                <div class="fv-row mb-7">
+                    <label class="form-label required">Supplier</label>
                     <select class="form-select mb-2" name="supplier"
-                        data-control="select2" data-hide-search="true" data-allow-clear="true"
+                        data-control="select2" data-minimum-results-for-search="Infinity" data-allow-clear="true"
                         data-placeholder="Select an option">
                         {!! $supplier_options !!}
                     </select>
@@ -86,7 +82,7 @@
                         :options="['0'=>'Disposed','1' => 'Available', '2' => 'Issued', '3'=>'Temporary Issued', '4'=>'Under Repair']"
                         placeholder="Select an option"
                         selected="1"
-                        class="fw-bold form-select-solid"
+                        class="fw-bold"
                         data-control="select2"
                         data-placeholder="Select an option"
                         data-minimum-results-for-search="Infinity"

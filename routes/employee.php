@@ -78,8 +78,9 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
     Route::controller(InventoryLists::class)->prefix('inventory')->group(function() {
         Route::post('/dt', 'dt');
         Route::post('/update', 'update');
+        Route::post('/download-qr', 'download_qr');
 
-        Route::post('/check-item-tag', 'check_item_tag');
+        // Route::post('/check-item-tag', 'check_item_tag');
 
         Route::post('/delete', 'delete');
     });

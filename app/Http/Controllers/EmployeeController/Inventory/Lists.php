@@ -14,18 +14,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Intervention\Image\Laravel\Facades\Image;
 
 class Lists extends Controller
 {
     public function dt(Request $rq)
     {
 
+        $filter_item = $rq->filter_item != 'all' ? $rq->filter_item : false;
         $filter_status = $rq->filter_status != 'all' ? $rq->filter_status : false;
         $id = $rq->id?Crypt::decrypt($rq->id):'';
 
         $data = ImsItemInventory::with('item_type')
         ->when($filter_status,function($q) use($filter_status){
             $q->where('status',$filter_status);
+        })
+        ->when($filter_item,function($q) use($filter_item){
+            $q->whereHas('item_type',function($q2) use($filter_item){
+                $q2->where('display_to',$filter_item);
+            });
         })
         ->where([['is_deleted',null]])
         ->get();
@@ -121,6 +129,7 @@ class Lists extends Controller
             DB::beginTransaction();
 
             $item_id = Crypt::decrypt($rq->item);
+            $company_location_id = Crypt::decrypt($rq->company_location);
             $created_by = Auth::user()->emp_id;
 
             $query = ImsItem::find($item_id);
@@ -136,8 +145,9 @@ class Lists extends Controller
             $create = [
                 'item_brand_id'=> $query->item_brand_id,
                 'item_type_id'=> $query->item_type_id,
+                'company_location_id'=>$company_location_id,
                 'name'=> $query->name,
-                'tag_number'=> $rq->tag_number,
+                // 'tag_number'=> $rq->tag_number,
                 'description'=> $description,
                 'price'=> $query->price,
                 'serial_number'=> $rq->serial_number,
@@ -193,31 +203,66 @@ class Lists extends Controller
         }
     }
 
-    public function check_item_tag(Request $rq)
+    // public function check_item_tag(Request $rq)
+    // {
+    //     try{
+    //         $location_id = Crypt::decrypt($rq->location_id);
+    //         $item_id = Crypt::decrypt($rq->item_id);
+
+    //         $location = HrisCompanyLocation::find($location_id);
+    //         $item = ImsItem::find($item_id);
+
+    //         $item_type_id = $item->item_type_id;
+    //         $count = ImsItemInventory::where('item_type_id',$item_type_id)->count();
+    //         $count = str_pad($count+1, 5, '0', STR_PAD_LEFT);
+
+    //         $item_tag = config('company.item_code').'-'.$location->location_code.'-'.$item->item_type->item_code.'-'.$count;
+
+    //         return response()->json([
+    //             'status' => 'success',
+    //             'message'=>'Success',
+    //             'payload' => $item_tag
+    //         ]);
+    //     }catch(Exception $e){
+    //         return response()->json([
+    //             'status' => 400,
+    //             'message' => $e->getMessage(),
+    //         ]);
+    //     }
+    // }
+
+    public function download_qr(Request $rq)
     {
         try{
-            $location_id = Crypt::decrypt($rq->location_id);
-            $item_id = Crypt::decrypt($rq->item_id);
+            $id = Crypt::decrypt($rq->encrypted_id);
+            $item = ImsItemInventory::findOrFail($id);
+            $text_below = $item->generate_tag_number();
 
-            $location = HrisCompanyLocation::find($location_id);
-            $item = ImsItem::find($item_id);
+            $url = 'https://example.com/vehicle/123';
 
-            $item_type_id = $item->item_type_id;
-            $count = ImsItemInventory::where('item_type_id',$item_type_id)->count();
-            $count = str_pad($count+1, 5, '0', STR_PAD_LEFT);
+            $qrPng = QrCode::format('png')->size(300)->margin(1)->generate($url);
+            $qrImage = Image::read('data:image/png;base64,' . base64_encode($qrPng));
 
-            $item_tag = config('company.item_code').'-'.$location->location_code.'-'.$item->item_type->item_code.'-'.$count;
+            $canvasHeight = $qrImage->height() + 70;
+            $canvas = Image::create($qrImage->width(), $canvasHeight)->fill('#ffffff'); // white background
 
-            return response()->json([
-                'status' => 'success',
-                'message'=>'Success',
-                'payload' => $item_tag
-            ]);
+            $canvas->place($qrImage, 'top');
+            $canvas->text($text_below, $canvas->width() / 2, $qrImage->height() + 20, function ($font) {
+                // Optional: Set font file if needed
+                $font->filename(public_path('assets/font/Roboto-Bold.ttf'));
+                $font->size(18);
+                $font->color('#000000');
+                $font->align('center');
+                $font->valign('top');
+            });
+
+            return response($canvas->toPng())->header('Content-Type', 'image/png');
         }catch(Exception $e){
             return response()->json([
                 'status' => 400,
                 'message' => $e->getMessage(),
             ]);
         }
+
     }
 }

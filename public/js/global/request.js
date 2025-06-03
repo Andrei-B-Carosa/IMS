@@ -23,6 +23,23 @@ export class RequestHandler {
                 throw error;
             });
     }
+    postBlob(url, data, multipart = false) {
+        data.append("_token", this.getToken());
+        let config = {
+            responseType: 'blob'
+        };
+
+        if (multipart) {
+            config.headers = { 'Content-Type': 'multipart/form-data' };
+        }
+
+        return axios.post(url, data, config)
+            .then(response => response.data)
+            .catch(error => {
+                console.error(error);
+                throw error;
+            });
+    }
 
     getToken() {
         return $('meta[name="csrf-token"]').attr("content");

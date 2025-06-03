@@ -16,6 +16,7 @@ class ImsItemInventory extends Model
 
     protected $fillable = [
         'item_type_id',
+        'company_location_id',
         'item_brand_id',
         'name',
         'tag_number',
@@ -45,6 +46,11 @@ class ImsItemInventory extends Model
         return $this->belongsTo(ImsItemType::class,'item_type_id');
     }
 
+    public function company_location()
+    {
+        return $this->belongsTo(HrisCompanyLocation::class,'company_location_id');
+    }
+
     public function updated_by_emp()
     {
         return $this->belongsTo(Employee::class,'updated_by')->withDefault();
@@ -63,5 +69,14 @@ class ImsItemInventory extends Model
     public function received_by_emp()
     {
         return $this->belongsTo(Employee::class,'received_by')->withDefault();
+    }
+
+    public function generate_tag_number()
+    {
+        $companyLocationName = $this->company_location ? $this->company_location->location_code : 'UNKNOWN';
+        $itemTypeCode = $this->item_type ? $this->item_type->item_code : 'XXX';
+        $itemId = $this->id ?? 0;
+        
+        return config('company.item_code').'-'.strtoupper($companyLocationName). '-' .$itemTypeCode. '-'.str_pad($itemId, 5, '0', STR_PAD_LEFT);
     }
 }
