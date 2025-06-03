@@ -249,7 +249,7 @@
                 label="Status"
                 :options="['1' => 'Active', '2' => 'Inactive']"
                 placeholder="Select an option"
-                selected=""
+                selected="1"
                 class="fw-bold form-select-solid"
                 data-control="select2"
                 data-placeholder="Select an option"
@@ -265,7 +265,7 @@
                 label="Display To"
                 :options="['1' => 'Accountability', '2' => 'Material Issuance', '3'=>'Both']"
                 placeholder="Select an option"
-                selected=""
+                selected="1"
                 class="fw-bold form-select-solid"
                 data-control="select2"
                 data-placeholder="Select an option"
@@ -276,7 +276,7 @@
         </div>
     </div>
 </x-elements.modal>
-{{-- 
+{{--
 <x-elements.modal
     id="add-item-brand"
     title="Item Brand Details"
