@@ -203,34 +203,6 @@ class Lists extends Controller
         }
     }
 
-    // public function check_item_tag(Request $rq)
-    // {
-    //     try{
-    //         $location_id = Crypt::decrypt($rq->location_id);
-    //         $item_id = Crypt::decrypt($rq->item_id);
-
-    //         $location = HrisCompanyLocation::find($location_id);
-    //         $item = ImsItem::find($item_id);
-
-    //         $item_type_id = $item->item_type_id;
-    //         $count = ImsItemInventory::where('item_type_id',$item_type_id)->count();
-    //         $count = str_pad($count+1, 5, '0', STR_PAD_LEFT);
-
-    //         $item_tag = config('company.item_code').'-'.$location->location_code.'-'.$item->item_type->item_code.'-'.$count;
-
-    //         return response()->json([
-    //             'status' => 'success',
-    //             'message'=>'Success',
-    //             'payload' => $item_tag
-    //         ]);
-    //     }catch(Exception $e){
-    //         return response()->json([
-    //             'status' => 400,
-    //             'message' => $e->getMessage(),
-    //         ]);
-    //     }
-    // }
-
     public function download_qr(Request $rq)
     {
         try{
@@ -256,7 +228,10 @@ class Lists extends Controller
                 $font->valign('top');
             });
 
-            return response($canvas->toPng())->header('Content-Type', 'image/png');
+            $filename = $text_below . '_QR.png';
+            return response($canvas->toPng())
+            ->header('Content-Type', 'image/png')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
         }catch(Exception $e){
             return response()->json([
                 'status' => 400,

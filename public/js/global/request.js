@@ -34,7 +34,7 @@ export class RequestHandler {
         }
 
         return axios.post(url, data, config)
-            .then(response => response.data)
+            .then(response => response)
             .catch(error => {
                 console.error(error);
                 throw error;

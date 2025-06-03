@@ -236,11 +236,22 @@ export var dtInventoryList = function (table,param='') {
                 formData.append('encrypted_id',id);
 
                 _request.postBlob('/' + _url + 'download-qr', formData, true)
-                .then(blob => {
+                .then(response => {
+                    const blob = response.data;
+                    const disposition = response.headers['content-disposition'];
+
+                    let filename = 'qr_code.png'; // fallback
+                    if (disposition) {
+                        const match = disposition.match(/filename\*?=(?:UTF-8'')?"?([^";\n]*)"?/);
+                        if (match && match[1]) {
+                            filename = decodeURIComponent(match[1].replace(/['"]/g, ''));
+                        }
+                    }
+
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = "qr_code.png";
+                    a.download = filename;
                     document.body.appendChild(a);
                     a.click();
                     a.remove();
