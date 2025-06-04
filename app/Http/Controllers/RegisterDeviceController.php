@@ -129,7 +129,8 @@ class RegisterDeviceController extends Controller
             $array_gpu[]=[
                 'name'=>$gpu['name'],
                 'description'=>$gpu['name'],
-                'type' =>$gpu['type']
+                'type' =>$gpu['type'],
+                'serial_number' =>null,
             ];
             if(strtolower($gpu['type']) != 'integrated'){
                 ImsItem::registerItem([

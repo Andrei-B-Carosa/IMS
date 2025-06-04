@@ -75,11 +75,19 @@ class ItemOption
     public function get_other_accessories($query,$search,$html)
     {
         $monitor_id = ImsItemType::whereRaw('LOWER(name) = ?', ['monitor'])->where('is_active', 1)->value('id');
+        $desktop_id = ImsItemType::getDesktopId();
+        $laptop_id = ImsItemType::getLaptopId();
+
         if ($monitor_id === null) {
             return '<option disabled>No Available Option</option>';
         }
 
-        $data = $query->where('item_type_id','!=',$monitor_id)->get();
+        $data = $query
+        ->whereNotIn('item_type_id',[$monitor_id,$desktop_id,$laptop_id])
+        ->whereHas('item_type',function($q){
+            $q->where('display_to',1)->orWhere('display_to',3);
+        })
+        ->get();
         if ($data->isEmpty()) {
             return '<option disabled>No Available Option</option>';
         }
@@ -87,7 +95,7 @@ class ItemOption
         foreach ($data as $row) {
             $value = Crypt::encrypt($row->id);
             $selected = $search === $row->id ? 'selected' : '';
-            $name = $row->name.' '.$row->description;
+            $name = $row->name??$row->description;
 
             $html .= '<option value="'.e($value).'"'.e($selected).'>'
                         .e($name).
@@ -111,7 +119,7 @@ class ItemOption
         foreach ($data as $row) {
             $value = Crypt::encrypt($row->id);
             $selected = trim(preg_replace('/\s+/', ' ', strtolower($rq->search))) === trim(preg_replace('/\s+/', ' ', strtolower($row->name))) ? 'selected' : '';
-            $name = $row->name;
+            $name = $row->name??$row->description;
 
             $html .= '<option value="'.e($value).'"'.e($selected).'>'
                         .e($name).
@@ -142,7 +150,7 @@ class ItemOption
         foreach ($data as $row) {
             $value = Crypt::encrypt($row->id);
             $selected = trim(preg_replace('/\s+/', ' ', strtolower($rq->search))) === trim(preg_replace('/\s+/', ' ', strtolower($row->name))) ? 'selected' : '';
-            $name = $row->name;
+            $name = $row->name??$row->description;
 
             $html .= '<option value="'.e($value).'"'.e($selected).'>'
                         .e($name).
@@ -173,7 +181,7 @@ class ItemOption
         foreach ($data as $row) {
             $value = Crypt::encrypt($row->id);
             $selected = trim(preg_replace('/\s+/', ' ', strtolower($rq->search))) === trim(preg_replace('/\s+/', ' ', strtolower($row->name))) ? 'selected' : '';
-            $name = $row->name;
+            $name = $row->name??$row->description;
 
             $html .= '<option value="'.e($value).'"'.e($selected).'>'
                         .e($name).
