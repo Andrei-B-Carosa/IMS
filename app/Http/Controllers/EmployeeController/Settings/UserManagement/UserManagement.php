@@ -114,7 +114,7 @@ class UserManagement extends Controller
 
             $emp_id =  Crypt::decrypt($rq->emp_id);
             $role_id =  Crypt::decrypt($rq->role_id);
-
+            // dd($emp_id);
             $query = ImsUserRole::where([['role_id',$role_id],['emp_id',$emp_id],['is_active',1]])->first();
             $query->is_active = 0;
             $query->is_deleted = 1;
@@ -189,6 +189,7 @@ class UserManagement extends Controller
             $q->where('is_active', 1)
               ->where('role_id', $role_id);
         })
+        ->where('id','!=',Auth::user()->emp_id)
         ->orderBy('id', 'ASC')
         ->get();
 
@@ -207,8 +208,8 @@ class UserManagement extends Controller
 
             $item->emp_name = $item->fullname();
             $item->emp_no = $item->emp_no;
-            $item->emp_department = $employee_details->department->name;
-            $item->emp_position = $employee_details->position->name;
+            $item->emp_department = $employee_details->department->name ??'No Department';
+            $item->emp_position = $employee_details->position->name ??'No Position';
 
             $item->position = $employee_details->position->name;
             $item->encrypted_id = Crypt::encrypt($item->id);
