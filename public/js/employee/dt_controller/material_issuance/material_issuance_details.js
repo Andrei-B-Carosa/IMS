@@ -724,7 +724,10 @@ export var dtAvailableItems = function (table,param=false) {
                         _request.post('/'+_url+'update-material-issuance-item',formData)
                         .then((res) => {
                             Alert.toast(res.status,res.message);
-                            initTable();
+                            if(res.status == 'success'){
+                                initTable();
+                                dtIssuedItems('material-issuance-item',param).init();
+                            }
                         })
                         .catch((error) => {
                             Alert.alert('error', "Something went wrong. Try again later", false);

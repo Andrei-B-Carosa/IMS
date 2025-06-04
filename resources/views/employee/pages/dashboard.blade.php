@@ -1,6 +1,6 @@
 
 <!--begin::Row-->
-<div class="row g-5 g-xl-8">
+{{-- <div class="row g-5 g-xl-8">
     <!--begin::Col-->
     <div class="col-xl-4">
 
@@ -2517,5 +2517,5 @@
         <!--end::Row-->
     </div>
     <!--end::Col-->
-</div>
+</div> --}}
 <!--end::Row-->

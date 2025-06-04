@@ -140,7 +140,6 @@ class Page
                     };
                 }
 
-
                 $gpu = json_decode($array['gpu'],true);
                 if(count($gpu) == 0){
                     $rq = $rq->merge([
@@ -168,7 +167,7 @@ class Page
                         ]);
                         $gpu_options[] =[
                             'html' =>(new ItemOption)->list($rq),
-                            'serial_number'=>$row['serial_number'],
+                            'serial_number'=>isset($row['serial_number'])? $row['serial_number'] :'',
                         ];
                     };
                 }

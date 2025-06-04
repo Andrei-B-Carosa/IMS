@@ -134,13 +134,12 @@ class Lists extends Controller
             $query = ImsItem::find($item_id);
 
             $description = $query->description;
-            if($query->item_type_id == 1 || $query->item_type_id == 8){
+            if($query->item_type_id == 8){
                 $description = json_decode($description,true);
                 $description['brand'] = $query->item_brand->name;
                 $description['serial_number'] = $rq->serial_number;
                 $description = json_encode($description);
             }
-
             $create = [
                 'item_brand_id'=> $query->item_brand_id,
                 'item_type_id'=> $query->item_type_id,

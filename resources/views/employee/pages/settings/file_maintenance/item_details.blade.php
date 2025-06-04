@@ -109,7 +109,7 @@
                                 <label class="required form-label">Laptop Model</label>
                                 <input type="text" name="laptop_model" class="form-control mb-2" placeholder="Item Name" value="{{ $data->description['model'] }}" />
                             </div>
-                        </div
+                        </div>
                     @endif
                     <div class="row">
                         <div class="mb-7 fv-row col-6">

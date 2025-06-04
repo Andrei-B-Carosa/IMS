@@ -62,6 +62,7 @@ class CompanyLocation extends Controller
                 'name' =>$query->name,
                 // 'company_id' =>$query->company->name,
                 'description' =>$query->description,
+                'location_code' =>$query->location_code,
                 'is_active' =>$query->is_active,
             ];
             return response()->json(['status' => 'success','message'=>'success', 'payload'=>base64_encode(json_encode($payload))]);

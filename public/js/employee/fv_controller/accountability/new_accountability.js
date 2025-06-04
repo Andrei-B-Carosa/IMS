@@ -68,7 +68,12 @@ export var fvNewAccountabilityController =  function (page,param) {
                                 const $current = $(input.element);
                                 const currentValue = $current.val();
 
-                                const allSelects = formIssuedItem.querySelectorAll('select[name*="[accessories]"]');
+                                // const allSelects = formIssuedItem.querySelectorAll('select[name*="[accessories]"]');
+                                const allSelects = Array.from($(formIssuedItem)
+                                    .find('select[name*="[accessories]"]')
+                                    .filter(function () {
+                                        return $(this).closest('[data-repeater-item]').is(':visible');
+                                    }));
                                 const values = Array.from(allSelects, el => el.value);
                                 const count = values.filter(v => v === currentValue).length;
 
@@ -122,7 +127,12 @@ export var fvNewAccountabilityController =  function (page,param) {
                                 const $current = $(input.element);
                                 const currentValue = $current.val();
 
-                                const allSelects = formIssuedItem.querySelectorAll('select[name*="[accessories]"]');
+                                // const allSelects = formIssuedItem.querySelectorAll('select[name*="[accessories]"]');
+                                const allSelects = Array.from($(formIssuedItem)
+                                    .find('select[name*="[accessories]"]')
+                                    .filter(function () {
+                                        return $(this).closest('[data-repeater-item]').is(':visible');
+                                    }));
                                 const values = Array.from(allSelects, el => el.value);
                                 const count = values.filter(v => v === currentValue).length;
 
@@ -172,7 +182,12 @@ export var fvNewAccountabilityController =  function (page,param) {
                                 const currentValue = input.value;
 
                                 // collect all accessory <select>s
-                                const allSelects = formEmployeeDetails.querySelectorAll('select[name*="[employee]"]');
+                                // const allSelects = formEmployeeDetails.querySelectorAll('select[name*="[employee]"]');
+                                const allSelects = Array.from($(formEmployeeDetails)
+                                    .find('select[name*="[employee]"]')
+                                    .filter(function () {
+                                        return $(this).closest('[data-repeater-item]').is(':visible');
+                                    }));
                                 const values = Array.from(allSelects, el => el.value);
                                 const count = values.filter(v => v === currentValue).length;
 
@@ -228,7 +243,12 @@ export var fvNewAccountabilityController =  function (page,param) {
                                 const currentValue = input.value;
 
                                 // collect all accessory <select>s
-                                const allSelects = formEmployeeDetails.querySelectorAll('select[name*="[employee]"]');
+                                // const allSelects = formEmployeeDetails.querySelectorAll('select[name*="[employee]"]');
+                                const allSelects = Array.from($(formEmployeeDetails)
+                                    .find('select[name*="[employee]"]')
+                                    .filter(function () {
+                                        return $(this).closest('[data-repeater-item]').is(':visible');
+                                    }));
                                 const values = Array.from(allSelects, el => el.value);
                                 const count = values.filter(v => v === currentValue).length;
 

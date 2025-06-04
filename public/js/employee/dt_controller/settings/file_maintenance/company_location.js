@@ -161,8 +161,8 @@ export var dtCompanyLocation = function (table,param=false) {
                 let _this = $(this);
                 let url   =_this.attr('rq-url');
                 let id    =_this.attr('data-id');
-                let modal_id = '#modal-add-item-brand';
-                let form = $('#form-add-item-brand');
+                let modal_id = '#modal-add-company-location';
+                let form = $('#form-add-company-location');
 
                 let formData = new FormData;
 
