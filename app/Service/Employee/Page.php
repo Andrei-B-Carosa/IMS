@@ -6,6 +6,7 @@ use App\Models\ImsAccountability;
 use App\Models\ImsItem;
 use App\Models\ImsItemInventory;
 use App\Models\ImsMaterialIssuance;
+use App\Service\Select\CompanyLocationOptions;
 use App\Service\Select\EmployeeOptions;
 use App\Service\Select\InventoryOption;
 use App\Service\Select\ItemBrandOption;
@@ -88,7 +89,7 @@ class Page
                     $rq = $rq->merge([
                         'id' => null,
                         'view'=>'1',
-                        'type'=>'search_ram',
+                        'type'=>'accountability_items',
                         'search'=>null
                     ]);
                     $ram_options[] =[
@@ -189,17 +190,19 @@ class Page
             $rq = $rq->merge(['id' => Crypt::encrypt($data->item_brand_id), 'view'=>'1', 'type'=>'get_item_brand']);
             $item_brand_options = (new ItemBrandOption)->list($rq);
 
-
             $rq = $rq->merge(['id' => Crypt::encrypt($data->received_by), 'view'=>'1', 'type'=>'mis_personnel']);
             $mis_personnel_options = (new EmployeeOptions)->list($rq);
-
 
             $rq = $rq->merge(['id' => Crypt::encrypt($data->supplier_id), 'view'=>'1', 'type'=>'get_supplier']);
             $supplier_options = (new SupplierOptions)->list($rq);
 
-            // return view('employee.pages.accountability.modal.edit_system_unit', compact('query','ram_options','storage_options','gpu_options'))->render();
+            $rq = $rq->merge(['id' => Crypt::encrypt($data->company_location_id), 'view'=>'1', 'type'=>'options']);
+            $clocation_options = (new CompanyLocationOptions)->list($rq);
 
-            return view('employee.pages.inventory.inventory_details', compact('data','array_specs','item_type_options','item_brand_options','mis_personnel_options','supplier_options'))->render();
+            return view('employee.pages.inventory.inventory_details', compact(
+                'data','array_specs','item_type_options','item_brand_options','mis_personnel_options','supplier_options',
+                'clocation_options'
+                ))->render();
 
         } catch(Exception $e) {
             return response()->json([
@@ -214,7 +217,6 @@ class Page
     {
         $rq = $rq->merge(['id' => null, 'view'=>'1', 'type'=>'mis_personnel']);
         $mis_personnel_options = (new EmployeeOptions)->list($rq);
-
 
         $rq = $rq->merge(['id' => null, 'view'=>'1', 'type'=>'get_supplier']);
         $supplier_options = (new SupplierOptions)->list($rq);

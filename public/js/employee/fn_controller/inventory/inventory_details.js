@@ -1,6 +1,6 @@
 'use strict';
 import { data_bs_components, modal_state, page_state } from "../../../global.js";
-import {Alert} from "../../../global/alert.js";
+import { get_company_location } from "../../../global/select.js";
 import {RequestHandler} from "../../../global/request.js";
 import { fvGeneralDetails, fvSystemUnitDetails } from "../../fv_controller/inventory/inventory_details.js";
 
@@ -10,6 +10,7 @@ export var InventoryDetailsController = function (page, param) {
 
     fvGeneralDetails('',param);
     fvSystemUnitDetails('',param);
+
     data_bs_components();
 
     $(async function () {

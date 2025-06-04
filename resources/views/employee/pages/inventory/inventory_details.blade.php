@@ -16,6 +16,15 @@
                     <label class="required form-label">Name</label>
                     <input type="text" name="name" class="form-control mb-2" placeholder="Item Name" value="{{ $data->name }}" />
                 </div>
+                <div class="fv-row mb-7 col-12 fv-plugins-icon-container">
+                    <label class="required form-label">Company Location</label>
+                    <select class="form-select mb-2" name="company_location"
+                            data-control="select2" data-hide-search="true" data-allow-clear="true"
+                            data-placeholder="Select an option">
+                            {!! $clocation_options !!}
+                    </select>
+                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                </div>
                 <div class="mb-7 fv-row">
                     <label class="required form-label">Tag Number</label>
                     <input type="text" name="tag_number" class="form-control mb-2" placeholder="Item Name" value="{{ $data->generate_tag_number() }}" disabled/>
@@ -81,7 +90,8 @@
                         id="status"
                         name="status"
                         label="Status"
-                        :options="['0'=>'Disposed','1' => 'Available', '2' => 'Issued', '3'=>'Temporary Issued', '4'=>'Under Repair']"
+                        {{-- :options="['0'=>'Disposed','1' => 'Available', '2' => 'Issued', '3'=>'Temporary Issued', '4'=>'Under Repair']" --}}
+                        :options="['1' => 'Available', '2' => 'Issued']"
                         placeholder="Select an option"
                         selected="{{ $data->status }}"
                         class="fw-bold form-select-solid"

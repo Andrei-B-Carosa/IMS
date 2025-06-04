@@ -50,6 +50,23 @@ export function fvNewItemGeneralDetails(_table=false,param=false){
                 let request = new RequestHandler;
                 let formData = new FormData;
 
+                if($(this).val() == ''){
+
+                    $('#card-new-item-details').addClass('d-none').find('.card-header .card-title').empty();
+                    $('#form-new-item-details').attr('data-include-fv',false);
+
+                    $('#card-new-item-general-details textarea[name="description"]').parent().addClass('d-none');
+                    if(fvNewItemGeneralDetails.getFields().hasOwnProperty('description')){
+                        fvNewItemGeneralDetails.removeField('description');
+                    }
+
+                    $('.laptop-details').addClass('d-none');
+                    if(fvNewItemComputingDeviceDetails.getFields().hasOwnProperty('laptop_model')){
+                        fvNewItemComputingDeviceDetails.removeField('laptop_model');
+                    }
+                    return;
+                }
+
                 formData.append('id',$(this).val());
                 request.post('file-maintenance/item/check-item-type',formData)
                 .then((res) => {
@@ -65,7 +82,11 @@ export function fvNewItemGeneralDetails(_table=false,param=false){
                             $('.laptop-details').addClass('d-none');
                         }
                         $('textarea[name="description"]').parent().addClass('d-none');
-                        $('#card-new-item-details').removeClass('d-none').find('.card-header .card-title').text(payload.name+' Details');
+                        $('#card-new-item-details').removeClass('d-none').find('.card-header .card-title')
+                        .empty()
+                        .append(`<h2>
+                            ${payload.name+' Details'}</h2>`
+                        );
                         $('#form-new-item-details').attr('data-include-fv',true);
                         if(fvNewItemGeneralDetails.getFields().hasOwnProperty('description')){
                             fvNewItemGeneralDetails.removeField('description');

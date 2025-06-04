@@ -22,7 +22,7 @@ class ImsItemType extends Model
     // Mutator for the 'name' attribute
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = ucwords(strtoupper($value));
+        $this->attributes['name'] = strtoupper($value);
     }
 
 
@@ -43,6 +43,34 @@ class ImsItemType extends Model
     public static function getMonitorId()
     {
         return self::whereRaw('LOWER(name) = ?', ['monitor'])
+                   ->where('is_active', 1)
+                   ->value('id');
+    }
+
+    public static function getSSDId()
+    {
+        return self::whereRaw('LOWER(name) = ?', ['ssd'])
+                   ->where('is_active', 1)
+                   ->value('id');
+    }
+
+    public static function getHDDId()
+    {
+        return self::whereRaw('LOWER(name) = ?', ['hdd'])
+                   ->where('is_active', 1)
+                   ->value('id');
+    }
+
+    public static function getGPUId()
+    {
+        return self::whereRaw('LOWER(name) = ?', ['gpu'])
+                   ->where('is_active', 1)
+                   ->value('id');
+    }
+
+    public static function getRAMId()
+    {
+        return self::whereRaw('LOWER(name) = ?', ['ram'])
                    ->where('is_active', 1)
                    ->value('id');
     }

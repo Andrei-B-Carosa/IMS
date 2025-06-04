@@ -261,6 +261,7 @@ export function fvGeneralDetails(_table=false,param=false){
                         // 'received_at':fv_validator(),
                         // 'price':fv_validator(),
                         'received_by':fv_validator(),
+                        'company_location':fv_validator(),
                         'supplier':fv_validator(),
                     },
                     plugins: {

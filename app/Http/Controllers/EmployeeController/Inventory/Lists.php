@@ -104,8 +104,8 @@ class Lists extends Controller
 
             $item->name =  $name ?? $description;
             $item->description = $description;
-            $item->item_number = $item->item_type->item_number;
-            $item->item_name = $item->item_type->name;
+            $item->item_number = $item->item_type->item_number ??'';
+            $item->item_name = $item->item_type->name ?? '--';
 
             $item->encrypted_id = Crypt::encrypt($item->id);
             return $item;

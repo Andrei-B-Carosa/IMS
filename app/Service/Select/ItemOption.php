@@ -37,7 +37,14 @@ class ItemOption
 
     public function get_item($query,$search,$html)
     {
-        $data = $query->get();
+        $ram_id = ImsItemType::getRAMId();
+        $gpu_id = ImsItemType::getGPUId();
+        $hdd_id = ImsItemType::getHDDId();
+        $ssd_id = ImsItemType::getSSDId();
+
+        $data = $query
+        ->whereNotIn('item_type_id',[$ram_id,$gpu_id,$ssd_id,$hdd_id])
+        ->get();
         if ($data->isEmpty()) {
             return '<option disabled>No Available Option</option>';
         }

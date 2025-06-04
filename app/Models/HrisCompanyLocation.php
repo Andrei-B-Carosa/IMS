@@ -10,6 +10,7 @@ class HrisCompanyLocation extends Model
     use HasFactory;
 
     protected $fillable=[
+        'id',
         'name',
         'description',
         'location_code',

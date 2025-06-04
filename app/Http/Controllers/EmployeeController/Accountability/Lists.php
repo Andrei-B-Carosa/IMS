@@ -35,7 +35,7 @@ class Lists extends Controller
             'issued_by_emp'
         ])
         ->when($filter_status,function($q) use($filter_status){
-            $filter_status = $filter_status == 'active'?1:2;
+            // $filter_status = $filter_status == 'active'?1:2;
             $q->where('status',$filter_status);
         })
         ->when($search, function($q) use($search) {

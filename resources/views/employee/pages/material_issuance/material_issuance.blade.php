@@ -50,15 +50,15 @@
                                         </span>
                                     </label>
                                     <label class="form-check form-check-sm form-check-custom form-check-solid mb-3 me-5">
-                                        <input class="form-check-input" type="radio" name="filter_status" value="active" />
+                                        <input class="form-check-input" type="radio" name="filter_status" value="1" />
                                         <span class="form-check-label text-gray-600">
-                                            Active
+                                            Complete
                                         </span>
                                     </label>
                                     <label class="form-check form-check-sm form-check-custom form-check-solid mb-3">
-                                        <input class="form-check-input" type="radio" name="filter_status" value="inactive" />
+                                        <input class="form-check-input" type="radio" name="filter_status" value="2" />
                                         <span class="form-check-label text-gray-600">
-                                            Inactive
+                                            Pending
                                         </span>
                                     </label>
                                 </div>

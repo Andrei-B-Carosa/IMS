@@ -21,7 +21,6 @@ class CompanyLocationOptions
     {
         $search = isset($rq->id) ? Crypt::decrypt($rq->id) : false;
         $data = $query->get();
-
         if ($data->isNotEmpty()) {
             $html = '<option></option>';
             foreach ($data as $row) {

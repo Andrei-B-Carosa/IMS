@@ -87,7 +87,7 @@ class Item extends Controller
                 . 'OS: ' . $array['windows_version'] . '<br>'
                 . $gpu_html
                 . 'Device Name: ' . $array['device_name'] . '<br>'
-                . ($item->item_type_id == 8 ? 'Serial Number: ' . $array['serial_number'] . '<br>' : '')
+                // . ($item->item_type_id == 8 ? 'Serial Number: ' . $array['serial_number'] . '<br>' : '')
                 . '</div>';
             }
 
@@ -256,6 +256,8 @@ class Item extends Controller
     public function check_item_type(Request $rq)
     {
         $payload = false;
+        $name = false;
+
         if(isset($rq->id)){
             $id = Crypt::decrypt($rq->id);
             $query = ImsItemType::find($id);
@@ -265,7 +267,7 @@ class Item extends Controller
         }
         $payload = base64_encode(json_encode([
             'type'=>$name,
-            'name' => $query->name ?? 'Item Details',
+            'name' => $name? ucwords(strtolower($name)) : 'Item Details',
             'is_computing_device' => $payload,
         ]));
 

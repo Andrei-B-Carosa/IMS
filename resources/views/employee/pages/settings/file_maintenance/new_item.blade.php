@@ -73,13 +73,13 @@
             </form>
         </div>
     </div>
-    
+
     {{-- Item Details --}}
     <div class="card card-flush py-4 mb-10 d-none" id="card-new-item-details">
 
         <div class="card-header">
             <div class="card-title">
-                <h2>Item Details</h2>
+
             </div>
         </div>
 
