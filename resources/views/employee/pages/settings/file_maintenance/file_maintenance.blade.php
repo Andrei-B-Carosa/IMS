@@ -276,7 +276,7 @@
         </div>
     </div>
 </x-elements.modal>
-{{--
+
 <x-elements.modal
     id="add-item-brand"
     title="Item Brand Details"
@@ -433,4 +433,4 @@
             </x-elements.textarea>
         </div>
     </div>
-</x-elements.modal> --}}
+</x-elements.modal>

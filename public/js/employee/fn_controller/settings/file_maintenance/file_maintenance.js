@@ -119,7 +119,9 @@ export var FileMaintenanceController = function (page,param) {
 
     $(async function () {
 
-        page_block.block();
+        if (!page_block.isBlocked()) {
+            page_block.block();
+        }
 
         loadActiveTab().then((tab) => {
             if(tab != false){
@@ -142,7 +144,9 @@ export var FileMaintenanceController = function (page,param) {
                 return;
             }
 
-            page_block.block();
+            if (!page_block.isBlocked()) {
+                page_block.block();
+            }
             tabLoaded.push(tab);
             loadActiveTab(tab).then((res) => {
                 if (res) {

@@ -201,7 +201,9 @@ export var UserManagementController =  function (page,param) {
     });
 
     $(async function () {
-        page_block.block();
+        if (!page_block.isBlocked()) {
+            page_block.block();
+        }
         loadRoles();
 
         setTimeout(() => {

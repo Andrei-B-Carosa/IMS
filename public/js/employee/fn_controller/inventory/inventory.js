@@ -12,7 +12,9 @@ export var InventoryListController = function (page, param) {
 
     $(async function () {
 
-        page_block.block();
+        if (!page_block.isBlocked()) {
+            page_block.block();
+        }
         setTimeout(() => {
             page_block.release();
         }, 500);

@@ -169,7 +169,9 @@ export var MaterialIssuanceListController = function (page, param) {
 
     $(async function () {
 
-        page_block.block();
+        if (!page_block.isBlocked()) {
+            page_block.block();
+        }
         await loadMaterialIssuanceList(1,'all');
 
         setTimeout(() => {
