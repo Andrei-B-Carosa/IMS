@@ -79,16 +79,20 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
         Route::post('/dt', 'dt');
         Route::post('/update', 'update');
         Route::post('/download-qr', 'download_qr');
-
         // Route::post('/check-item-tag', 'check_item_tag');
+
+        // Route::post('/request-repair', 'request_repair');
+        Route::post('/update-repair', 'update_repair');
+        Route::post('/repair-info', 'repair_info');
 
         Route::post('/delete', 'delete');
     });
 
     Route::controller(InventoryDetails::class)->prefix('inventory-details')->group(function() {
-        Route::post('inventory-details/update-general-details', 'update_general_details');
-        Route::post('inventory-details/update-item-details', 'update_item_details');
+        Route::post('update-general-details', 'update_general_details');
+        Route::post('update-item-details', 'update_item_details');
 
+        Route::post('dt-item-logs', 'dt_item_logs');
 
     });
 

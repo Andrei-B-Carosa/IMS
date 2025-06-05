@@ -15,6 +15,7 @@ class ImsItemInventory extends Model
     */
 
     protected $fillable = [
+        'id',
         'item_type_id',
         'company_location_id',
         'item_brand_id',
@@ -76,7 +77,7 @@ class ImsItemInventory extends Model
         $companyLocationName = $this->company_location ? $this->company_location->location_code : 'UNKNOWN';
         $itemTypeCode = $this->item_type ? $this->item_type->item_code : 'XXX';
         $itemId = $this->id ?? 0;
-        
+
         return config('company.item_code').'-'.strtoupper($companyLocationName). '-' .$itemTypeCode. '-'.str_pad($itemId, 5, '0', STR_PAD_LEFT);
     }
 }

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\ImsItem;
 use App\Models\ImsItemBrand;
 use App\Models\ImsItemInventory;
+use App\Models\ImsItemInventoryLog;
+use App\Service\Reusable\Datatable;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,6 +17,44 @@ use Illuminate\Support\Facades\DB;
 
 class Details extends Controller
 {
+    public function dt_item_logs(Request $rq)
+    {
+        $id = Crypt::decrypt($rq->id);
+        $data = ImsItemInventoryLog::with('employee')->where('item_inventory_id',$id)->get();
+
+        $data->transform(function ($item, $key) {
+
+            $last_updated_by = null;
+            $last_update_at = null;
+            if($item->updated_by != null){
+                $last_updated_by = optional($item->updated_by_emp)->fullname();
+                $last_update_at = Carbon::parse($item->updated_at)->format('m-d-Y');
+            }elseif($item->created_by !=null){
+                $last_updated_by = optional($item->created_by_emp)->fullname();
+                $last_update_at = Carbon::parse($item->created_at)->format('m-d-Y');
+            }
+
+            $item->count = $key + 1;
+            $item->last_updated_by = $last_updated_by;
+            $item->last_update_at = $last_update_at;
+
+            $item->emp_fullname = $item->employee->fullname();
+
+            $item->encrypted_id = Crypt::encrypt($item->id);
+            return $item;
+        });
+
+        $table = new Datatable($rq, $data);
+        $table->renderTable();
+
+        return response()->json([
+            'draw' => $table->getDraw(),
+            'recordsTotal' => $table->getRecordsTotal(),
+            'recordsFiltered' =>  $table->getRecordsFiltered(),
+            'data' => $table->getRows()
+        ]);
+    }
+
     public function update_general_details(Request $rq)
     {
         try {

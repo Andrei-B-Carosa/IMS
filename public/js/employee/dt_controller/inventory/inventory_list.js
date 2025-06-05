@@ -29,9 +29,14 @@ export var dtInventoryList = function (table,param='') {
                 {
                     data: "count",
                     name: "count",
-                    title: "#",
+                    title: " ",
                     responsivePriority: -3,
                     searchable:false,
+                    render:function(data,type,row){
+                        return `<div class="form-check form-check-sm form-check-custom form-check-solid check-item">
+                            <input class="form-check-input" type="checkbox" value="${row.encrypted_id}">
+                        </div>`;
+                    }
                 },
                 {
                     data: "name", name: "name", title: "Item",
@@ -65,6 +70,13 @@ export var dtInventoryList = function (table,param='') {
                     visible:false,
                 },
                 {
+                    data: "enable_quick_actions", name: "enable_quick_actions", title: "Enable Quick Action",
+                    className:'',
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
+                },
+                {
                     data: "description", name: "description", title: "Description",
                     className:'',
                     sortable:false,
@@ -83,6 +95,8 @@ export var dtInventoryList = function (table,param='') {
                         let status = {
                             1: ["info", "Available"],
                             2: ["success", "Issued"],
+                            3: ["success", "Temporary Issued"],
+                            4: ["danger", "Under Repair"],
 
                         };
                         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
@@ -136,15 +150,67 @@ export var dtInventoryList = function (table,param='') {
                             row.is_deleted == 1 ? ``
                             :
                             `<div class="d-flex">
-                                <a href="/inventory-details/${data}" class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up view" data-id="${data}"
-                                    data-bs-toggle="tooltip" title="View item details">
-                                    <i class="ki-duotone ki-pencil fs-2x">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                    </i>
-                                </a>
+                            ${row.enable_quick_actions ? `
+                                <button class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up q-action"
+                                        data-kt-menu-trigger="click"
+                                        data-kt-menu-placement="bottom-end"
+                                        data-kt-menu-overflow="true" data-bs-toggle="tooltip" title="Quick Actions">
+                                        <i class="ki-duotone ki-pencil fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </button>
+
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
+                                        data-kt-menu="true">
+                                        <div class="menu-item px-3">
+                                            <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">
+                                                Quick Actions
+                                            </div>
+                                        </div>
+                                        <div class="separator mb-3 opacity-75"></div>
+                                        <div class="menu-item px-3">
+                                            <a href="/inventory-details/${data}" class="menu-link px-3">
+                                                View Details
+                                            </a>
+                                        </div>
+                                        ${row.status!=4 && row.status!=0 ?`
+                                            <div class="menu-item px-3">
+                                                <a href="javascript:;" class="menu-link px-3 request-repair" data-id="${data}">
+                                                    Request Repair
+                                                </a>
+                                            </div>`:``}
+                                        ${row.status==4 && row.status!=0? `<div class="menu-item px-3">
+                                            <a href="javascript:;" class="menu-link px-3 update-repair" data-id="${data}">
+                                                Update Repair
+                                            </a>
+                                        </div>`:``}
+                                        <div class="separator mt-3 opacity-75"></div>
+                                        <div class="menu-item px-3">
+                                            <div class="menu-content px-3 py-3">
+                                                <a class="btn btn-primary  btn-sm px-4"
+                                                    href="#">
+                                                    Generate Reports
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div> `
+                                    :
+                                    `
+                                    <a href="/inventory-details/${data}" class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up"
+                                        data-bs-toggle="tooltip" title="View Details">
+                                        <i class="ki-duotone ki-pencil fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </a>
+                                    `
+                                    }
+
                                 <button class="btn btn-icon btn-icon btn-light-dark btn-sm me-1 hover-elevate-up download-qr" data-id="${data}"
                                     data-bs-toggle="tooltip" title="Download QR Code">
                                     <i class="bi bi-qr-code fs-2 ">
@@ -155,7 +221,7 @@ export var dtInventoryList = function (table,param='') {
                                     </i>
                                 </button>
                                 <button class="btn btn-icon btn-icon btn-light-danger btn-sm me-1 hover-elevate-up remove" data-id="${data}"
-                                data-bs-toggle="tooltip" title="Remove item on inventory">
+                                data-bs-toggle="tooltip" title="Remove item from inventory">
                                     <i class="ki-duotone ki-trash fs-2x">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
@@ -262,6 +328,56 @@ export var dtInventoryList = function (table,param='') {
                 });
             })
 
+            $(document).on('click','.request-repair',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+
+                let _this = $(this);
+                let id    =_this.attr('data-id');
+
+                let modal_id = '#modal-request-repair';
+                let form = $('#form-request-repair');
+                modal_state(modal_id,'show');
+                $(modal_id).find('button.submit').attr('data-inventory-id',id);
+            })
+
+            $(document).on('click','.update-repair',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+
+                let _this = $(this);
+                let id    =_this.attr('data-id');
+                let modal_id = '#modal-request-repair';
+                let form = $('#form-request-repair');
+
+                let formData = new FormData;
+
+                formData.append('id',id);
+                _request.post('/inventory/repair-info',formData)
+                .then((res) => {
+                    let payload = JSON.parse(window.atob(res.payload));
+
+                    $('input[name="start_at"]')[0]._flatpickr.setDate(payload.start_at, true);
+                    $('input[name="end_at"]')[0]._flatpickr.setDate(payload.end_at, true);
+
+                    form.find('select[name="status"]').val(payload.status).trigger('change');
+                    form.find('select[name="repair_type"]').val(payload.repair_type).trigger('change');
+
+                    form.find('textarea[name="description"]').val(payload.description);
+                    $(modal_id).find('button.submit').attr('data-id',payload.encrypted_id);
+                    $(modal_id).find('button.submit').attr('data-inventory-id',id);
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                    Alert.alert('error', "Something went wrong. Try again later", false);
+                })
+                .finally((error) => {
+                    modal_state(modal_id,'show');
+                });
+
+            })
+
         })
     }
 
@@ -272,3 +388,4 @@ export var dtInventoryList = function (table,param='') {
     }
 
 }
+

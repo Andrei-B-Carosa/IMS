@@ -16,16 +16,17 @@ return new class extends Migration
 
             $table->integer('item_inventory_id');
             $table->integer('emp_id');
-            $table->text('activity_logs');
+            $table->integer('activity_type');
+            $table->string('activity_log');
 
-            // $table->tinyInteger('is_deleted')->nullable();
-            // $table->tinyInteger('deleted_by')->nullable();
-            // $table->dateTime('deleted_at')->nullable();
+            $table->text('old_value')->nullable();
+            $table->text('new_value')->nullable();
 
-            // $table->unsignedBigInteger('created_by')->nullable();
-            // $table->unsignedBigInteger('updated_by')->nullable();
-            // $table->timestamp('created_at')->useCurrent();
-            // $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->unsignedBigInteger('created_by')->nullable();
+
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->nullable();
         });
     }
 

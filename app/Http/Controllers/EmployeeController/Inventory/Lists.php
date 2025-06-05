@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\HrisCompanyLocation;
 use App\Models\ImsItem;
 use App\Models\ImsItemInventory;
+use App\Models\ImsItemRepairLog;
 use App\Models\ImsItemType;
 use App\Service\Reusable\Datatable;
 use Carbon\Carbon;
@@ -56,6 +57,7 @@ class Lists extends Controller
             $name = $item->name;
             $description = $item->description;
             $item_type = $item->item_type_id;
+            $enable_quick_actions = $item->item_type->display_to == 1 ? true:false ;
 
             if($item_type == 1 || $item_type == 8) {
                 $array = json_decode($description,true);
@@ -106,7 +108,7 @@ class Lists extends Controller
             $item->description = $description;
             $item->item_number = $item->item_type->item_number ??'';
             $item->item_name = $item->item_type->name ?? '--';
-
+            $item->enable_quick_actions = $enable_quick_actions;
             $item->encrypted_id = Crypt::encrypt($item->id);
             return $item;
         });
@@ -237,5 +239,63 @@ class Lists extends Controller
             ]);
         }
 
+    }
+
+    public function repair_info(Request $rq)
+    {
+        try{
+            $id = Crypt::decrypt($rq->id);
+            $query = ImsItemRepairLog::where([['item_inventory_id',$id],['status',1]])->first();
+            $payload = [
+                'repair_type' =>$query->repair_type,
+                'start_at' =>Carbon::parse($query->start_at)->format('m-d-Y'),
+                'end_at' => $query->end_at?Carbon::parse($query->end_at)->format('m-d-Y'):null,
+                'description' =>$query->description,
+                'status' =>$query->status,
+                'encrypted_id' =>Crypt::encrypt($query->id),
+            ];
+            return response()->json(['status' => 'success','message'=>'success', 'payload'=>base64_encode(json_encode($payload))]);
+        }catch(Exception $e){
+            return response()->json(['status'=>400,'message' =>$e->getMessage()]);
+        }
+    }
+
+    public function update_repair(Request $rq)
+    {
+        try{
+            DB::beginTransaction();
+            $user_id = Auth::user()->emp_id;
+            $id = isset($rq->id) && $rq->id != "undefined" ? Crypt::decrypt($rq->id):null;
+            $inventory_item_id = Crypt::decrypt($rq->item_inventory_id);
+            $query = ImsItemInventory::find($inventory_item_id);
+
+            $attribute = [
+                'id'=>$id,
+                'item_inventory_id' => $inventory_item_id,
+            ];
+            $values = [
+                'issued_by' =>$user_id,
+                'repair_type' =>$rq->repair_type,
+                'item_inventory_status' =>$query->status,
+                'start_at' =>Carbon::createFromFormat('m-d-Y',$rq->start_at)->format('Y-m-d'),
+                'end_at' => isset($rq->end_at)? Carbon::createFromFormat('m-d-Y',$rq->end_at)->format('Y-m-d'):null,
+                'description' =>$rq->description,
+                'status' =>$rq->status,
+            ];
+            if(!isset($id)){
+                $values['created_by'] = $user_id;
+            }else{
+                $values['updated_by'] = $user_id;
+            }
+            $query = ImsItemRepairLog::updateOrCreate($attribute,$values);
+            DB::commit();
+            return response()->json(['status' => 'success', 'message'=>'Success']);
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

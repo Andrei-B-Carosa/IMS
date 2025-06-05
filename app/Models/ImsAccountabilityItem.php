@@ -25,6 +25,8 @@ class ImsAccountabilityItem extends Model
     /***
     * 1= Issued
       2= Returned
+      3=
+      4= Under Repair
     */
   protected static function booted()
   {

@@ -73,3 +73,65 @@
         </div>
     </div>
 </div>
+
+<x-elements.modal
+    id="request-repair"
+    title="Repair Details"
+    action="/inventory/update-repair">
+    <div class="d-flex flex-column px-5 px-lg-10" style="max-height: 670px;">
+        <div class="row">
+            <div class="fv-row col-6 mb-7">
+                <label class="required fw-semibold fs-6 mb-2">Start At</label>
+                <input type="text" name="start_at" input-control="date-picker" default-date="current" class="form-control mb-3 mb-lg-0 flatpickr">
+                <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+            </div>
+            <div class="fv-row col-6 mb-7">
+                <label class="fw-semibold fs-6 mb-2">End At</label>
+                <input type="text" name="end_at" input-control="date-picker" default-date="" class="form-control mb-3 mb-lg-0 flatpickr">
+                <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+            </div>
+        </div>
+        <div class="fv-row mb-7 fv-plugins-icon-container">
+            <x-elements.select
+                id="repair_type"
+                name="repair_type"
+                label="Repair Type"
+                :options="['1' => 'Hardware', '2' => 'Software']"
+                placeholder="Select an option"
+                selected="1"
+                class="fw-bold "
+                data-control="select2"
+                data-placeholder="Select an option"
+                data-minimum-results-for-search="Infinity"
+                disabled="false"
+            />
+            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+        </div>
+        <div class="fv-row mb-7 fv-plugins-icon-container">
+            <x-elements.select
+                id="status"
+                name="status"
+                label="Status"
+                :options="['1' => 'In Progress', '2' => 'Resolved', '3'=>'Not Repairable']"
+                placeholder="Select an option"
+                selected="1"
+                class="fw-bold "
+                data-control="select2"
+                data-placeholder="Select an option"
+                data-minimum-results-for-search="Infinity"
+                disabled="false"
+            />
+            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+        </div>
+        <div class="d-flex fv-row flex-column mb-7">
+            <x-elements.textarea
+                id="description"
+                name="description"
+                label="Description"
+                class="form-control-solid"
+                data-required="false"
+            />
+        </div>
+
+    </div>
+</x-elements.modal>

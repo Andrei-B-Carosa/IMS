@@ -150,7 +150,7 @@ export function data_bs_components()
             let inputValue = input.value;
             let isValidDate = !isNaN(Date.parse(inputValue));
             $(input).flatpickr({
-                defaultDate: isValidDate ? inputValue : new Date(),
+                defaultDate: isValidDate ? inputValue : (input.getAttribute('default-date') === 'current'?new Date():''),
                 dateFormat: 'm-d-Y',
             });
         });
