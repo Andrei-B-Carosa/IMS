@@ -2,6 +2,7 @@
 
 namespace App\Service\Employee;
 
+use App\Models\Employee;
 use App\Models\ImsAccountability;
 use App\Models\ImsItem;
 use App\Models\ImsItemInventory;
@@ -13,6 +14,7 @@ use App\Service\Select\ItemBrandOption;
 use App\Service\Select\ItemOption;
 use App\Service\Select\ItemTypeOption;
 use App\Service\Select\SupplierOptions;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -383,6 +385,37 @@ class Page
 
             return view('employee.pages.settings.file_maintenance.item_details', compact('data','array_specs','item_type_options','item_brand_options','mis_personnel_options'))->render();
 
+        } catch(Exception $e) {
+            return response()->json([
+                'status' => 400,
+                // 'message' =>  'Something went wrong. try again later'
+                'message' =>  $e->getMessage()
+            ]);
+        }
+    }
+
+    public function employee_details($rq)
+    {
+        try{
+            $id = Crypt::decrypt($rq->id);
+            $query = Employee::find($id);
+            $isRegisterEmployee = false;
+
+            $emp_details = $query->emp_details;
+            $tenure = Carbon::parse($emp_details->date_employed)->diffInYears(Carbon::now());
+            $data = [
+                'fullname'=>$query->fullname(),
+                'department'=> $emp_details->department->name,
+                'dept_code'=> $emp_details->department->code,
+                'position'=> $emp_details->position->name,
+                'date_employed'=> isset($emp_details->date_employed)?Carbon::parse($emp_details->date_employed)->format('m/d/Y'):'--',
+                'tenure'=> $tenure > 0 ? $tenure : '--',
+                'employment_type' =>$emp_details->employment->name,
+                'c_email'=> $query->emp_account->c_email,
+                'work_status' => $emp_details->work_status,
+                'is_active' => $emp_details->is_active,
+            ];
+            return view('employee.pages.settings.employee_list.employee_details.employee_details', ['data'=>$data,'isRegisterEmployee'=>$isRegisterEmployee])->render();
         } catch(Exception $e) {
             return response()->json([
                 'status' => 400,

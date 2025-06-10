@@ -16,75 +16,43 @@ class ImsUserRolesSeeder extends Seeder
         DB::table('ims_user_roles')->insert([
             [
                 'emp_id' => 1,
-                'role_id' => 1, // Assuming 1 is for 'Admin'
+                'role_id' => 2, // Employee Role
                 'is_active' => 1,
-                'is_deleted' => 0,
+                'is_deleted' => null,
                 'deleted_by' => null,
                 'deleted_at' => null,
                 'created_by' => 1,
-                'updated_by' => 1,
                 'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'emp_id' => 2,
-                'role_id' => 2, // Assuming 2 is for 'Employee'
+                'role_id' => 2, // Employee Role
                 'is_active' => 1,
-                'is_deleted' => 0,
+                'is_deleted' => null,
                 'deleted_by' => null,
                 'deleted_at' => null,
                 'created_by' => 1,
-                'updated_by' => 1,
                 'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'emp_id' => 10,
-                'role_id' => 2, // Assuming 2 is for 'Employee'
-                'is_active' => 1,
-                'is_deleted' => 0,
-                'deleted_by' => null,
-                'deleted_at' => null,
-                'created_by' => 1,
-                'updated_by' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'emp_id' => 5,
-                'role_id' => 2, // Assuming 2 is for 'Employee'
-                'is_active' => 1,
-                'is_deleted' => 0,
-                'deleted_by' => null,
-                'deleted_at' => null,
-                'created_by' => 1,
-                'updated_by' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'emp_id' => 4,
-                'role_id' => 2, // Assuming 2 is for 'Employee'
-                'is_active' => 1,
-                'is_deleted' => 0,
-                'deleted_by' => null,
-                'deleted_at' => null,
-                'created_by' => 1,
-                'updated_by' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'emp_id' => 3,
-                'role_id' => 2, // Assuming 2 is for 'Employee'
+                'role_id' => 2, // Employee Role
                 'is_active' => 1,
-                'is_deleted' => 0,
+                'is_deleted' => null,
                 'deleted_by' => null,
                 'deleted_at' => null,
                 'created_by' => 1,
-                'updated_by' => 1,
                 'created_at' => now(),
-                'updated_at' => now(),
+            ],
+            [
+                'emp_id' => 4,
+                'role_id' => 2, // Employee Role
+                'is_active' => 1,
+                'is_deleted' => null,
+                'deleted_by' => null,
+                'deleted_at' => null,
+                'created_by' => 1,
+                'created_at' => now(),
             ],
         ]);
     }

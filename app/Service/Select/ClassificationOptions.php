@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Reusable\Select;
+namespace App\Service\Select;
 
 use App\Models\HrisClassification;
 use Illuminate\Http\Request;

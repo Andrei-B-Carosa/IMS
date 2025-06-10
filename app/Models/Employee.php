@@ -55,17 +55,18 @@ class Employee extends Model
         'mother_fname',
         'mother_lname',
         'mother_mname',
+        'is_completed',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        // Automatically generate employee ID before creating a new employee record
-        static::creating(function ($model) {
-               $model->emp_no = self::generateEmployeeId($model);
-        });
-    }
+    //     // Automatically generate employee ID before creating a new employee record
+    //     static::creating(function ($model) {
+    //            $model->emp_no = self::generateEmployeeId($model);
+    //     });
+    // }
 
     public static function generateEmployeeId($employee)
     {
@@ -108,6 +109,11 @@ class Employee extends Model
     {
         return $this->belongsTo(self::class,'deleted_by');
     }
+
+    // public function documents()
+    // {
+    //     return $this->HasMany(HrisEmployeeDocument::class,'emp_id');
+    // }
 
     public function emp_position()
     {

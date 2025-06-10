@@ -14,6 +14,8 @@ import { ItemDetailsController } from './fn_controller/settings/file_maintenance
 import { NewItemController } from './fn_controller/settings/file_maintenance/new_item.js';
 import { UserManagementController } from './fn_controller/settings/user_management/user_management.js';
 import { page_content } from './page.js';
+import {EmployeeMasterlistController} from './fn_controller/settings/employee_list/employee_masterlist.js'
+import { EmployeeDetailsController } from './fn_controller/settings/employee_list/employee_details/employee_details.js';
 
 async function init_page(_default) {
     let pathname = window.location.pathname;
@@ -72,6 +74,9 @@ const _handlers = {
     item_details:(page,param)=>ItemDetailsController(page,param),
     new_item:(page,param)=>NewItemController(page,param),
     user_management:(page,param)=>UserManagementController(page,param),
+    employee_list:(page,param)=>EmployeeMasterlistController(page,param),
+    employee_details:(page,param)=>EmployeeDetailsController(page,param),
+
 };
 
 jQuery(document).ready(function() {

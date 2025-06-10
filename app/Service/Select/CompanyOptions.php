@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Reusable\Select;
+namespace App\Service\Select;
 
 use App\Models\HrisCompany;
 use App\Models\HrisEmployeeOvertimeRequest;

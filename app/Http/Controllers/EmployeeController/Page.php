@@ -92,6 +92,7 @@ class Page extends Controller
             'new-material-issuance' => fn() => $page->new_material_issuance($rq),
             'material-issuance-details' => fn() => $page->material_issuance_details($rq),
             'item-details' => fn() => $page->item_details($rq),
+            'employee-details' => fn() => $page->employee_details($rq),
             'new-item' => fn() => $page->new_item($rq),
         ];
 

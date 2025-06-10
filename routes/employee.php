@@ -7,12 +7,26 @@ use App\Http\Controllers\EmployeeController\Inventory\Lists as InventoryLists;
 use App\Http\Controllers\EmployeeController\MaterialIssuance\Details as MaterialIssuanceDetails;
 use App\Http\Controllers\EmployeeController\MaterialIssuance\Lists as MaterialIssuanceLists;
 use App\Http\Controllers\EmployeeController\Page;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\AccountSecurity\AccountDetails;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\EmployeeDetails;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\EmployeeMasterlist;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\EmploymentDetails\EmploymentDetails;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\PersonalData\DocumentAttachments;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\PersonalData\EducationalBackground;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\PersonalData\FamilyBackground;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\PersonalData\PersonalInformation;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\PersonalData\References;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\PersonalData\WorkExperience;
 use App\Http\Controllers\EmployeeController\Settings\FileMaintenance\CompanyLocation;
 use App\Http\Controllers\EmployeeController\Settings\FileMaintenance\Item;
 use App\Http\Controllers\EmployeeController\Settings\FileMaintenance\ItemBrand;
 use App\Http\Controllers\EmployeeController\Settings\FileMaintenance\ItemSuppliers;
 use App\Http\Controllers\EmployeeController\Settings\FileMaintenance\ItemType;
 use App\Http\Controllers\EmployeeController\Settings\UserManagement\UserManagement;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\AccountSecurity\Tab as AccountSecurityTab;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\EmployeeRegistration;
+use App\Http\Controllers\EmployeeController\Settings\EmployeeList\PersonalData\Tab as PersonalDataTab;
+
 use App\Service\UserRoute;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +45,12 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
     Route::get('/new-material-issuance','system_file')->name('employee.new_material_issuance');
     Route::get('/material-issuance-details/{id}', 'system_file');
 
+    Route::get('/employee-details/{id}', 'system_file');
+
+    Route::get('/register-employee', function(){
+        return view('employee.pages.settings.employee_list.employee_registration.index');
+    })->name('employee.register_employee');
+
     Route::get('/item-details/{id}', 'system_file');
     Route::get('/new-item', 'system_file');
 
@@ -46,7 +66,6 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
             }
         }
     }
-
 
     Route::controller(AccountabilityLists::class)->prefix('accountability')->group(function() {
         Route::post('/list', 'list');
@@ -116,7 +135,6 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
 
     });
 
-
     Route::group(['prefix'=>'file-maintenance'], function() {
         Route::controller(Item::class)->prefix('item')->group(function() {
             Route::post('/dt', 'dt');
@@ -179,6 +197,82 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
 
             Route::post('/employee-list', 'employee_list');
             Route::post('/user-list', 'user_list');
+        });
+    });
+
+    Route::group(['prefix'=>'employee-list'], function() {
+        Route::controller(EmployeeMasterlist::class)->prefix('employee_masterlist')->group(function() {
+            Route::post('/dt', 'dt');
+            Route::post('/restore', 'restore');
+            Route::post('/archive', 'archive');
+            Route::post('/update', 'update');
+            Route::post('/delete', 'delete');
+            Route::post('/emp_details', 'emp_details');
+        });
+
+        Route::group(['prefix'=>'employee-details'], function() {
+
+            Route::controller(EmployeeDetails::class)->group(function() {
+                Route::post('/tab', 'tab');
+                Route::post('/form', 'form');
+                Route::post('/update', 'update');
+                Route::post('/delete', 'delete');
+            });
+
+            Route::group(['prefix'=>'personal_data'], function() {
+
+                Route::post('/tab', [PersonalDataTab::class, 'tab']);
+
+                Route::post('/personal_information/update', [PersonalInformation::class, 'update']);
+                Route::post('/family_background/update', [FamilyBackground::class, 'update']);
+
+                Route::controller(EducationalBackground::class)->prefix('educational_background')->group(function() {
+                    Route::post('/dt', 'dt');
+                    Route::post('/update', 'update');
+                    Route::post('/delete', 'delete');
+                    Route::post('/check_document', 'check_document');
+
+                    Route::post('/info', 'info');
+                });
+
+                Route::controller(WorkExperience::class)->prefix('work_experience')->group(function() {
+                    Route::post('/dt', 'dt');
+                    Route::post('/update', 'update');
+                    Route::post('/delete', 'delete');
+                    Route::post('/check_document', 'check_document');
+
+                    Route::post('/info', 'info');
+                });
+
+                Route::controller(DocumentAttachments::class)->prefix('document_attachment')->group(function() {
+                    Route::post('/dt', 'dt');
+                    Route::post('/update', 'update');
+                    Route::post('/delete', 'delete');
+                    Route::post('/download_document', 'download_document');
+                    Route::post('/view_document', 'view_document');
+                });
+
+                Route::controller(References::class)->prefix('references')->group(function() {
+                    Route::post('/dt', 'dt');
+                    Route::post('/update', 'update');
+                    Route::post('/delete', 'delete');
+
+                    Route::post('/info', 'info');
+                });
+            });
+
+            Route::post('/employment_details/update', [EmploymentDetails::class, 'update']);
+
+            Route::group(['prefix'=>'account_security'], function() {
+                Route::post('/tab', [AccountSecurityTab::class, 'tab']);
+                Route::post('/update', [AccountDetails::class, 'update']);
+            });
+
+        });
+
+        Route::controller(EmployeeRegistration::class)->prefix('employee-registration')->group(function() {
+            Route::post('/form', 'form');
+            Route::post('/update', 'update');
         });
     });
 

@@ -53,6 +53,20 @@ export var dtItemLogs = function (table,param='') {
                     }
                 },
                 {
+                    data: "activity_table", name: "activity_table", title: "Table Activity",
+                    sortable:false,
+                    searchable:false,
+                    className:'text-muted',
+                    // render: function (data, type, row) {
+                    //     let status = {
+                    //         1: ["info", "INSERT"],
+                    //         2: ["success", "UPDATE"],
+
+                    //     };
+                    //     return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
+                    // },
+                },
+                {
                     data: "activity_type", name: "activity_type", title: "Activity Type",
                     sortable:false,
                     searchable:false,

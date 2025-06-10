@@ -57,6 +57,8 @@ return new class extends Migration
             $table->string('mother_mname')->nullable();
 
             $table->tinyInteger('is_active')->nullable();
+            $table->tinyInteger('is_completed')->nullable();
+
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();

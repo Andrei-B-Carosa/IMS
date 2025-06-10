@@ -16,8 +16,9 @@ return new class extends Migration
 
             $table->integer('item_inventory_id');
             $table->integer('emp_id');
-            $table->integer('activity_type');
-            $table->string('activity_log');
+            $table->string('activity_table')->nullable();
+            $table->integer('activity_type')->nullable();
+            $table->string('activity_log')->nullable();
 
             $table->text('old_value')->nullable();
             $table->text('new_value')->nullable();

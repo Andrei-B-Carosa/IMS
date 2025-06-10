@@ -43,7 +43,7 @@ class ImsSystemLayerSeeder extends Seeder
             [
                 'name' => 'Employee List',
                 'href' => 'employee_list',
-                'folder' => null,
+                'folder' => 'employee_list',
                 'status' => 1,
                 'is_deleted' => 0,
                 'deleted_by' => null,
