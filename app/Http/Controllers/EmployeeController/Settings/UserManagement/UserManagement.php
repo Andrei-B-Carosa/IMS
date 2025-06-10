@@ -4,6 +4,7 @@ namespace App\Http\Controllers\EmployeeController\Settings\UserManagement;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\EmployeeAccount;
 use App\Models\ImsRole;
 use App\Models\ImsUserRole;
 use App\Service\Reusable\Datatable;
@@ -87,6 +88,11 @@ class UserManagement extends Controller
             ];
             $values = ['is_active' =>$rq->is_active];
 
+            //CREATE ACCOUNT
+            $employee = Employee::find($emp_id);
+            EmployeeAccount::createAccount($employee,$user_id);
+
+            //CREATE USER ROLE
             $query = ImsUserRole::updateOrCreate($attribute,$values);
             if ($query->wasRecentlyCreated) {
                 $query->update([ 'created_by'=>$user_id ]);

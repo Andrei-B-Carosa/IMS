@@ -411,7 +411,7 @@ class Page
                 'date_employed'=> isset($emp_details->date_employed)?Carbon::parse($emp_details->date_employed)->format('m/d/Y'):'--',
                 'tenure'=> $tenure > 0 ? $tenure : '--',
                 'employment_type' =>$emp_details->employment->name,
-                'c_email'=> $query->emp_account->c_email,
+                'c_email'=> $query->emp_account? $query->emp_account->c_email:false,
                 'work_status' => $emp_details->work_status,
                 'is_active' => $emp_details->is_active,
             ];

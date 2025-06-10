@@ -38,7 +38,7 @@ class EmployeeAccount extends Authenticatable
         $username = strtolower($employee->fname.'.'.$employee->lname);
         $c_email = $username.'@'.config('company.company_domain');
 
-        $existingAccount = EmployeeAccount::where([['emp_id', $employee->id], ['is_active', 1]])->first();
+        $existingAccount = EmployeeAccount::where([['emp_id', $employee->id], ['is_active', 1],['is_deleted',null]])->first();
         if (!$existingAccount) {
             EmployeeAccount::create([
                 'emp_id' => $employee->id, // Assuming $employee->id exists

@@ -21,7 +21,7 @@ class EmployeeMasterlist extends Controller
         ->when($filter_status,function($q) use($filter_status){
             $q->where('is_active',$filter_status);
         })
-        ->whereHas('emp_account')
+        // ->whereHas('emp_account')
         ->whereHas('emp_details')
         ->where('is_deleted',null)
         ->get();
@@ -48,7 +48,7 @@ class EmployeeMasterlist extends Controller
             $item->emp_no = $item->emp_no;
             $item->department_name = $emp_details->department->name;
             $item->position_name = $emp_details->position->name;
-            $item->c_email = $item->emp_account->c_email;
+            $item->c_email = $item->emp_account?$item->emp_account->c_email:'';
             $item->date_employed = $emp_details->date_employed?Carbon::parse($emp_details->date_employed)->format('F j, Y'):'No Date Hired';
 
             $item->encrypted_id = Crypt::encrypt($item->id);

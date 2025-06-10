@@ -39,7 +39,7 @@
                                     class="d-flex align-items-center text-gray-400 text-hover-primary mb-2">
                                     <i class="ki-duotone ki-sms fs-4"><span
                                             class="path1"></span><span
-                                            class="path2"></span></i>  {{ $data['c_email'] }}
+                                            class="path2"></span></i>  {{ $data['c_email']!== false ? $data['c_email'] : 'No Corporate Email' }}
                                 </a>
                             </div>
                         </div>
@@ -89,12 +89,14 @@
                         Employment Details
                     </a>
                 </li>
-                <li class="nav-item mt-2">
-                    <a class="nav-link text-active-primary ms-0 me-10 py-5 main-tab" data-tab="account_security"
-                        href="javascript:;">
-                        Account Security
-                    </a>
-                </li>
+                @if($data['c_email'] !== false)
+                    <li class="nav-item mt-2">
+                        <a class="nav-link text-active-primary ms-0 me-10 py-5 main-tab" data-tab="account_security"
+                            href="javascript:;">
+                            Account Security
+                        </a>
+                    </li>
+                @endif
                 {{-- <li class="nav-item mt-2">
                     <a class="nav-link text-active-primary ms-0 me-10 py-5 main-tab" data-tab="activity_logs"
                         href="javascript:;">

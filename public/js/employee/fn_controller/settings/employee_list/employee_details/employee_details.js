@@ -20,7 +20,7 @@ export var EmployeeDetailsController =  function (page,param) {
     async function loadActiveMainTab(tab=false)
     {
         tab = (tab == false ? (localStorage.getItem("employee_details_maintab") || 'personal_data') : tab);
-
+        
         if (page_block.isBlocked() === false) {  page_block.block(); }
         return new Promise(async (resolve, reject) => {
             if (tab) {
