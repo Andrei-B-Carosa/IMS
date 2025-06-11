@@ -79,7 +79,9 @@ export var dtIssuedItems = function (table,param=false) {
                     render: function (data, type, row) {
                         let status = {
                             1: ["success", "Issued"],
-                            2: ["danger", "Returned"],
+                            2: ["info", "Returned"],
+                            3: ["secondary", "Temporary Issued"],
+                            4: ["danger", "Under Repair"],
 
                         };
                         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;

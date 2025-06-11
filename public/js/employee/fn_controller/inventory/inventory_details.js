@@ -15,10 +15,32 @@ export var InventoryDetailsController = function (page, param) {
 
     data_bs_components();
 
+    function checkItemStatus()
+    {
+        let formGeneralDetails = document.querySelector("#form-general-details");
+        if($('select[name="status"]').val() == '0'){
+            formGeneralDetails.querySelectorAll("input, select, textarea").forEach(el => {
+                el.disabled = true;
+            });
+            let formSystemUnit = document.querySelector("#form-item-details");
+            if (formSystemUnit) {
+                formSystemUnit.querySelectorAll("input, select, textarea").forEach(el => {
+                    el.disabled = true;
+                });
+                formSystemUnit.querySelectorAll("button[data-repeater-create], button[data-repeater-delete]").forEach(btn => {
+                    btn.classList.add("d-none");
+                });
+            }
+            $('button.submit').addClass('d-none');
+        }
+    }
+
     $(async function () {
 
         page_block.block();
-        // inventory-list_table
+
+        checkItemStatus();
+
         setTimeout(() => {
             page_block.release();
         }, 500);

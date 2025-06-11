@@ -93,9 +93,10 @@ export var dtInventoryList = function (table,param='') {
                     searchable:false,
                     render: function (data, type, row) {
                         let status = {
+                            0: ["warning", "Disposed"],
                             1: ["info", "Available"],
                             2: ["success", "Issued"],
-                            3: ["success", "Temporary Issued"],
+                            3: ["secondary", "Temporary Issued"],
                             4: ["danger", "Under Repair"],
 
                         };

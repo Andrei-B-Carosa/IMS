@@ -309,6 +309,21 @@ export function fvGeneralDetails(_table=false,param=false){
                                     Alert.toast(res.status,res.message);
                                     if(res.status == 'success'){
                                         fv.resetForm();
+                                        if($('select[name="status"]').val() == '0'){
+                                            form.querySelectorAll("input, select, textarea").forEach(el => {
+                                                el.disabled = true;
+                                            });
+                                            const formSystemUnit = document.querySelector("#form-item-details");
+                                            if (formSystemUnit) {
+                                                formSystemUnit.querySelectorAll("input, select, textarea").forEach(el => {
+                                                    el.disabled = true;
+                                                });
+                                                formSystemUnit.querySelectorAll("button[data-repeater-create], button[data-repeater-delete]").forEach(btn => {
+                                                    btn.classList.add("d-none");
+                                                });
+                                            }
+                                            $('button.submit').addClass('d-none');
+                                        }
                                     }
                                 })
 

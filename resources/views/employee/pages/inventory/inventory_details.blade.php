@@ -1,7 +1,39 @@
 <div class="page-inventory-details">
 
+    <!--begin::Alert-->
+    {{-- <div class="alert alert-dismissible bg-light-danger border border-danger d-flex flex-column flex-sm-row p-5 mb-5">
+        <!--begin::Icon-->
+        <i class="ki-duotone ki-trash fs-2hx text-danger me-4 mt-2 mb-sm-0">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+            <span class="path4"></span>
+            <span class="path5"></span>
+        </i>
+        <!--end::Icon-->
+
+        <!--begin::Wrapper-->
+        <div class="d-flex flex-column pe-0 pe-sm-10">
+            <!--begin::Title-->
+            <h4 class="fw-semibold">Item is Disposed</h4>
+            <!--end::Title-->
+
+            <!--begin::Content-->
+            <span>Scroll down for more details . . .</span>
+            <!--end::Content-->
+        </div>
+        <!--end::Wrapper-->
+
+        <!--begin::Close-->
+        <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+            <i class="ki-duotone ki-cross fs-1 text-primary"><span class="path1"></span><span class="path2"></span></i>
+        </button>
+        <!--end::Close-->
+    </div> --}}
+    <!--end::Alert-->
+
     {{-- General Details --}}
-    <div class="card card-flush py-4 mb-10" id="card-general-details">
+    <div class="card card-flush py-4 my-10" id="card-general-details">
         <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_general_details_collapsible">
             <div class="card-title">General Details</div>
             <div class="card-toolbar">
@@ -12,7 +44,7 @@
         </div>
         <div id="card_general_details_collapsible" class="collapse show">
             <div class="card-body pt-0">
-                <form id="form-general-details" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="inventory-details/update-general-details">
+                <form id="form-general-details" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="/inventory-details/update-general-details">
 
                     <div class="mb-7 fv-row">
                         <label class="required form-label">Name</label>
@@ -185,7 +217,7 @@
                             <div class="repeater-ram">
                                 <div class="d-flex flex-stack mb-5">
                                     <h5 class="fw-bold m-0">MEMORY</h5>
-                                    <button type="button" data-repeater-create class="btn btn-sm btn-flex btn-light-primary ">
+                                    <button type="button" data-repeater-create class="btn btn-sm btn-flex btn-light-primary">
                                         <i class="ki-duotone ki-plus fs-3"></i>
                                         Add Field
                                     </button>
@@ -259,7 +291,7 @@
                             <div class="repeater-gpu">
                                 <div class="d-flex flex-stack mb-5">
                                     <h5 class="fw-bold m-0">VIDEO CARD</h5>
-                                    <button type="button" data-repeater-create class="btn btn-sm btn-flex btn-light-primary ">
+                                    <button type="button" data-repeater-create class="btn btn-sm btn-flex btn-light-primary">
                                         <i class="ki-duotone ki-plus fs-3"></i>
                                         Add Field
                                     </button>
@@ -295,17 +327,16 @@
 
                 <div class="card-footer">
                     <div class="d-flex justify-content-end">
-                        {{-- <button id="" class="btn btn-light me-5 cancel">
-                            Cancel
-                        </button> --}}
-                        <button type="button" class="btn btn-primary submit">
-                            <span class="indicator-label">
-                                Save Changes
-                            </span>
-                            <span class="indicator-progress">
-                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                            </span>
-                        </button>
+                        @if($data->status!=0)
+                            <button type="button" class="btn btn-primary submit">
+                                <span class="indicator-label">
+                                    Save Changes
+                                </span>
+                                <span class="indicator-progress">
+                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -313,6 +344,7 @@
         </div>
     @endif
 
+    {{-- Item Logs --}}
     @if($data->item_type_id == 1 || $data->item_type_id ==8)
         <div class="card card-flush py-4 mb-10">
             <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_item_logs_collapsible">

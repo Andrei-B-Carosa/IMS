@@ -25,6 +25,7 @@ export var EmployeeMasterlistController = function (page,param) {
 
         setTimeout(() => {
             page_block.release();
+            localStorage.removeItem("employee_details_maintab");
         }, 300);
     });
 
