@@ -128,28 +128,6 @@ class Lists extends Controller
                 'created_by'=>$issued_by,
             ]);
 
-            $issued_item = json_decode($rq->issued_item,true);
-            $issued_item_array =[];
-            foreach($issued_item as $row)
-            {
-                $item_id = Crypt::decrypt($row['id']);
-                // $find = ImsItemInventory::find($item_id);
-                // if(!$find){
-                //     return false;
-                // }
-
-                $issued_item_array[]=[
-                    'accountability_id' =>$accountability->id,
-                    'item_inventory_id' =>$item_id,
-                    'status'=>1,
-                    'issued_at'=>$issued_at,
-                    'remarks'=>''
-                ];
-                // $find->status = 2;
-                // $find->save();
-            }
-            ImsAccountabilityItem::insert($issued_item_array);
-
             $issued_to = json_decode($rq->issued_to,true);
             $issued_to_array =[];
             foreach($issued_to as $row)
@@ -173,6 +151,28 @@ class Lists extends Controller
                 ];
             }
             ImsAccountabilityIssuedTo::insert($issued_to_array);
+
+            $issued_item = json_decode($rq->issued_item,true);
+            $issued_item_array =[];
+            foreach($issued_item as $row)
+            {
+                $item_id = Crypt::decrypt($row['id']);
+                // $find = ImsItemInventory::find($item_id);
+                // if(!$find){
+                //     return false;
+                // }
+
+                $issued_item_array[]=[
+                    'accountability_id' =>$accountability->id,
+                    'item_inventory_id' =>$item_id,
+                    'status'=>1,
+                    'issued_at'=>$issued_at,
+                    'remarks'=>''
+                ];
+                // $find->status = 2;
+                // $find->save();
+            }
+            ImsAccountabilityItem::insert($issued_item_array);
 
             DB::commit();
             return response()->json(['status' => 'success', 'message'=>'Accountability is saved']);

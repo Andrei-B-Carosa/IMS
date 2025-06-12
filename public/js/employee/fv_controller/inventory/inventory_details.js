@@ -108,20 +108,49 @@ export function fvSystemUnitDetails(_table=false,param=false){
                 },
 
                 hide: async function () {
-                    $(this).find('[name]').each(function () {
-                        const fieldName = $(this).attr('name');
-                        if (fvSystemUnitDetails.getElements(fieldName)) {
-                            fvSystemUnitDetails.removeField(fieldName);
+                    let formData = new FormData();
+                    let _request = new RequestHandler;
+                    let _this = $(this);
+
+                    if(_this.find('[name]').val() == '' || _this.find('[name]').val()==null){
+                        _this.slideUp();
+                        return;
+                    }
+
+                    Alert.input('info','Remove ram ?',{
+                    isRequired: true,
+                    inputPlaceholder: "Put your reason for removing this item",
+                        onConfirm: function(remarks) {
+                            formData.append('encrypted_id',param);
+                            formData.append('remarks',remarks);
+                            formData.append('ram_id',_this.find('[name]').val());
+                            _request.post('/inventory-details/update-ram',formData)
+                            .then((res) => {
+                                Alert.toast(res.status,res.message);
+                                if(res.status =='success'){
+                                    _this.find('[name]').each(function () {
+                                    const fieldName = _this.attr('name');
+                                    if (fvSystemUnitDetails.getElements(fieldName)) {
+                                        fvSystemUnitDetails.removeField(fieldName);
+                                    }
+                                    });
+                                    _this.slideUp();
+                                }
+
+                            })
+                            .catch((error) => {
+                                Alert.alert('error', "Something went wrong. Try again later", false);
+                            })
+                            .finally((error) => {
+                            });
                         }
                     });
-                    $(this).slideUp();
                 },
             });
         }
 
         function handleStorageRepeater(fvSystemUnitDetails)
         {
-            console.log(123)
             $('.repeater-storage').repeater({
                 initEmpty: false,
                 defaultValues: { 'text-input': 'foo' },
@@ -135,13 +164,43 @@ export function fvSystemUnitDetails(_table=false,param=false){
                 },
 
                 hide: async function () {
-                    $(this).find('[name]').each(function () {
-                        const fieldName = $(this).attr('name');
-                        if (fvSystemUnitDetails.getElements(fieldName)) {
-                            fvSystemUnitDetails.removeField(fieldName);
+                    let formData = new FormData();
+                    let _request = new RequestHandler;
+                    let _this = $(this);
+
+                    if(_this.find('[name]').val() == '' || _this.find('[name]').val()==null){
+                        _this.slideUp();
+                        return;
+                    }
+
+                    Alert.input('info','Remove Storage ?',{
+                    isRequired: true,
+                    inputPlaceholder: "Put your reason for removing this item",
+                        onConfirm: function(remarks) {
+                            formData.append('encrypted_id',param);
+                            formData.append('remarks',remarks);
+                            formData.append('storage_id',_this.find('[name]').val());
+                            _request.post('/inventory-details/update-storage',formData)
+                            .then((res) => {
+                                Alert.toast(res.status,res.message);
+                                if(res.status =='success'){
+                                    _this.find('[name]').each(function () {
+                                    const fieldName = _this.attr('name');
+                                    if (fvSystemUnitDetails.getElements(fieldName)) {
+                                        fvSystemUnitDetails.removeField(fieldName);
+                                    }
+                                    });
+                                    _this.slideUp();
+                                }
+
+                            })
+                            .catch((error) => {
+                                Alert.alert('error', "Something went wrong. Try again later", false);
+                            })
+                            .finally((error) => {
+                            });
                         }
                     });
-                    $(this).slideUp();
                 },
             });
 
@@ -162,13 +221,43 @@ export function fvSystemUnitDetails(_table=false,param=false){
                 },
 
                 hide: async function () {
-                    $(this).find('[name]').each(function () {
-                        const fieldName = $(this).attr('name');
-                        if (fvSystemUnitDetails.getElements(fieldName)) {
-                            fvSystemUnitDetails.removeField(fieldName);
+                    let formData = new FormData();
+                    let _request = new RequestHandler;
+                    let _this = $(this);
+
+                    if(_this.find('[name]').val() == '' || _this.find('[name]').val()==null){
+                        _this.slideUp();
+                        return;
+                    }
+
+                    Alert.input('info','Remove Video Card ?',{
+                    isRequired: true,
+                    inputPlaceholder: "Put your reason for removing this item",
+                        onConfirm: function(remarks) {
+                            formData.append('encrypted_id',param);
+                            formData.append('remarks',remarks);
+                            formData.append('gpu_id',_this.find('[name]').val());
+                            _request.post('/inventory-details/update-gpu',formData)
+                            .then((res) => {
+                                Alert.toast(res.status,res.message);
+                                if(res.status =='success'){
+                                    _this.find('[name]').each(function () {
+                                    const fieldName = _this.attr('name');
+                                    if (fvSystemUnitDetails.getElements(fieldName)) {
+                                        fvSystemUnitDetails.removeField(fieldName);
+                                    }
+                                    });
+                                    _this.slideUp();
+                                }
+
+                            })
+                            .catch((error) => {
+                                Alert.alert('error', "Something went wrong. Try again later", false);
+                            })
+                            .finally((error) => {
+                            });
                         }
                     });
-                    $(this).slideUp();
                 },
             });
         }

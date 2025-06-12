@@ -179,7 +179,7 @@
             </div>
             <div id="card_item_details_collapsible" class="collapse">
                 <div class="card-body pt-0">
-                    <form id="form-item-details" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="inventory-details/update-item-details">
+                    <form id="form-item-details" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="/inventory-details/update-item-details">
                         @if($data->item_type_id == 8)
                             <div class="laptop-details row">
                                 <div class="mb-7 col-12 fv-row">

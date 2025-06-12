@@ -118,10 +118,15 @@ class Details extends Controller
         try {
             DB::beginTransaction();
             $id = Crypt::decrypt($rq->encrypted_id);
+            $user = Auth::user();
+
             $query = ImsItemInventory::find($id);
+            $description_array = json_decode($query->description,true);
 
             $array_storage = [];
             $storage = json_decode($rq->storage,true);
+            $existing_storage  = json_decode($description_array['ram'],true);
+
             foreach($storage as $row)
             {
                 if(empty($row['id'])){
@@ -129,12 +134,37 @@ class Details extends Controller
                 }
                 $search_id = Crypt::decrypt($row['id']);
                 $search = ImsItem::find($search_id);
-                $array_storage[]=[
-                    'name'=>$search->name,
-                    'description' =>$search->description,
-                    'type' =>$search->item_type->name,
-                    'serial_number'=>$row['serial_number'],
+                $new_entry = [
+                    'name' => $search->name,
+                    'description' => $search->description,
+                    'type' => $search->item_type->name,
+                    'serial_number' => $row['serial_number'],
                 ];
+                $array_storage[] = $new_entry;
+
+                // $hasChanged = true;
+                // $old_value = null;
+                // foreach ($existing_storage as $existing) {
+                //     if (
+                //         strtolower(trim($existing['name'])) === strtolower(trim($new_entry['name'])) &&
+                //         strtolower(trim($existing['serial_number'])) === strtolower(trim($new_entry['serial_number']))
+                //     ) {
+                //         $hasChanged = false;
+                //         break;
+                //     }
+                // }
+
+                // if ($hasChanged) {
+                //     ImsItemInventoryLog::create([
+                //         'item_inventory_id'=>$id,
+                //         'emp_id'=>$user->emp_id,
+                //         'activity_type'=>2,
+                //         'activity_table'=>'INVENTORY',
+                //         'activity_log'=>$user->employee->fullname().' changed the storage from'.$storage->name.' to '..',
+                //         'created_by'=>$user->emp_id
+                //     ]);
+                // }
+
             }
 
             $array_ram = [];
@@ -193,6 +223,162 @@ class Details extends Controller
             DB::commit();
             return response()->json(['status' => 'success', 'message'=>'Success']);
 
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function update_ram(Request $rq)
+    {
+        try {
+            DB::beginTransaction();
+            $id = Crypt::decrypt($rq->encrypted_id);
+            $ram_id = Crypt::decrypt($rq->ram_id);
+            $user = Auth::user();
+
+            $query = ImsItemInventory::find($id);
+            $ram = ImsItem::find($ram_id);
+
+            $description = json_decode($query->description,true);
+            $ram_array= json_decode($description['ram'],true);
+
+            if (is_array($ram_array) && isset($description['ram'])) {
+                foreach ($ram_array as $index => $item) {
+                    if (strtolower(trim($item['name'])) === strtolower(trim($ram->name))) {
+                        unset($ram_array[$index]);
+                        break;
+                    }
+                }
+
+                // Optional: reindex the array
+                $ram_array = array_values($ram_array);
+
+                // Save updated description
+                $description['ram'] = json_encode($ram_array);
+                $query->description = $description;
+                $query->save();
+
+                $item_name = ucwords(strtolower($query->item_type->name));
+                ImsItemInventoryLog::create([
+                    'item_inventory_id'=>$id,
+                    'emp_id'=>$user->emp_id,
+                    'activity_type'=>2,
+                    'activity_table'=>'INVENTORY',
+                    'activity_log'=>$user->employee->fullname().' removed the ram '.$ram->name.' from this '.$item_name.' Reason is : '.$rq->remarks,
+                    'created_by'=>$user->emp_id
+                ]);
+
+                DB::commit();
+            }
+            return response()->json(['status' => 'success', 'message'=>'Success']);
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function update_storage(Request $rq)
+    {
+        try {
+            DB::beginTransaction();
+            $id = Crypt::decrypt($rq->encrypted_id);
+            $storage_id = Crypt::decrypt($rq->ram_id);
+            $user = Auth::user();
+
+            $query = ImsItemInventory::find($id);
+            $storage = ImsItem::find($storage_id);
+
+            $description = json_decode($query->description,true);
+            $storage_array= json_decode($description['storage'],true);
+
+            if (is_array($storage_array) && isset($description['storage'])) {
+                foreach ($storage_array as $index => $item) {
+                    if (strtolower(trim($item['name'])) === strtolower(trim($storage->name))) {
+                        unset($storage_array[$index]);
+                        break;
+                    }
+                }
+
+                // Optional: reindex the array
+                $storage_array = array_values($storage_array);
+
+                // Save updated description
+                $description['storage'] = json_encode($storage_array);
+                $query->description = $description;
+                $query->save();
+
+                $item_name = ucwords(strtolower($query->item_type->name));
+                ImsItemInventoryLog::create([
+                    'item_inventory_id'=>$id,
+                    'emp_id'=>$user->emp_id,
+                    'activity_type'=>2,
+                    'activity_table'=>'INVENTORY',
+                    'activity_log'=>$user->employee->fullname().' removed the storage '.$storage->name.' from this '.$item_name.' Reason is : '.$rq->remarks,
+                    'created_by'=>$user->emp_id
+                ]);
+
+                DB::commit();
+            }
+            return response()->json(['status' => 'success', 'message'=>'Success']);
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function update_gpu(Request $rq)
+    {
+        try {
+            DB::beginTransaction();
+            $id = Crypt::decrypt($rq->encrypted_id);
+            $gpu_id = Crypt::decrypt($rq->gpu_id);
+            $user = Auth::user();
+
+            $query = ImsItemInventory::find($id);
+            $gpu = ImsItem::find($gpu_id);
+
+            $description = json_decode($query->description,true);
+            $gpu_array= json_decode($description['gpu'],true);
+
+            if (is_array($gpu_array) && isset($description['gpu'])) {
+                foreach ($gpu_array as $index => $item) {
+                    if (strtolower(trim($item['name'])) === strtolower(trim($gpu->name))) {
+                        unset($gpu_array[$index]);
+                        break;
+                    }
+                }
+
+                // Optional: reindex the array
+                $gpu_array = array_values($gpu_array);
+
+                // Save updated description
+                $description['gpu'] = json_encode($gpu_array);
+                $query->description = $description;
+                $query->save();
+
+                $item_name = ucwords(strtolower($query->item_type->name));
+                ImsItemInventoryLog::create([
+                    'item_inventory_id'=>$id,
+                    'emp_id'=>$user->emp_id,
+                    'activity_type'=>2,
+                    'activity_table'=>'INVENTORY',
+                    'activity_log'=>$user->employee->fullname().' removed the gpu : '.$gpu->name.' from this '.$item_name.' Reason is : '.$rq->remarks,
+                    'created_by'=>$user->emp_id
+                ]);
+
+                DB::commit();
+            }
+            return response()->json(['status' => 'success', 'message'=>'Success']);
         }catch(Exception $e){
             DB::rollback();
             return response()->json([

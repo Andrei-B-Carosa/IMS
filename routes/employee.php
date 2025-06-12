@@ -111,6 +111,10 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
         Route::post('update-general-details', 'update_general_details');
         Route::post('update-item-details', 'update_item_details');
 
+        Route::post('update-ram', 'update_ram');
+        Route::post('update-storage', 'update_storage');
+        Route::post('update-gpu', 'update_gpu');
+
         Route::post('dt-item-logs', 'dt_item_logs');
 
     });
