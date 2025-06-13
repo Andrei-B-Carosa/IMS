@@ -40,7 +40,7 @@
                 <div class="row mb-6">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6">Department</label>
                     <div class="col-lg-8 fv-row">
-                        <select class="form-select-sm form-select" name="department_id" data-minimum-results-for-search="Infinity"
+                        <select class="form-select-sm form-select" name="department_id"
                             data-control="select2" data-placeholder="Select an option" @if (isset($employee) && !$isRegisterEmployee) @disabled(true) @endif>
                             {!! $options['department'] !!}
                         </select>
@@ -68,7 +68,7 @@
                     <label class="col-lg-4 col-form-label required fw-bold fs-6">Position Title</label>
                     <div class="col-lg-8 fv-row">
                         <select class="form-select-sm form-select" name="position_id" data-control="select2" data-placeholder="Select an option" data-allow-clear="true"
-                        data-minimum-results-for-search="Infinity" data-placeholder="Select an option" @if (isset($employee) && !$isRegisterEmployee) @disabled(true) @endif>
+                        data-placeholder="Select an option" @if (isset($employee) && !$isRegisterEmployee) @disabled(true) @endif>
                             {!! $options['position'] !!}
                         </select>
                     </div>

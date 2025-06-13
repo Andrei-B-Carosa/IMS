@@ -17,7 +17,7 @@ class EmployeePositionSeeder extends Seeder
         DB::table('hris_employee_positions')->insert([
             [
                 'emp_id' => 1,
-                'position_id' => 33,
+                'position_id' => 41,
                 'department_id' => 2,
                 'company_id' => 1,
                 // 'company_location_id' =>1,
@@ -33,7 +33,7 @@ class EmployeePositionSeeder extends Seeder
             ],
             [
                 'emp_id' => 2,
-                'position_id' => 27,
+                'position_id' => 35,
                 'department_id' => 2,
                 'company_id' => 1,
                 // 'company_location_id' =>1,
@@ -49,7 +49,7 @@ class EmployeePositionSeeder extends Seeder
             ],
             [
                 'emp_id' => 3,
-                'position_id' => 27,
+                'position_id' => 35,
                 'department_id' => 2,
                 'company_id' => 1,
                 // 'company_location_id' =>1,
@@ -65,7 +65,7 @@ class EmployeePositionSeeder extends Seeder
             ],
             [
                 'emp_id' => 4,
-                'position_id' => 32,
+                'position_id' => 40,
                 'department_id' => 2,
                 'company_id' => 1,
                 // 'company_location_id' =>1,
