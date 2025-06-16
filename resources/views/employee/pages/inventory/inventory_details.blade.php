@@ -121,6 +121,11 @@
                             {!! $supplier_options !!}
                         </select>
                     </div>
+                    <div class="fv-row mb-7">
+                        <label class="fw-semibold fs-6 mb-2">Warranty End At</label>
+                        <input type="text" name="warranty_end_at" input-control="date-picker" value="{{ isset($data->warranty_end_at) ? date('m-d-Y',strtotime($data->warranty_end_at)) : null }}" default-date="" class="form-control  mb-3 mb-lg-0 flatpickr">
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                    </div>
                     <div class="fv-row mb-7 fv-plugins-icon-container">
                         <x-elements.select
                             id="status"

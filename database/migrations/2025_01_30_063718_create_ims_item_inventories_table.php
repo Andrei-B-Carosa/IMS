@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('received_by')->nullable();
 
             $table->integer('supplier_id')->nullable();
+            $table->date('warranty_end_at')->nullable();
             $table->text('remarks')->nullable();
 
             $table->tinyInteger('status')->nullable();

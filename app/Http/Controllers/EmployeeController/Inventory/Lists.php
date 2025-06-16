@@ -110,6 +110,7 @@ class Lists extends Controller
             $item->item_number = $item->item_type->item_number ??'';
             $item->item_name = $item->item_type->name ?? '--';
             $item->enable_quick_actions = $enable_quick_actions;
+            $item->tag_number = $item->generate_tag_number();
             $item->encrypted_id = Crypt::encrypt($item->id);
             return $item;
         });
@@ -153,6 +154,7 @@ class Lists extends Controller
                 'price'=> $query->price,
                 'serial_number'=> $rq->serial_number,
                 'received_at'=> Carbon::createFromFormat('m-d-Y',$rq->received_at)->format('Y-m-d'),
+                'warranty_end_at'=> isset($rq->warranty_end_at)?Carbon::createFromFormat('m-d-Y',$rq->warranty_end_at)->format('Y-m-d'):null,
                 'received_by'=> Crypt::decrypt($rq->received_by),
                 'supplier_id'=> isset($rq->supplier) ? Crypt::decrypt($rq->supplier):null,
                 'remarks'=> $rq->remarks,
@@ -161,7 +163,6 @@ class Lists extends Controller
             ];
 
             ImsItemInventory::insert($create);
-
             DB::commit();
             return response()->json(['status' => 'success', 'message'=>'New Inventory is saved']);
         }catch(Exception $e){
@@ -293,6 +294,21 @@ class Lists extends Controller
             return response()->json(['status' => 'success', 'message'=>'Success']);
         }catch(Exception $e){
             DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function generate_report(Request $rq)
+    {
+        try{
+
+
+
+        }catch(Exception $e){
+
             return response()->json([
                 'status' => 400,
                 'message' => $e->getMessage(),

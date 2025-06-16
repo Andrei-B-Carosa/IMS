@@ -32,11 +32,12 @@ export var dtInventoryList = function (table,param='') {
                     title: " ",
                     responsivePriority: -3,
                     searchable:false,
-                    render:function(data,type,row){
-                        return `<div class="form-check form-check-sm form-check-custom form-check-solid check-item">
-                            <input class="form-check-input" type="checkbox" value="${row.encrypted_id}">
-                        </div>`;
-                    }
+                    className:'text-muted',
+                },
+                {
+                    data: "tag_number", name: "tag_number", title: "Tag Number",
+                    className:'',
+                    sortable:false,
                 },
                 {
                     data: "name", name: "name", title: "Item",
@@ -83,7 +84,7 @@ export var dtInventoryList = function (table,param='') {
                     searchable:false,
                 },
                 {
-                    data: "location", name: "location", title: "Located At",
+                    data: "location", name: "location", title: "Location",
                     className:'',
                     sortable:false,
                     searchable:false,
@@ -110,30 +111,30 @@ export var dtInventoryList = function (table,param='') {
                         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
                     },
                 },
-                {
-                    data: "received_date", name: "received_date", title: "Received At",
-                    sortable:false,
-                    searchable:false,
-                    className:'text-muted text-start min-w-100px',
-                    render: function (data, type, row) {
-                        if(!data){
-                            return '--';
-                        }
-                        return data;
-                    },
-                },
-                {
-                    data: "received_by", name: "received_by", title: "Received By",
-                    sortable:false,
-                    searchable:false,
-                    className:'text-start text-muted',
-                    render: function (data, type, row) {
-                        if(!data){
-                            return '--';
-                        }
-                        return data;
-                    },
-                },
+                // {
+                //     data: "received_date", name: "received_date", title: "Received At",
+                //     sortable:false,
+                //     searchable:false,
+                //     className:'text-muted text-start min-w-100px',
+                //     render: function (data, type, row) {
+                //         if(!data){
+                //             return '--';
+                //         }
+                //         return data;
+                //     },
+                // },
+                // {
+                //     data: "received_by", name: "received_by", title: "Received By",
+                //     sortable:false,
+                //     searchable:false,
+                //     className:'text-start text-muted',
+                //     render: function (data, type, row) {
+                //         if(!data){
+                //             return '--';
+                //         }
+                //         return data;
+                //     },
+                // },
                 {
                     data: "remarks", name: "remarks", title: "Remarks",
                     sortable:false,
@@ -198,8 +199,7 @@ export var dtInventoryList = function (table,param='') {
                                         <div class="separator mt-3 opacity-75"></div>
                                         <div class="menu-item px-3">
                                             <div class="menu-content px-3 py-3">
-                                                <a class="btn btn-primary  btn-sm px-4"
-                                                    href="#">
+                                                <a class="btn btn-primary btn-sm px-4 generate-report" href="#">
                                                     Generate Reports
                                                 </a>
                                             </div>
@@ -384,6 +384,42 @@ export var dtInventoryList = function (table,param='') {
                     modal_state(modal_id,'show');
                 });
 
+            })
+
+            $(`#${table}_table`).on('click','.generate-report',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+
+                let _this = $(this);
+                let id    =_this.attr('data-id');
+                let formData = new FormData;
+                formData.append('encrypted_id',id);
+
+                _request.postBlob('/' + _url + 'generate-report', formData, true)
+                .then(response => {
+                    const blob = response.data;
+                    const disposition = response.headers['content-disposition'];
+
+                    let filename = 'qr_code.png'; // fallback
+                    if (disposition) {
+                        const match = disposition.match(/filename\*?=(?:UTF-8'')?"?([^";\n]*)"?/);
+                        if (match && match[1]) {
+                            filename = decodeURIComponent(match[1].replace(/['"]/g, ''));
+                        }
+                    }
+
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch((error) => {
+                    Alert.alert('error', "Something went wrong. Try again later", false);
+                });
             })
 
         })

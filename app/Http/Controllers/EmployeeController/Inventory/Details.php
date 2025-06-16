@@ -93,8 +93,9 @@ class Details extends Controller
             $query->item_type_id = $item_type_id;
             $query->supplier_id = $rq->supplier? Crypt::decrypt($rq->supplier):null;
 
-            $query->received_at = $rq->received_at ? Carbon::createFromFormat('m-d-Y', $rq->received_at)->format('Y-m-d') : null;
-            $query->received_by = $rq->received_by? Crypt::decrypt($rq->received_by):null;
+            $query->received_at = isset($rq->received_at) ? Carbon::createFromFormat('m-d-Y', $rq->received_at)->format('Y-m-d') : null;
+            $query->warranty_end_at = isset($rq->warranty_end_at) ? Carbon::createFromFormat('m-d-Y', $rq->warranty_end_at)->format('Y-m-d') : null;
+            $query->received_by = isset($rq->received_by)? Crypt::decrypt($rq->received_by):null;
 
             $query->updated_by = Auth::user()->emp_id;
             $query->remarks = $rq->remarks;

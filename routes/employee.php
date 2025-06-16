@@ -104,6 +104,8 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
         Route::post('/update-repair', 'update_repair');
         Route::post('/repair-info', 'repair_info');
 
+        Route::post('/generate-report', 'generate_report');
+
         Route::post('/delete', 'delete');
     });
 

@@ -27,6 +27,7 @@ class ImsItemInventory extends Model
         'received_at',
         'received_by',
         'supplier_id',
+        'warranty_end_at',
         'remarks',
         'status',
         'created_by',
