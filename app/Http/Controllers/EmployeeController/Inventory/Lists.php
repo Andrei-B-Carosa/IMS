@@ -210,7 +210,7 @@ class Lists extends Controller
             $item = ImsItemInventory::findOrFail($id);
             $text_below = $item->generate_tag_number();
 
-            $url = 'https://example.com/vehicle/123';
+            $url = 'http://156.67.221.153/inventory-details/';
 
             $qrPng = QrCode::format('png')->size(300)->margin(1)->generate($url);
             $qrImage = Image::read('data:image/png;base64,' . base64_encode($qrPng));

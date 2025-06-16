@@ -16,7 +16,9 @@ return new class extends Migration
 
             $table->integer('form_no')->nullable();
 
-            $table->dateTime('issued_at')->nullable();
+            $table->date('issued_at')->nullable();
+            $table->date('returned_at')->nullable();
+
             $table->integer('issued_by')->nullable();
 
             $table->integer('received_by')->nullable();

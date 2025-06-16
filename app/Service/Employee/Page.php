@@ -348,7 +348,8 @@ class Page
                 }else{
                     foreach($gpu as $row){
                         if(strtolower($row['type']) =='integrated'){
-                            continue;
+                            $row['name'] = null;
+                            $row['serial_number'] = null;
                         }
                         $rq = $rq->merge([
                             'id' => null,
@@ -359,11 +360,10 @@ class Page
                         ]);
                         $gpu_options[] =[
                             'html' =>(new ItemOption)->list($rq),
-                            'serial_number'=>$row['serial_number'],
+                            'serial_number'=>$row['serial_number'] ?? '',
                         ];
                     };
                 }
-
 
                 $array_specs = [
                     'ram_options'=>$ram_options,

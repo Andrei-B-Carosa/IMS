@@ -32,6 +32,7 @@ class ImsAccountability extends Model
     protected $fillable = [
         'form_no',
         'issued_at',
+        'returned_at',
         'issued_by',
         'received_by',
         'remarks',

@@ -14,13 +14,21 @@
         </div>
         <div class="card-body p-9">
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Date Issued: </label>
+                <label class="col-lg-4 fw-semibold text-muted">Issued At: </label>
 
                 <div class="col-lg-8">
                     <span class="fw-bold fs-6 text-gray-800">{{ date('M d, Y',strtotime($data->issued_at)) }}</span>
                 </div>
             </div>
-            {{-- {{ dd($data); }} --}}
+            @if(isset($data->returned_at))
+                <div class="row mb-7">
+                    <label class="col-lg-4 fw-semibold text-muted">Returned At: </label>
+
+                    <div class="col-lg-8">
+                        <span class="fw-bold fs-6 text-gray-800">{{ date('M d, Y',strtotime($data->returned_at)) }}</span>
+                    </div>
+                </div>
+            @endif
             <div class="row mb-7">
                 <label class="col-lg-4 fw-semibold text-muted">Issued By: </label>
                 <div class="col-lg-8 fv-row">
@@ -66,7 +74,7 @@
                     Remarks:
                 </label>
                 <div class="col-lg-8">
-                    <span class="fw-bold fs-6 text-gray-800">{{ $data->remarks }} item</span>
+                    <span class="fw-bold fs-6 text-gray-800">{{ $data->remarks }}</span>
                 </div>
             </div>
         </div>
@@ -147,14 +155,20 @@
                                 <input type="text" name="form_no" class="form-control mb-3 mb-lg-0" value="">
                                 <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                             </div>
-                            <div class="fv-row mb-7 fv-plugins-icon-container">
-                                <label class="required fw-semibold fs-6 mb-2">Date Issued</label>
-                                <input type="text" name="date_issued" input-control="date-picker" default-date="current" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
-                                <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-                            </div>
-
                             <div class="row">
-                                <div class="fv-row mb-7 fv-plugins-icon-container col-6">
+                                <div class="fv-row mb-7 col-6 fv-plugins-icon-container">
+                                    <label class="required fw-semibold fs-6 mb-2">Issued At</label>
+                                    <input type="text" name="date_issued" input-control="date-picker" default-date="current" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
+                                <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                </div>
+                                <div class="fv-row mb-7 col-6 fv-plugins-icon-container">
+                                    <label class="required fw-semibold fs-6 mb-2">Returned At</label>
+                                    <input type="text" name="returned_at" input-control="date-picker" default-date="" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
+                                <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
                                     <x-elements.select
                                         id="issued_by"
                                         name="issued_by"
@@ -171,7 +185,7 @@
                                     />
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>
-                                <div class="fv-row mb-7 fv-plugins-icon-container col-6">
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
                                     <x-elements.select
                                         id="received_by"
                                         name="received_by"

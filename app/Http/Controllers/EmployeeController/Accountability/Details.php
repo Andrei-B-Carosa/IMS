@@ -530,9 +530,10 @@ class Details extends Controller
             $user_id = Auth::user()->emp_id;
 
             $query = ImsAccountability::find($id);
-
             $query->form_no = $rq->form_no;
             $query->issued_at = Carbon::createFromFormat('m-d-Y', $rq->date_issued)->format('Y-m-d');
+            $query->returned_at = isset($rq->returned_at) ?Carbon::createFromFormat('m-d-Y', $rq->returned_at)->format('Y-m-d') : null;
+
             $query->issued_by = Crypt::decrypt($rq->issued_by);
             $query->received_by = Crypt::decrypt($rq->received_by);
             $query->updated_by = $user_id;
