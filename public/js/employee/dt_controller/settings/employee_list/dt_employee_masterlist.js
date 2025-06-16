@@ -43,7 +43,7 @@ export var dtEmployeeMasterlist = function (param=false) {
                             0: ["danger", "Inactive"],
 
                         };
-                        return `<div class="position-relative ps-6 pe-3 py-2" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Date Hired : ${row.date_employed}">
+                        return `<div class="position-relative ps-6 pe-3 py-2">
                                     <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-${status[row.is_active][0]}"></div>
                                     <span class="mb-1 text-dark text-hover-primary fw-bolder">
                                         ${data} <span class="badge badge-outline badge-primary ">${row.emp_no??'No Employee Number'}</span>
