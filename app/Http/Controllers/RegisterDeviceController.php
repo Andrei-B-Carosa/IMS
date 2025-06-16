@@ -162,7 +162,8 @@ class RegisterDeviceController extends Controller
             'name' =>$name,
             'description'=>$description,
             'status' =>2,
-            'remarks' => 'Data came from online registration'
+            'remarks' => 'Data came from online registration',
+            'created_by'=>1,
         ]);
     }
 
@@ -243,7 +244,8 @@ class RegisterDeviceController extends Controller
             'description'=>$description,
             'serial_number'=>$data['serial_number'],
             'status' =>2,
-            'remarks' => 'Data came from online registration'
+            'remarks' => 'Data came from online registration',
+            'created_by'=>1,
         ]);
     }
 
@@ -273,6 +275,7 @@ class RegisterDeviceController extends Controller
                 'serial_number'=>$row['serial_number'],
                 'status'=>2,
                 'remarks'=>'Data came from online registration',
+                'created_by'=>1,
             ]);
         }
 
@@ -304,6 +307,7 @@ class RegisterDeviceController extends Controller
                     'serial_number'=>$row['serial_number'],
                     'status'=>2,
                     'remarks'=>'Data came from online registration',
+                    'created_by'=>1,
                 ]);
             }
         }
@@ -322,6 +326,7 @@ class RegisterDeviceController extends Controller
 
         $accountability = ImsAccountability::create([
             'issued_by'=> $issued_by,
+            'created_by'=>1,
         ]);
 
         //Insert accountabled employee
@@ -339,6 +344,7 @@ class RegisterDeviceController extends Controller
                 'emp_id'=>$emp_id,
                 'department_id'=>$find_emp_id->emp_details->department_id,
                 'position_id'=>$find_emp_id->emp_details->position_id,
+                'created_by'=>1,
             ]);
         }
 
@@ -347,7 +353,8 @@ class RegisterDeviceController extends Controller
             'item_inventory_id' =>$device->id,
             'accountability_id' =>$accountability->id,
             'status'=>1,
-            'remarks'=>'This data is from online registration'
+            'remarks'=>'This data is from online registration',
+            'created_by'=>1,
         ];
         foreach($accessories as $item)
         {
@@ -355,7 +362,8 @@ class RegisterDeviceController extends Controller
                 'item_inventory_id' =>$item->id,
                 'accountability_id' =>$accountability->id,
                 'status'=>1,
-                'remarks'=>'This data is from online registration'
+                'remarks'=>'This data is from online registration',
+                'created_by'=>1,
             ];
 
         }

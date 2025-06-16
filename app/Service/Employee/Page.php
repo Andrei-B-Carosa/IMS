@@ -158,7 +158,8 @@ class Page
                 }else{
                     foreach($gpu as $row){
                         if(strtolower($row['type']) =='integrated'){
-                            continue;
+                            $row['name'] = null;
+                            $row['serial_number'] = null;
                         }
 
                         $rq = $rq->merge([
