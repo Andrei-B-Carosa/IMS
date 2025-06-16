@@ -24,4 +24,6 @@ Route::group(['middleware' => 'prevent.verified.user','controller' => EmployeeLo
 });
 
 
-
+Route::get('/qr/{id}', function () {
+    return 'Under Construction . . .';
+});

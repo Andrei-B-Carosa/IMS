@@ -105,6 +105,7 @@ class Lists extends Controller
             $item->received_by = $received_by_emp;
 
             $item->name =  $name ?? $description;
+            $item->location =  $item->company_location->name;
             $item->description = $description;
             $item->item_number = $item->item_type->item_number ??'';
             $item->item_name = $item->item_type->name ?? '--';
@@ -210,7 +211,7 @@ class Lists extends Controller
             $item = ImsItemInventory::findOrFail($id);
             $text_below = $item->generate_tag_number();
 
-            $url = 'http://156.67.221.153/inventory-details/';
+            $url = 'http://156.67.221.153/qr/'.base64_encode($id);
 
             $qrPng = QrCode::format('png')->size(300)->margin(1)->generate($url);
             $qrImage = Image::read('data:image/png;base64,' . base64_encode($qrPng));
