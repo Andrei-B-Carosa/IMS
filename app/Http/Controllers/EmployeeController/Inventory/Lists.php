@@ -205,24 +205,103 @@ class Lists extends Controller
         }
     }
 
+    // public function download_qr(Request $rq)
+    // {
+    //     try{
+    //         $id = Crypt::decrypt($rq->encrypted_id);
+    //         $item = ImsItemInventory::findOrFail($id);
+    //         $text_below = $item->generate_tag_number();
+
+    //         $url = 'http://156.67.221.153/qr/'.base64_encode($id);
+
+    //         $qrPng = QrCode::format('png')->size(300)->margin(1)->generate($url);
+    //         $qrImage = Image::read('data:image/png;base64,' . base64_encode($qrPng));
+
+    //         $canvasHeight = $qrImage->height() + 70;
+    //         $canvas = Image::create($qrImage->width(), $canvasHeight)->fill('#ffffff'); // white background
+
+    //         $canvas->place($qrImage, 'top');
+    //         $canvas->text($text_below, $canvas->width() / 2, $qrImage->height() + 20, function ($font) {
+    //             // Optional: Set font file if needed
+    //             $font->filename(public_path('assets/font/Roboto-Bold.ttf'));
+    //             $font->size(18);
+    //             $font->color('#000000');
+    //             $font->align('center');
+    //             $font->valign('top');
+    //         });
+
+    //         $filename = $text_below . '_QR.png';
+    //         return response($canvas->toPng())
+    //         ->header('Content-Type', 'image/png')
+    //         ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    //     }catch(Exception $e){
+    //         return response()->json([
+    //             'status' => 400,
+    //             'message' => $e->getMessage(),
+    //         ]);
+    //     }
+
+    // }
+
     public function download_qr(Request $rq)
     {
-        try{
+        try {
             $id = Crypt::decrypt($rq->encrypted_id);
             $item = ImsItemInventory::findOrFail($id);
             $text_below = $item->generate_tag_number();
+            $url = 'http://156.67.221.153/qr/' . base64_encode($id);
 
-            $url = 'http://156.67.221.153/qr/'.base64_encode($id);
+            $qrSize = 300;
+            $barHeight = 60;
+            $textMargin = 10;
+            $sidePadding = 40; // ADD this for left and right space
 
-            $qrPng = QrCode::format('png')->size(300)->margin(1)->generate($url);
+            $qrPng = QrCode::format('png')->size($qrSize)->margin(1)->generate($url);
             $qrImage = Image::read('data:image/png;base64,' . base64_encode($qrPng));
 
-            $canvasHeight = $qrImage->height() + 70;
-            $canvas = Image::create($qrImage->width(), $canvasHeight)->fill('#ffffff'); // white background
+            $qrWidth = $qrImage->width();
+            $qrHeight = $qrImage->height();
 
-            $canvas->place($qrImage, 'top');
-            $canvas->text($text_below, $canvas->width() / 2, $qrImage->height() + 20, function ($font) {
-                // Optional: Set font file if needed
+            $canvasWidth = $qrWidth + ($sidePadding * 2); // wider canvas
+            $canvasHeight = $qrHeight + ($barHeight * 2) + 40;
+
+            $canvas = Image::create($canvasWidth, $canvasHeight)->fill('#ffffff');
+
+            // Top Green Bar
+            $canvas->drawRectangle(0, 0, function ($rectangle) use ($canvasWidth, $barHeight) {
+                $rectangle->size($canvasWidth, $barHeight);
+                $rectangle->background('#28a745');
+            });
+
+            // Bottom Green Bar
+            $canvas->drawRectangle(0, $canvasHeight - $barHeight, function ($rectangle) use ($canvasWidth, $barHeight) {
+                $rectangle->size($canvasWidth, $barHeight);
+                $rectangle->background('#28a745');
+            });
+
+            // Place QR in the center horizontally, just below top bar
+            $canvas->place($qrImage, 'top-left', $sidePadding, $barHeight);
+
+            // Top Bar Text
+            $canvas->text('PROPERTY OF RVL MOVERS CORPORATION', $canvasWidth / 2, $barHeight / 2, function ($font) {
+                $font->filename(public_path('assets/font/Roboto-Bold.ttf'));
+                $font->size(18);
+                $font->color('#ffffff');
+                $font->align('center');
+                $font->valign('middle');
+            });
+
+            // Bottom Bar Text
+            $canvas->text('DO NOT REMOVE', $canvasWidth / 2, $canvasHeight - ($barHeight / 2), function ($font) {
+                $font->filename(public_path('assets/font/Roboto-Bold.ttf'));
+                $font->size(18);
+                $font->color('#ffffff');
+                $font->align('center');
+                $font->valign('middle');
+            });
+
+            // Tag number below QR
+            $canvas->text($text_below, $canvasWidth / 2, $barHeight + $qrHeight + $textMargin, function ($font) {
                 $font->filename(public_path('assets/font/Roboto-Bold.ttf'));
                 $font->size(18);
                 $font->color('#000000');
@@ -231,17 +310,19 @@ class Lists extends Controller
             });
 
             $filename = $text_below . '_QR.png';
+
             return response($canvas->toPng())
-            ->header('Content-Type', 'image/png')
-            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
-        }catch(Exception $e){
+                ->header('Content-Type', 'image/png')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 400,
                 'message' => $e->getMessage(),
             ]);
         }
-
     }
+
 
     public function repair_info(Request $rq)
     {

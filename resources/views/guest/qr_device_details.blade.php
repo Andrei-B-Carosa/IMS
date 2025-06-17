@@ -149,38 +149,40 @@
                 </div>
             </div>
             <div class="card-body p-9">
-                <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
-                    <thead>
-                        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                            <th class="">#</th>
-                            <th class="">Accountability No.</th>
-                            <th class="">Issued By</th>
-                            <th class="">Issued At</th>
-                            <th class="">Returned At </th>
-                            <th class="">Status</th>
-                            <th class="">Accountable To </th>
-                            <th class="">Remarks</th>
-                        </tr>
-                    </thead>
-                    <tbody class=" fw-semibold">
-                        @foreach($accountability_history as $row)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $row['form_no'] }}</td>
-                                <td>{{ $row['issued_by'] }}</td>
-                                <td>{{ $row['issued_at'] }}</td>
-                                <td>{{ $row['returned_at'] }}</td>
-                                <td>{{ $row['accountable_to'] }}</td>
-                                <td>
-                                    <span class="badge badge-{{ $row['status_badge']['class'] }}">
-                                        {{ $row['status_badge']['label'] }}
-                                    </span>
-                                </td>
-                                <td>{{ $row['remarks'] }}</td>
+                <div class="table-responsive">
+                    <table class="table table-row-dashed fs-6 gy-5">
+                        <thead>
+                            <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                                <th class="">#</th>
+                                <th class="">Accountability No.</th>
+                                <th class="">Issued By</th>
+                                <th class="">Issued At</th>
+                                <th class="">Returned At </th>
+                                <th class="">Status</th>
+                                <th class="">Accountable To </th>
+                                <th class="">Remarks</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class=" fw-semibold">
+                            @foreach($accountability_history as $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row['form_no'] }}</td>
+                                    <td>{{ $row['issued_by'] }}</td>
+                                    <td>{{ $row['issued_at'] }}</td>
+                                    <td>{{ $row['returned_at'] }}</td>
+                                    <td>{{ $row['accountable_to'] }}</td>
+                                    <td>
+                                        <span class="badge badge-{{ $row['status_badge']['class'] }}">
+                                            {{ $row['status_badge']['label'] }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $row['remarks'] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -191,36 +193,38 @@
                 </div>
             </div>
             <div class="card-body p-9">
-                <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
-                    <thead>
-                        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                            <th class="">#</th>
-                            <th class="">Repair Type</th>
-                            <th class="">Start At</th>
-                            <th class="">End At</th>
-                            <th class="">Created By</th>
-                            <th class="">Status </th>
-                            <th class="">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody class=" fw-semibold">
-                        @foreach($repair_history as $row)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $row['repair_type'] }}</td>
-                                <td>{{ $row['start_at'] }}</td>
-                                <td>{{ $row['end_at'] }}</td>
-                                <td>{{ $row['initialize_by'] }}</td>
-                                <td>
-                                    <span class="badge badge-{{ $row['status_badge']['class'] }}">
-                                        {{ $row['status_badge']['label'] }}
-                                    </span>
-                                </td>
-                                <td>{{ $row['description'] }}</td>
+                <div class="table-responsive">
+                    <table class="table align-middle table-row-dashed fs-6 gy-5">
+                        <thead>
+                            <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                                <th class="">#</th>
+                                <th class="">Repair Type</th>
+                                <th class="">Start At</th>
+                                <th class="">End At</th>
+                                <th class="">Created By</th>
+                                <th class="">Status </th>
+                                <th class="">Description</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class=" fw-semibold">
+                            @foreach($repair_history as $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row['repair_type'] }}</td>
+                                    <td>{{ $row['start_at'] }}</td>
+                                    <td>{{ $row['end_at'] }}</td>
+                                    <td>{{ $row['initialize_by'] }}</td>
+                                    <td>
+                                        <span class="badge badge-{{ $row['status_badge']['class'] }}">
+                                            {{ $row['status_badge']['label'] }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $row['description'] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
