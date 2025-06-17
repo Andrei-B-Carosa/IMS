@@ -20,7 +20,7 @@ return new class extends Migration
             $table->tinyInteger('status')->comment('1=issued , 2=returned');
             $table->date('issued_at')->nullable();
             $table->date('removed_at')->nullable();
-            $table->text('remarks');
+            $table->text('remarks')->nullable();
 
             $table->tinyInteger('is_deleted')->nullable();
             $table->tinyInteger('deleted_by')->nullable();

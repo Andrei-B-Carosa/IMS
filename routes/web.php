@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccessController\EmployeeLogin;
+use App\Http\Controllers\QrDeviceDetails;
 use App\Http\Controllers\RegisterDeviceController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,6 @@ Route::group(['middleware' => 'prevent.verified.user','controller' => EmployeeLo
 });
 
 
-Route::get('/qr/{id}', function () {
-    return 'Under Construction . . .';
+Route::controller(QrDeviceDetails::class)->group(function() {
+    Route::get('qr/{id}', 'device_details')->name('qr.device_details');
 });

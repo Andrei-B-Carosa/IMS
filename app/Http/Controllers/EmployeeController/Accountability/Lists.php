@@ -167,7 +167,7 @@ class Lists extends Controller
                     'item_inventory_id' =>$item_id,
                     'status'=>1,
                     'issued_at'=>$issued_at,
-                    'remarks'=>''
+                    'remarks'=>null
                 ];
                 // $find->status = 2;
                 // $find->save();

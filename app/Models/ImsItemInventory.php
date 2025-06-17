@@ -81,4 +81,14 @@ class ImsItemInventory extends Model
 
         return config('company.item_code').'-'.strtoupper($companyLocationName). '-' .$itemTypeCode. '-'.str_pad($itemId, 5, '0', STR_PAD_LEFT);
     }
+
+    public function accountability_item()
+    {
+        return $this->hasMany(ImsAccountabilityItem::class,'item_inventory_id','id');
+    }
+
+    public function repair_log()
+    {
+        return $this->hasMany(ImsItemRepairLog::class,'item_inventory_id','id');
+    }
 }

@@ -65,12 +65,12 @@ export class DataTableHelper {
                 }
                 var ths = $(this.api().table().header()).find("th");
                 ths.addClass(  "text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0" );
-                data_bs_components()
+                data_bs_components();
                 KTMenu.createInstances();
             },
         });
         this.table.on('draw', function () {
-            data_bs_components()
+            data_bs_components();
             KTMenu.createInstances();
             KTComponents.init();
         });

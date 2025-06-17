@@ -42,6 +42,7 @@ class InventoryOption
             $value = Crypt::encrypt($row->id);
             $selected = $search === $row->id ? 'selected' : '';
             $name = $row->name ?? $row->description;
+            $name = $name.' ( '. $row->generate_tag_number() .' )';
 
             $html .= '<option value="'.e($value).'"'.e($selected).'>'
                         .e($name).

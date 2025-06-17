@@ -158,7 +158,7 @@
                             <div class="row">
                                 <div class="fv-row mb-7 col-6 fv-plugins-icon-container">
                                     <label class="required fw-semibold fs-6 mb-2">Issued At</label>
-                                    <input type="text" name="date_issued" input-control="date-picker" default-date="current" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
+                                    <input type="text" name="date_issued" input-control="date-picker" default-date="" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
                                 <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>
                                 <div class="fv-row mb-7 col-6 fv-plugins-icon-container">
@@ -263,12 +263,12 @@
                             <div class="row">
                                 <div class="fv-row mb-7 fv-plugins-icon-container col-6">
                                     <label class="required fw-semibold fs-6 mb-2">Issued at</label>
-                                    <input type="text" name="issued_at" input-control="date-picker" default-date="current" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
+                                    <input type="text" name="issued_at" input-control="date-picker" default-date="" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>
                                 <div class="fv-row mb-7 fv-plugins-icon-container col-6">
                                     <label class="fw-semibold fs-6 mb-2">Return at</label>
-                                    <input type="text" name="returned_at" input-control="date-picker" default-date="current" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
+                                    <input type="text" name="returned_at" input-control="date-picker" default-date="" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>
                             </div>
@@ -311,7 +311,7 @@
     </div>
 
     <div class="modal fade" id="modal-available-items" tabindex="-1" aria-hidden="false" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-focus="false">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header" id="kt_modal_add_user_header">
                     <h2 class="fw-bold">Add Item</h2>
@@ -320,6 +320,14 @@
                     </div>
                 </div>
                 <div class="modal-body">
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input type="text" class="form-control form-control-solid ps-12 search"
+                            placeholder="Search here ..." />
+                    </div>
                     <x-elements.datatable id="available-items" class="table-striped table-sm align-middle table-row-dashed dataTable">
                     </x-elements.datatable>
                 </div>
@@ -328,7 +336,7 @@
     </div>
 
     <div class="modal fade" id="modal-available-personnel" tabindex="-1" aria-hidden="false" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-focus="false">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header" id="kt_modal_add_user_header">
                     <h2 class="fw-bold">Add Personnel</h2>
@@ -337,6 +345,14 @@
                     </div>
                 </div>
                 <div class="modal-body">
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input type="text" class="form-control form-control-solid ps-12 search"
+                            placeholder="Search here ..." />
+                    </div>
                     <x-elements.datatable id="available-personnel" class="table-striped table-sm align-middle table-row-dashed dataTable">
                     </x-elements.datatable>
                 </div>

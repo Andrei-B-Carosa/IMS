@@ -41,7 +41,7 @@ export var dtIssuedItems = function (table,param=false) {
                                 <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
                                     ${data}
                                 </a>
-                                <span>${row.serial_number}</span>
+                                ${row.serial_number?`<span class="text-muted">S/N: ${row.serial_number}</span>`:``}
                             </div>
                             `;
                         }
@@ -211,8 +211,10 @@ export var dtIssuedItems = function (table,param=false) {
 
                     $('input[name="issued_at"]')[0]._flatpickr.setDate(payload.issued_at, true);
                     $('input[name="issued_at"]').prev('label').text('Issued At');
-
-                    $('input[name="returned_at"]')[0]._flatpickr.setDate(payload.returned_at, true);
+                    console.log(payload.removed_at)
+                    // if(payload.removed_at){
+                    //     $('input[name="returned_at"]')[0]._flatpickr.setDate(payload.removed_at, true);
+                    // }
                     $('input[name="returned_at"]').prev('label').text('Returned At');
 
                     $('textarea[name="remarks"]').val(payload.remarks);
@@ -315,6 +317,13 @@ export var dtAvailableItems = function (table,param=false) {
                     title: "#",
                     responsivePriority: -3,
                     searchable:false,
+                    className:'text-muted',
+                },
+                {
+                    data: "tag_number", name: "tag_number", title: "Tag Number",
+                    className:'',
+                    sortable:false,
+                    className:'text-muted',
                 },
                 {
                     data: "name", name: "name", title: "Item",
@@ -374,6 +383,7 @@ export var dtAvailableItems = function (table,param=false) {
                     data: "remarks", name: "remarks", title: "Remarks",
                     sortable:false,
                     searchable:false,
+                    className:'text-muted',
                     render: function (data, type, row) {
                         if(!data){
                             return '--';

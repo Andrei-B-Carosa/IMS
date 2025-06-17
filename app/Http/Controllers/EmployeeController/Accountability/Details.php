@@ -270,6 +270,7 @@ class Details extends Controller
 
             $item->name =  $name ?? $description;
             $item->description = $description;
+            $item->tag_number = $item->generate_tag_number();
             $item->serial_number = $item->serial_number;
             $item->price = $item->price;
             $item->type = $item_type;
@@ -311,7 +312,6 @@ class Details extends Controller
             $item->emp_no = $item->emp_no;
             $item->department_name = $emp_details->department->name;
             $item->position_name = $emp_details->position->name;
-            $item->c_email = $item->emp_account->c_email;
             $item->date_employed = $emp_details->date_employed?Carbon::parse($emp_details->date_employed)->format('F j, Y'):'No Date Hired';
 
             $item->encrypted_id = Crypt::encrypt($item->id);
@@ -411,7 +411,7 @@ class Details extends Controller
             $data = [
                 'status'=>$query->status,
                 'issued_at'=>Carbon::parse($query->issued_at)->format('m-d-Y'),
-                'removed_at'=>$query->removed_at?Carbon::parse($query->removed_at)->format('m-d-Y'):'',
+                'removed_at'=>$query->removed_at?Carbon::parse($query->removed_at)->format('m-d-Y'):null,
                 'remarks'=>$query->remarks,
                 'name'=>$query->item_inventory->name ?? 'No item name',
                 'description'=>$description,

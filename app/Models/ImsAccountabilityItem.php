@@ -64,4 +64,14 @@ class ImsAccountabilityItem extends Model
       return $this->belongsTo(Employee::class,'deleted_by');
   }
 
+  public function accountable_to()
+  {
+    return $this->hasMany(ImsAccountabilityIssuedTo::class,'accountability_id');
+  }
+
+  public function accountability()
+  {
+    return $this->hasOne(ImsAccountability::class,'id','accountability_id');
+  }
+
 }
