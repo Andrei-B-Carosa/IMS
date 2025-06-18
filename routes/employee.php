@@ -56,18 +56,18 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
     Route::get('/item-details/{id}', 'system_file');
     Route::get('/new-item', 'system_file');
 
-    // $routes = (new UserRoute())->getWebRoutes(2);
-    // if ($routes) {
-    //     foreach ($routes as $row) {
-    //         if ($row->is_layered) {
-    //             foreach ($row->file_layer as $layer) {
-    //                 Route::get('/'.$layer->system_layer->href,'system_file');
-    //             }
-    //         }else{
-    //             Route::get('/'.$row->href,'system_file');
-    //         }
-    //     }
-    // }
+    $routes = (new UserRoute())->getWebRoutes(2);
+    if ($routes) {
+        foreach ($routes as $row) {
+            if ($row->is_layered) {
+                foreach ($row->file_layer as $layer) {
+                    Route::get('/'.$layer->system_layer->href,'system_file');
+                }
+            }else{
+                Route::get('/'.$row->href,'system_file');
+            }
+        }
+    }
 
     Route::controller(AccountabilityLists::class)->prefix('accountability')->group(function() {
         Route::post('/list', 'list');
