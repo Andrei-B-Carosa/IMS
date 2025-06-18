@@ -17,6 +17,8 @@ import { page_content } from './page.js';
 import {EmployeeMasterlistController} from './fn_controller/settings/employee_list/employee_masterlist.js'
 import { EmployeeDetailsController } from './fn_controller/settings/employee_list/employee_details/employee_details.js';
 import { DashboardController } from './fn_controller/dashboard/dashboard.js';
+import { DevicePerSite } from './fn_controller/report/devices_per_site.js';
+import { DevicePerDepartment } from './fn_controller/report/devices_per_department.js';
 
 async function init_page(_default) {
     let pathname = window.location.pathname;
@@ -77,6 +79,8 @@ const _handlers = {
     user_management:(page,param)=>UserManagementController(page,param),
     employee_list:(page,param)=>EmployeeMasterlistController(page,param),
     employee_details:(page,param)=>EmployeeDetailsController(page,param),
+    devices_per_site:(page,param)=>DevicePerSite(page,param),
+    devices_per_department:(page,param)=>DevicePerDepartment(page,param),
 
 };
 

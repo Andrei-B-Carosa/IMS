@@ -7,6 +7,8 @@ use App\Http\Controllers\EmployeeController\Inventory\Lists as InventoryLists;
 use App\Http\Controllers\EmployeeController\MaterialIssuance\Details as MaterialIssuanceDetails;
 use App\Http\Controllers\EmployeeController\MaterialIssuance\Lists as MaterialIssuanceLists;
 use App\Http\Controllers\EmployeeController\Page;
+use App\Http\Controllers\EmployeeController\Reports\DevicePerDepartment;
+use App\Http\Controllers\EmployeeController\Reports\DevicePerSite;
 use App\Http\Controllers\EmployeeController\Settings\EmployeeList\AccountSecurity\AccountDetails;
 use App\Http\Controllers\EmployeeController\Settings\EmployeeList\EmployeeDetails;
 use App\Http\Controllers\EmployeeController\Settings\EmployeeList\EmployeeMasterlist;
@@ -281,6 +283,21 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
             Route::post('/update', 'update');
         });
     });
+
+
+    Route::group(['prefix'=>'reports'], function() {
+        Route::controller(DevicePerSite::class)->prefix('devices-per-site')->group(function() {
+            Route::post('/dt', 'dt');
+            Route::post('/export', 'export');
+        });
+
+        Route::controller(DevicePerDepartment::class)->prefix('devices-per-department')->group(function() {
+            Route::post('/dt', 'dt');
+            Route::post('/export', 'export');
+        });
+
+    });
+
 
 });
 

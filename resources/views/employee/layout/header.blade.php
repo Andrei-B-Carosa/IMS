@@ -33,37 +33,37 @@
                                my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0" id="kt_app_header_menu" data-kt-menu="true">
 
 
-              @foreach ($result as $data)
-                    @if(count($data['file_layer']) == 0)
-                        <div class="menu-item navbar me-0 me-lg-3" id="{{$data['href']}}" data-page="{{$data['href']}}" data-link="employee/{{$data['href']}}">
-                            <span class="menu-link py-3">
-                                <span class="menu-title">{{ $data['name'] }}</span>
-                            </span>
-                        </div>
-                    @else
-                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                            data-kt-menu-placement="bottom-start"
-                            class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
-                            <span class="menu-link py-3">
-                                <span class="menu-title">{{ $data['name'] }}</span>
-                                <span class="menu-arrow d-lg-none"></span>
-                            </span>
-
-                            <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-0 py-lg-4 w-lg-200px">
-                                @foreach ($data['file_layer'] as $layer)
-                                    <div class="menu-item">
-                                        <a class="menu-link navbar py-3 sub-menu" id="{{$layer['href']}}" data-page="{{$layer['href']}}" data-link="{{$layer['href']}}" href="javascript:;">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title">{{ $layer['name'] }}</span>
-                                        </a>
+                        @foreach ($result as $data)
+                                @if(count($data['file_layer']) == 0)
+                                    <div class="menu-item navbar me-0 me-lg-3" id="{{$data['href']}}" data-page="{{$data['href']}}" data-link="employee/{{$data['href']}}">
+                                        <span class="menu-link py-3">
+                                            <span class="menu-title">{{ $data['name'] }}</span>
+                                        </span>
                                     </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
+                                @else
+                                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                        data-kt-menu-placement="bottom-start"
+                                        class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                                        <span class="menu-link py-3">
+                                            <span class="menu-title">{{ $data['name'] }}</span>
+                                            <span class="menu-arrow d-lg-none"></span>
+                                        </span>
+
+                                        <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-0 py-lg-4 w-lg-200px">
+                                            @foreach ($data['file_layer'] as $layer)
+                                                <div class="menu-item">
+                                                    <a class="menu-link navbar py-3 sub-menu" id="{{$layer['href']}}" data-page="{{$layer['href']}}" data-link="{{$layer['href']}}" href="javascript:;">
+                                                        <span class="menu-bullet">
+                                                            <span class="bullet bullet-dot"></span>
+                                                        </span>
+                                                        <span class="menu-title">{{ $layer['name'] }}</span>
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
                        </div>
                    </div>
 
