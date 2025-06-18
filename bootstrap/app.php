@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 Route::namespace('')
                     ->group(base_path('routes/select.php'));
 
+                Route::namespace('')
+                    ->group(base_path('routes/widget.php'));
+
             },
         )
     ->withMiddleware(function (Middleware $middleware) {

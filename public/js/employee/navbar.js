@@ -16,6 +16,7 @@ import { UserManagementController } from './fn_controller/settings/user_manageme
 import { page_content } from './page.js';
 import {EmployeeMasterlistController} from './fn_controller/settings/employee_list/employee_masterlist.js'
 import { EmployeeDetailsController } from './fn_controller/settings/employee_list/employee_details/employee_details.js';
+import { DashboardController } from './fn_controller/dashboard/dashboard.js';
 
 async function init_page(_default) {
     let pathname = window.location.pathname;
@@ -60,7 +61,7 @@ export async function page_handler(page,param=null){
 }
 
 const _handlers = {
-    // dashboard: (page, param) => HomeController(page, param),
+    dashboard: (page, param) => DashboardController(page, param),
     accountability: (page, param) => AccountabilityListController(page, param),
     accountability_details: (page, param) => AccountabilityDetailsController(page, param),
     new_accountability:(page,param) => NewAccountabilityController(page,param),

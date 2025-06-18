@@ -53,6 +53,19 @@ class ImsSystemLayerSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'Employee List',
+                'href' => 'employee_list',
+                'folder' => 'employee_list',
+                'status' => 1,
+                'is_deleted' => 0,
+                'deleted_by' => null,
+                'deleted_at' => null,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

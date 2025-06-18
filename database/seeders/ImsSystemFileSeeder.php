@@ -89,6 +89,21 @@ class ImsSystemFileSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'Reports',
+                'href' => 'reports',
+                'icon' => null,
+                'is_layered' => 1,
+                'folder' => 'reports',
+                'status' => 1,
+                'is_deleted' => 0,
+                'deleted_by' => null,
+                'deleted_at' => null,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

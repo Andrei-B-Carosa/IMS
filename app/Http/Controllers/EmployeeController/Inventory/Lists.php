@@ -323,7 +323,6 @@ class Lists extends Controller
         }
     }
 
-
     public function repair_info(Request $rq)
     {
         try{

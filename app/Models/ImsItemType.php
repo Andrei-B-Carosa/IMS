@@ -75,6 +75,20 @@ class ImsItemType extends Model
                    ->value('id');
     }
 
+    public static function getCellphoneId()
+    {
+        return self::whereRaw('LOWER(name) = ?', ['cellphone'])
+                   ->where('is_active', 1)
+                   ->value('id');
+    }
+
+    public static function getPrinterId()
+    {
+        return self::whereRaw('LOWER(name) = ?', ['printer'])
+                   ->where('is_active', 1)
+                   ->value('id');
+    }
+
     public static function getItemTypeId($name)
     {
         $search = trim(preg_replace('/\s+/', ' ', $name));
