@@ -363,14 +363,14 @@ class RegisterDeviceController extends Controller
                 'created_by'=>1,
             ];
 
-            // ImsItemInventoryLog::create([
-            //     'item_inventory_id'=>$item->id,
-            //     'emp_id'=>1,
-            //     'activity_type'=>2,
-            //     'activity_table'=>'ACCOUNTABILITY',
-            //     'activity_log'=>'Item is currently issued to '. implode(', ', $employee).'. The accountability form no is: "'. $rq->form_no.'"',
-            //     'created_by'=>1
-            // ]);
+            ImsItemInventoryLog::create([
+                'item_inventory_id'=>$item->id,
+                'emp_id'=>1,
+                'activity_type'=>2,
+                'activity_table'=>'ACCOUNTABILITY',
+                'activity_log'=>'Item is currently issued to '. implode(', ', $employee).'. The accountability form no is: "'. $rq->form_no.'"',
+                'created_by'=>1
+            ]);
 
         }
 
