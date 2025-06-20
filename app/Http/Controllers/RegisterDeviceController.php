@@ -9,12 +9,14 @@ use App\Models\ImsAccountabilityItem;
 use App\Models\ImsItem;
 use App\Models\ImsItemBrand;
 use App\Models\ImsItemInventory;
+use App\Models\ImsItemInventoryLog;
 use App\Models\ImsItemType;
 use App\Service\Select\ItemOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Crypt;
+use Carbon\Carbon;
 
 class RegisterDeviceController extends Controller
 {
@@ -56,8 +58,8 @@ class RegisterDeviceController extends Controller
             $device_type = strtolower($data['device_type']);
 
             $register_device = match($device_type){
-                'system unit' =>$this->register_desktop($data),
-                'laptop' =>$this->register_laptop($data),
+                'system unit' =>$this->register_desktop($rq,$data),
+                'laptop' =>$this->register_laptop($rq,$data),
                 default => false
             };
             if($register_device === false){
@@ -87,7 +89,7 @@ class RegisterDeviceController extends Controller
         }
     }
 
-    public function register_desktop($data)
+    public function register_desktop($rq,$data)
     {
         $array_storage = [];
         foreach($data['storage'] as $storage)
@@ -153,21 +155,20 @@ class RegisterDeviceController extends Controller
         ]);
 
         $desktop_id = ImsItemType::getDesktopId();
-        if(!$desktop_id){
-            return false;
-        }
+        if(!$desktop_id){ return false; }
 
         return ImsItemInventory::create([
             'item_type_id' => $desktop_id,
             'name' =>$name,
             'description'=>$description,
             'status' =>2,
+            'company_location_id' =>Crypt::decrypt($rq->company_location),
             'remarks' => 'Data came from online registration',
-            'created_by'=>1,
+            'created_by'=>1
         ]);
     }
 
-    public function register_laptop($data)
+    public function register_laptop($rq,$data)
     {
         $array_storage = [];
         foreach($data['storage'] as $storage)
@@ -233,9 +234,7 @@ class RegisterDeviceController extends Controller
 
         $brand_id = ImsItemBrand::getBrandId($data['brand']);
         $laptop_id = ImsItemType::getLaptopId();
-        if(!$laptop_id){
-            return false;
-        }
+        if(!$laptop_id){   return false; }
 
         return ImsItemInventory::create([
             'item_type_id' => $laptop_id,
@@ -245,59 +244,47 @@ class RegisterDeviceController extends Controller
             'serial_number'=>$data['serial_number'],
             'status' =>2,
             'remarks' => 'Data came from online registration',
+            'company_location_id' =>Crypt::decrypt($rq->company_location),
             'created_by'=>1,
         ]);
     }
 
     public function register_accessories($rq,$dataParam,$device_type)
     {
-        $data = json_decode($rq->other_accessories,true);
-        if(empty($data))
-        {
-            return false;
-        }
-
         $accessory_ids =[];
-        foreach($data as $row)
-        {
-            $accesories_id = Crypt::decrypt($row['id']);
-            $query = ImsItem::find($accesories_id);
+        $data = json_decode($rq->other_accessories,true);
+        if(!empty($data)){
+            foreach($data as $row)
+            {
+                $accesories_id = Crypt::decrypt($row['id']);
+                $query = ImsItem::find($accesories_id);
 
-            if(!$query){
-                return false;
+                if(!$query){
+                    return false;
+                }
+
+                $accessory_ids[] = ImsItemInventory::create([
+                    'item_brand_id' =>$query->item_brand_id,
+                    'item_type_id' => $query->item_type_id,
+                    'name'=>$query->name,
+                    'description'=>$query->description,
+                    'serial_number'=>$row['serial_number'],
+                    'status'=>2,
+                    'remarks'=>'Data came from online registration',
+                    'company_location_id' =>Crypt::decrypt($rq->company_location),
+                    'created_by'=>1,
+                ]);
             }
-
-            $accessory_ids[] = ImsItemInventory::create([
-                'item_brand_id' =>$query->item_brand_id,
-                'item_type_id' => $query->item_type_id,
-                'name'=>$query->name,
-                'description'=>$query->description,
-                'serial_number'=>$row['serial_number'],
-                'status'=>2,
-                'remarks'=>'Data came from online registration',
-                'created_by'=>1,
-            ]);
         }
-
-        if($device_type == 'system unit'){
+        if($device_type == 'system unit' && !empty($dataParam['monitors'])){
             foreach($dataParam['monitors'] as $row){
                 $monitor = ImsItem::whereRaw('LOWER(name) = ?', [strtolower($row['name'])])->where('is_active', 1)->first();
                 if(!$monitor){
-
                     $monitor = ImsItem::registerItem([
                         'name'=>$row['name'],
                         'description'=>$row['manufacturer'].' Monitor',
+                        'brand'=>$row['manufacturer'],
                     ],'Monitor');
-
-                    // $type_id = ImsItemType::getMonitorId('monitor')??null;
-                    // $brand_id = ImsItemBrand::getBrandId($row['manufacturer'])??null;
-
-                    // $monitor = ImsItem::create([
-                    //     'item_type_id' =>$type_id,
-                    //     'item_brand_id' =>$brand_id,
-                    //     'name'=> $row['name'],
-                    //     'description' => $row['manufacturer'].' Monitor'
-                    // ]);
                 }
                 $accessory_ids[] = ImsItemInventory::create([
                     'item_brand_id' =>$monitor->item_brand_id,
@@ -307,11 +294,11 @@ class RegisterDeviceController extends Controller
                     'serial_number'=>$row['serial_number'],
                     'status'=>2,
                     'remarks'=>'Data came from online registration',
+                    'company_location_id' =>Crypt::decrypt($rq->company_location),
                     'created_by'=>1,
                 ]);
             }
         }
-
         return $accessory_ids;
     }
 
@@ -324,12 +311,18 @@ class RegisterDeviceController extends Controller
             return false;
         }
 
+        $received_by = Crypt::decrypt($issued_to[0]['employee']);
         $accountability = ImsAccountability::create([
             'issued_by'=> $issued_by,
+            'issued_at'=>Carbon::now(),
+            'received_by' => $received_by,
+            'form_no' => $rq->form_no,
+            'remarks' => 'Data came from online registration',
             'created_by'=>1,
         ]);
 
         //Insert accountabled employee
+        $employee = [];
         foreach($issued_to as $row)
         {
             $emp_id = Crypt::decrypt($row['employee']);
@@ -339,16 +332,18 @@ class RegisterDeviceController extends Controller
                 return false;
             }
 
+            $employee[] = $find_emp_id->fullname();
             ImsAccountabilityIssuedTo::create([
                 'accountability_id' => $accountability->id,
                 'emp_id'=>$emp_id,
                 'department_id'=>$find_emp_id->emp_details->department_id,
                 'position_id'=>$find_emp_id->emp_details->position_id,
+                'remarks'=>'This data is from online registration',
                 'created_by'=>1,
             ]);
         }
 
-        //Construct array of items
+        //This array is for laptop/system unit
         $items_array[] = [
             'item_inventory_id' =>$device->id,
             'accountability_id' =>$accountability->id,
@@ -356,6 +351,8 @@ class RegisterDeviceController extends Controller
             'remarks'=>'This data is from online registration',
             'created_by'=>1,
         ];
+
+        //This array is accessories
         foreach($accessories as $item)
         {
             $items_array[]=[
@@ -366,7 +363,26 @@ class RegisterDeviceController extends Controller
                 'created_by'=>1,
             ];
 
+            // ImsItemInventoryLog::create([
+            //     'item_inventory_id'=>$item->id,
+            //     'emp_id'=>1,
+            //     'activity_type'=>2,
+            //     'activity_table'=>'ACCOUNTABILITY',
+            //     'activity_log'=>'Item is currently issued to '. implode(', ', $employee).'. The accountability form no is: "'. $rq->form_no.'"',
+            //     'created_by'=>1
+            // ]);
+
         }
+
+        //This log is for laptop/system unit
+        ImsItemInventoryLog::create([
+            'item_inventory_id'=>$device->id,
+            'emp_id'=>1,
+            'activity_type'=>2,
+            'activity_table'=>'ACCOUNTABILITY',
+            'activity_log'=>'Item is currently issued to '. implode(', ', $employee).'. The accountability form no is: "'. $rq->form_no.'"',
+            'created_by'=>1
+        ]);
         return ImsAccountabilityItem::insert($items_array);
     }
 }

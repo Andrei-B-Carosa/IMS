@@ -272,12 +272,33 @@
                     </div>
                 </div>
                 <div class="card-body pt-10">
+                    <div class="col-md-12 fv-row mb-7">
+                        <label class="required fw-semibold fs-6 mb-2">Form No.</label>
+                        <input type="text" name="form_no" class="form-control" value="">
+                    </div>
                     <div class="form-group">
                         <div class="col-md-12 fv-row mb-7">
                             <label class="form-label required">Issued By</label>
                             <select class="form-select" data-kt-repeater="select2" data-placeholder="Select an option" name="issued_by">
                             </select>
                         </div>
+                    </div>
+                    <div class="fv-row mb-7 col-12 fv-plugins-icon-container">
+                        <x-elements.select
+                            id="company_location"
+                            name="company_location"
+                            label="Items Located At ?"
+                            :options="[]"
+                            placeholder="Select an option"
+                            selected="1"
+                            class="fw-bold "
+                            data-control="select2"
+                            data-placeholder="Select an option"
+                            data-minimum-results-for-search="Infinity"
+                            data-allow-clear="true"
+                            disabled="false"
+                        />
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                     </div>
                     <div class="d-flex flex-column mb-5 fv-row rounded-3 p-7 border border-dashed border-gray-300">
                         <div class="fs-5 fw-bold form-label mb-3">

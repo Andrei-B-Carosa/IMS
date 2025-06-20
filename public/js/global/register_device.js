@@ -1,7 +1,7 @@
 'use strict';
 
 import { RequestHandler } from "./request.js";
-import { get_department, get_employee, get_item, get_mis_personnel, get_position } from "./select.js";
+import { get_company_location, get_department, get_employee, get_item, get_mis_personnel, get_position } from "./select.js";
 import {fv_validator} from "../global.js";
 import {Alert} from "../global/alert.js"
 
@@ -167,6 +167,8 @@ export var RegisterDeviceController =  function (page,param) {
             fields: {
                 'issued_by':fv_validator(),
                 'acknowledgement':fv_validator(),
+                'company_location':fv_validator(),
+                'form_no':fv_validator(),
             },
             plugins: {
             trigger: new FormValidation.plugins.Trigger(),
@@ -228,6 +230,8 @@ export var RegisterDeviceController =  function (page,param) {
         await _fvOtherAccessories();
         await _fvEmployeeDetails();
         await _fvIssuedBy();
+        await get_company_location('select[name="company_location"]','','options',1);
+
 
         submitForm.click(async function(e){
             e.preventDefault();
