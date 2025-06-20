@@ -80,7 +80,7 @@ class CompanyLocation extends Controller
 
             $attribute = ['id'=>$id];
             $values = [
-                'name' =>ucwords(strtolower($rq->name)),
+                'name' =>strtoupper(strtolower($rq->name)),
                 // 'company_id' =>Crypt::decrypt($rq->company_id),
                 'description' =>$rq->description,
                 'location_code' =>$rq->location_code,
