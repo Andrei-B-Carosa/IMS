@@ -23,7 +23,7 @@ class Lists extends Controller
         $filter_status = $rq->filter_status != 'all' ? $rq->filter_status : false;
         $page = $rq->page;
         $search = $rq->search;
-        $perPage = 10;
+        $perPage = 12;
 
         $query = ImsAccountability::with([
             // 'issued_to' => function ($q) {

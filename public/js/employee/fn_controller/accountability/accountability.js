@@ -209,11 +209,11 @@ export var AccountabilityListController = function (page, param) {
         })
 
         page.on('click','.page-link', function (e) {
-        e.preventDefault()
-        e.stopImmediatePropagation()
-        let paginate_page =$(this).attr('data-page')
-        loadAccountabilityList(paginate_page);
-    });
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            let paginate_page =$(this).attr('data-page')
+            loadAccountabilityList(paginate_page);
+        });
 
     });
 }
