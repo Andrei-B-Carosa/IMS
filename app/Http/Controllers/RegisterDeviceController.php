@@ -348,6 +348,7 @@ class RegisterDeviceController extends Controller
             'item_inventory_id' =>$device->id,
             'accountability_id' =>$accountability->id,
             'status'=>1,
+            'issued_at'=>Carbon::now(),
             'remarks'=>'This data is from online registration',
             'created_by'=>1,
         ];
