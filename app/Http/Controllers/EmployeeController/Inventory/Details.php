@@ -291,7 +291,7 @@ class Details extends Controller
         try {
             DB::beginTransaction();
             $id = Crypt::decrypt($rq->encrypted_id);
-            $storage_id = Crypt::decrypt($rq->ram_id);
+            $storage_id = Crypt::decrypt($rq->storage_id);
             $user = Auth::user();
 
             $query = ImsItemInventory::find($id);
