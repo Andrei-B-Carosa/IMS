@@ -359,6 +359,7 @@ class RegisterDeviceController extends Controller
                 'item_inventory_id' =>$item->id,
                 'accountability_id' =>$accountability->id,
                 'status'=>1,
+                'issued_at'=>Carbon::now(),
                 'remarks'=>'This data is from online registration',
                 'created_by'=>1,
             ];
@@ -379,6 +380,7 @@ class RegisterDeviceController extends Controller
             'item_inventory_id'=>$device->id,
             'emp_id'=>1,
             'activity_type'=>2,
+            'issued_at'=>Carbon::now(),
             'activity_table'=>'ACCOUNTABILITY',
             'activity_log'=>'Item is currently issued to '. implode(', ', $employee).'. The accountability form no is: "'. $rq->form_no.'"',
             'created_by'=>1
