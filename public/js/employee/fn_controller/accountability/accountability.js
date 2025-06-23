@@ -56,7 +56,7 @@ export var AccountabilityListController = function (page, param) {
             let payload = JSON.parse(window.atob(res.payload));
             if(payload.data.length <= 0){
                 div.parent().append(
-                    `<div id="empty_state_wrapper" >
+                    `<div id="empty_state_wrapper">
                         <div class="card-px text-center pt-15 pb-15">
                             <h2 class="fs-2x fw-bold mb-0" id="empty_state_title">Nothing in here</h2>
                             <p class="text-gray-400 fs-4 fw-semibold py-7" id="empty_state_subtitle">
@@ -99,7 +99,7 @@ export var AccountabilityListController = function (page, param) {
                 let issued_to_html = issued_to.map(emp => emp.fullname).join(', ');
 
                 html+=`
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <a href="/accountability-details/${item.encrypted_id}" class="card card-flush h-md-100 border border-2 border-${item.status ==1?`success`:`danger`} border-hover shadow-sm">
                         <div class="card-header border-0 pt-9">
                             <div class="card-title">

@@ -54,12 +54,15 @@ class Details extends Controller
                 $removed_at = Carbon::parse($item->removed_at)->format('M d, Y');
             }
 
-            $name = $item->item_inventory->name;
-            $description = $item->item_inventory->description;
-            $item_type = $item->item_inventory->item_type_id;
+            $item_inventory = $item->item_inventory;
+
+            $name = $item_inventory->name;
+            $description = $item_inventory->description;
+            $item_type = $item_inventory->item_type_id;
+            $tag_number = $item_inventory->generate_tag_number();
 
             if($item_type == 1 || $item_type == 8) {
-                $array = json_decode($item->item_inventory->description,true);
+                $array = json_decode($item_inventory->description,true);
                 $ram = json_decode($array['ram']);
 
                 $storage = json_decode($array['storage'],true);
@@ -86,27 +89,17 @@ class Details extends Controller
                 };
             }
 
-            if($item_type == 1){
-                $description = '<div class=" fs-6">
-                    CPU: '.$array['cpu'].'<br>
-                    RAM: '.$ram_html.'<br>
-                    '.$storage_html.'
-                    OS: '.$array['windows_version'].'<br>
-                    '.$gpu_html.'
-                    Device Name: '.$array['device_name'].'<br>
-                </div>';
-            }
-
-            if($item_type == 8){
-                $description = '<div class=" fs-6">
-                    Model: '.$array['model'].'<br>
-                    CPU: '.$array['cpu'].'<br>
-                    RAM: '.$ram_html.'<br>
-                    '.$storage_html.'
-                    OS: '.$array['windows_version'].'<br>
-                    Device Name: '.$array['device_name'].'<br>
-                    S/N: '.$array['serial_number'].'
-                </div>';
+            if($item_type == 1 || $item_type == 8){
+                $description = '<div class="fs-6">'
+                . ($item->item_type_id == 8 ? 'Model: ' . $array['model'] . '<br>' : '')
+                . 'CPU: ' . $array['cpu'] . '<br>'
+                . 'RAM: ' . $ram_html . '<br>'
+                . $storage_html
+                . 'OS: ' . $array['windows_version'] . '<br>'
+                . $gpu_html
+                . 'Device Name: ' . $array['device_name'] . '<br>'
+                . ($item->item_type_id == 8 ? 'Serial Number: ' . (isset($array['serial_number'])? $array['serial_number']:($item->serial_number??'--')) . '<br>' : '')
+                . '</div>';
             }
 
             $item->count = $key + 1;
@@ -116,10 +109,12 @@ class Details extends Controller
             $item->issued_at = $issued_at;
             $item->removed_at = $removed_at;
 
+            $item->tag_number = $tag_number;
+
             $item->name =  $name ?? $description;
             $item->description = $description;
-            $item->serial_number = $item->item_inventory->serial_number;
-            $item->price = $item->item_inventory->price;
+            $item->serial_number = $item_inventory->serial_number;
+            $item->price = $item_inventory->price;
             $item->type = $item_type;
             $item->encrypted_id = Crypt::encrypt($item->id);
             return $item;

@@ -24,12 +24,19 @@ export var dtIssuedItems = function (table,param=false) {
                 id:param,
             },
             [
+                // {
+                //     data: "count",
+                //     name: "count",
+                //     title: "#",
+                //     responsivePriority: -3,
+                //     searchable:false,
+                // },
                 {
-                    data: "count",
-                    name: "count",
-                    title: "#",
-                    responsivePriority: -3,
-                    searchable:false,
+                    data: "tag_number",
+                    name: "tag_number",
+                    title: "Tag Number",
+                    sortable:false,
+                    className:'text-muted',
                 },
                 {
                     data: "name", name: "name", title: "Item",
