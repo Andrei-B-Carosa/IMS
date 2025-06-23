@@ -66,7 +66,7 @@ class ImsAccountabilityItem extends Model
 
   public function accountable_to()
   {
-    return $this->hasMany(ImsAccountabilityIssuedTo::class,'accountability_id');
+    return $this->hasMany(ImsAccountabilityIssuedTo::class,'accountability_id','accountability_id');
   }
 
   public function accountability()

@@ -19,6 +19,7 @@ import { EmployeeDetailsController } from './fn_controller/settings/employee_lis
 import { DashboardController } from './fn_controller/dashboard/dashboard.js';
 import { DevicePerSite } from './fn_controller/report/devices_per_site.js';
 import { DevicePerDepartment } from './fn_controller/report/devices_per_department.js';
+import { IssuedDevicesController } from './fn_controller/report/issued_devices.js';
 
 async function init_page(_default) {
     let pathname = window.location.pathname;
@@ -81,6 +82,7 @@ const _handlers = {
     employee_details:(page,param)=>EmployeeDetailsController(page,param),
     devices_per_site:(page,param)=>DevicePerSite(page,param),
     devices_per_department:(page,param)=>DevicePerDepartment(page,param),
+    issued_devices:(page,param)=>IssuedDevicesController(page,param),
 
 };
 

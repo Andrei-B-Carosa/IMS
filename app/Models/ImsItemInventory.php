@@ -87,6 +87,12 @@ class ImsItemInventory extends Model
         return $this->hasMany(ImsAccountabilityItem::class,'item_inventory_id','id');
     }
 
+    public function active_accountability_item()
+    {
+        return $this->hasOne(ImsAccountabilityItem::class,'item_inventory_id','id')->where('status',1);
+    }
+
+
     public function repair_log()
     {
         return $this->hasMany(ImsItemRepairLog::class,'item_inventory_id','id');
