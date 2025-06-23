@@ -177,27 +177,27 @@ export var dtIssuedDevices = function (table,param=false) {
 
             _card.off();
 
-            _card.on('change','select.filter_table',function(e){
-                e.preventDefault()
-                e.stopImmediatePropagation()
-                initTable();
-            })
-
-            // _card.on('keyup','.search',function(e){
+            // _card.on('change','select.filter_table',function(e){
             //     e.preventDefault()
             //     e.stopImmediatePropagation()
-            //     let searchTerm = $(this).val();
-            //     if (e.key === 'Enter' || e.keyCode === 13) {
-            //         dataTableHelper.search(searchTerm);
-            //     } else if (e.keyCode === 8 || e.key === 'Backspace') {
-            //         setTimeout(() => {
-            //             let updatedSearchTerm = $(this).val();
-            //             if (updatedSearchTerm === '') {
-            //                 dataTableHelper.search('');
-            //             }
-            //         }, 0);
-            //     }
+            //     initTable();
             // })
+
+            _card.on('keyup','.search',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+                let searchTerm = $(this).val();
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    dataTableHelper.search(searchTerm);
+                } else if (e.keyCode === 8 || e.key === 'Backspace') {
+                    setTimeout(() => {
+                        let updatedSearchTerm = $(this).val();
+                        if (updatedSearchTerm === '') {
+                            dataTableHelper.search('');
+                        }
+                    }, 0);
+                }
+            })
 
             _card.on('click','.export-issued-devices',function(e){
                 e.preventDefault()
@@ -235,92 +235,6 @@ export var dtIssuedDevices = function (table,param=false) {
                 });
 
             })
-
-            // $(`#${table}_table`).on('click','.view',function(e){
-            //     let _this = $(this);
-            //     let id    =_this.attr('data-id');
-            //     let modal_id = '#modal-edit-other-details';
-            //     let form = $('#form-edit-other-details');
-
-            //     let formData = new FormData;
-            //     formData.append('encrypted_id',id);
-
-            //     _request.post('/'+_url+'info-issued-items',formData)
-            //     .then((res) => {
-            //         let payload = JSON.parse(window.atob(res.payload));
-
-            //         $('input[name="issued_at"]')[0]._flatpickr.setDate(payload.issued_at, true);
-            //         $('input[name="issued_at"]').prev('label').text('Issued At');
-            //         console.log(payload.removed_at)
-            //         // if(payload.removed_at){
-            //         //     $('input[name="returned_at"]')[0]._flatpickr.setDate(payload.removed_at, true);
-            //         // }
-            //         $('input[name="returned_at"]').prev('label').text('Returned At');
-
-            //         $('textarea[name="remarks"]').val(payload.remarks);
-            //         $('select[name="status"]').val(payload.status).trigger('change');
-
-            //         let html_other_details = `
-            //             <div class="fw-bold fs-5">Item: </div>
-            //             <div class="mb-7 text-gray-800 fs-6">
-            //                 ${payload.name}
-            //             </div>
-
-            //             <div class="fw-bold fs-5">Description:</div>
-            //             <div class="mb-7 text-gray-800 fs-6">
-            //                 ${payload.description}
-            //             </div>
-
-            //             ${payload.serial_number?`
-            //                 <div class="fw-bold fs-5">Serial Number: </div>
-            //                 <div class="text-gray-800 fs-6 serial-number">
-            //                     ${payload.serial_number}
-            //                 </div> `:``}
-            //         `;
-
-            //         $(modal_id).find('.other-details').empty().html(html_other_details);
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //         Alert.alert('error', "Something went wrong. Try again later", false);
-            //     })
-            //     .finally((error) => {
-            //         $(modal_id).find('.modal-title').text('');
-            //         $(modal_id).find('button.submit').attr('data-id',id);
-            //         $(modal_id).find('.modal-title').text('Issued Item Details');
-            //         form.attr('action','issued-items');
-            //         modal_state(modal_id,'show');
-            //     });
-            // })
-
-            // $(`#${table}_table`).on('click','.remove',function(e){
-            //     e.preventDefault()
-            //     e.stopImmediatePropagation()
-
-            //     let _this = $(this);
-            //     let id    =_this.attr('data-id');
-            //     let formData = new FormData;
-
-            //     Alert.input('info','Remove this item on accountability ?',{
-            //         isRequired: true,
-            //         inputPlaceholder: "Put your reason for removing this item",
-            //         onConfirm: function(remarks) {
-            //             formData.append('encrypted_id',id);
-            //             formData.append('remarks',remarks);
-            //             formData.append('status',2);
-            //             _request.post('/'+_url+'remove-issued-item',formData)
-            //             .then((res) => {
-            //                 Alert.toast(res.status,res.message);
-            //                 initTable();
-            //             })
-            //             .catch((error) => {
-            //                 Alert.alert('error', "Something went wrong. Try again later", false);
-            //             })
-            //             .finally((error) => {
-            //             });
-            //         }
-            //     });
-            // })
 
         })
 
