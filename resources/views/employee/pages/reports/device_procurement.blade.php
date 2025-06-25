@@ -1,5 +1,5 @@
-<div class="page-devices-per-department">
-    <div class="card card-devices-per-department">
+<div class="page-device-procurement">
+    <div class="card card-device-procurement">
         <div class="card-header border-0 pt-6">
             <div class="card-title">
                 {{-- <div class="d-flex align-items-center position-relative my-1">
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="card-body pt-0 card-body-devices-per-department">
+        <div class="card-body pt-0 card-body-device-procurement">
 
         </div>
     </div>

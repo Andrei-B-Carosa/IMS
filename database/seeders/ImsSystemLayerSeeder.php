@@ -67,8 +67,8 @@ class ImsSystemLayerSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Available Inventory',
-                'href' => 'available_inventory',
+                'name' => 'Device Procurement',
+                'href' => 'device_procurement',
                 'folder' => null,
                 'status' => 1,
                 'is_deleted' => null,

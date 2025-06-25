@@ -28,18 +28,18 @@ class IssuedDeviceExport implements FromCollection, WithHeadings
         // Return only the fields you want in Excel
         return $this->data->map(function ($item) use ($statusMap) {
             return [
-                // 'No'              => $item->count,
-                'Tag Number'      => $item->tag_number,
-                'Name'            => strip_tags($item->name),
-                'Type'            => $item->type,
-                'Description'     => strip_tags($item->description),
-                'Serial Number'   => $item->serial_number,
-                'Status'          => $statusMap[$item->accountability_status] ?? 'Unknown',
-                'Issued At'       => $item->issued_at,
-                'Returned At'     => $item->returned_at,
-                'Accountable To'  => $item->accountable_to,
-                'Remarks'         => $item->remarks,
-                'Price'           => $item->price,
+                'Tag Number'            => $item->tag_number,
+                'Name'                  => strip_tags($item->name),
+                'Type'                  => $item->type,
+                'Description'           => strip_tags($item->description),
+                'Serial Number'         => $item->serial_number,
+                'Price'                 => $item->price,
+                'Accountability No.'    => $item->form_no,
+                'Status'                => $statusMap[$item->accountability_status] ?? 'Unknown',
+                'Issued At'             => $item->issued_at,
+                'Returned At'           => $item->returned_at,
+                'Accountable To'        => $item->accountable_to,
+                'Remarks'               => $item->remarks,
             ];
         });
     }
@@ -47,18 +47,18 @@ class IssuedDeviceExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            // 'No',
             'Tag Number',
             'Name',
             'Type',
             'Description',
             'Serial Number',
+            'Price',
+            'Accountability No. ',
             'Status',
             'Issued At',
             'Returned At',
             'Accountable To',
             'Remarks',
-            'Price',
         ];
     }
 }

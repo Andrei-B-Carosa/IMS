@@ -10,6 +10,7 @@ class ImsAccountabilityIssuedTo extends Model
 
     protected $table = 'ims_accountability_issued_to';
     protected $fillable = [
+        'id',
         'accountability_id' ,
         'emp_id' ,
         'status',
@@ -51,5 +52,10 @@ class ImsAccountabilityIssuedTo extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class,'emp_id');
+    }
+
+     public function accountability()
+    {
+        return $this->belongsTo(ImsAccountability::class,'accountability_id');
     }
 }

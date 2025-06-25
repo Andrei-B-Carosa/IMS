@@ -11,24 +11,30 @@
             </tr>
         </thead>
         <tbody class=" fw-semibold">
-            @foreach ($report as $site => $counts)
-                <tr>
-                    <td>{{ strtoupper($site) }}</td>
-                    <td>{{ $counts['Laptop'] }}</td>
-                    <td>{{ $counts['Desktop'] }}</td>
-                    <td>{{ $counts['Cellphone'] }}</td>
-                    <td>{{ $counts['Printer'] }}</td>
-                    <td><strong>{{ $counts['Total'] }}</strong></td>
+            @if(!empty($report))
+                @foreach ($report as $site => $counts)
+                    <tr>
+                        <td>{{ strtoupper($site) }}</td>
+                        <td>{{ $counts['Laptop'] }}</td>
+                        <td>{{ $counts['Desktop'] }}</td>
+                        <td>{{ $counts['Cellphone'] }}</td>
+                        <td>{{ $counts['Printer'] }}</td>
+                        <td><strong>{{ $counts['Total'] }}</strong></td>
+                    </tr>
+                @endforeach
+                <tr class="fw-bold text-dark border-top">
+                    <td>TOTAL</td>
+                    <td>{{ $totals['Laptop'] }}</td>
+                    <td>{{ $totals['Desktop'] }}</td>
+                    <td>{{ $totals['Cellphone'] }}</td>
+                    <td>{{ $totals['Printer'] }}</td>
+                    <td>{{ $totals['Total'] }}</td>
                 </tr>
-            @endforeach
-            <tr class="fw-bold text-dark border-top">
-                <td>TOTAL</td>
-                <td>{{ $totals['Laptop'] }}</td>
-                <td>{{ $totals['Desktop'] }}</td>
-                <td>{{ $totals['Cellphone'] }}</td>
-                <td>{{ $totals['Printer'] }}</td>
-                <td>{{ $totals['Total'] }}</td>
-            </tr>
+            @else
+                <tr>
+                    <td colspan="7" class="text-center">No data available.</td>
+                </tr>
+            @endif
         </tbody>
     </table>
 </div>

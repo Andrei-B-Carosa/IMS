@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class ImsAccountabilityItem extends Model
 {
     protected $fillable = [
-        'accountability_id' ,
-        'item_inventory_id' ,
+        'accountability_id',
+        'item_inventory_id',
         'status',
         'remarks',
         'issued_at',

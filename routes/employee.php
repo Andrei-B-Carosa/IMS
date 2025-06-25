@@ -9,6 +9,7 @@ use App\Http\Controllers\EmployeeController\MaterialIssuance\Lists as MaterialIs
 use App\Http\Controllers\EmployeeController\Page;
 use App\Http\Controllers\EmployeeController\Reports\DevicePerDepartment;
 use App\Http\Controllers\EmployeeController\Reports\DevicePerSite;
+use App\Http\Controllers\EmployeeController\Reports\DeviceProcurement;
 use App\Http\Controllers\EmployeeController\Reports\IssuedDevices;
 use App\Http\Controllers\EmployeeController\Settings\EmployeeList\AccountSecurity\AccountDetails;
 use App\Http\Controllers\EmployeeController\Settings\EmployeeList\EmployeeDetails;
@@ -298,6 +299,11 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
         });
 
         Route::controller(IssuedDevices::class)->prefix('issued-devices')->group(function() {
+            Route::post('/dt', 'dt');
+            Route::post('/export', 'export');
+        });
+
+        Route::controller(DeviceProcurement::class)->prefix('device-procurement')->group(function() {
             Route::post('/dt', 'dt');
             Route::post('/export', 'export');
         });

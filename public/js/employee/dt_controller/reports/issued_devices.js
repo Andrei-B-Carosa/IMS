@@ -24,17 +24,10 @@ export var dtIssuedDevices = function (table,param=false) {
                 id:param,
             },
             [
-                // {
-                //     data: "count",
-                //     name: "count",
-                //     title: "#",
-                //     responsivePriority: -3,
-                //     searchable:false,
-                // },
                 {
                     data: "tag_number",
                     name: "tag_number",
-                    title: "Tag Number",
+                    title: "Tag",
                     className:"text-muted",
                 },
                 {
@@ -79,6 +72,17 @@ export var dtIssuedDevices = function (table,param=false) {
                     visible:false,
                 },
                 {
+                    data: "form_no", name: "form_no", title: "Accontability No.",
+                    sortable:false,
+                    searchable:false,
+                    render: function (data, type, row) {
+                        if(!data){
+                            return '--';
+                        }
+                        return data;
+                    },
+                },
+                {
                     data: "accountability_status", name: "accountability_status", title: "Status",
                     sortable:false,
                     searchable:false,
@@ -94,7 +98,7 @@ export var dtIssuedDevices = function (table,param=false) {
                     },
                 },
                 {
-                    data: "issued_at", name: "issued_at", title: "Issued At",
+                    data: "issued_at", name: "issued_at", title: "Issued at",
                     sortable:false,
                     searchable:false,
                     render(data,type,row)
@@ -107,7 +111,7 @@ export var dtIssuedDevices = function (table,param=false) {
                     }
                 },
                 {
-                    data: "returned_at", name: "returned_at", title: "Returned At",
+                    data: "returned_at", name: "returned_at", title: "Returned at",
                     sortable:false,
                     searchable:false,
                     render(data,type,row)
@@ -135,40 +139,6 @@ export var dtIssuedDevices = function (table,param=false) {
                         return data;
                     },
                 },
-                // {
-                //     data: "encrypted_id",
-                //     name: "encrypted_id",
-                //     title: "Action",
-                //     sortable:false,
-                //     className: "text-center",
-                //     responsivePriority: -1,
-                //     render: function (data, type, row) {
-                //         return `${
-                //                 row.status ==2 || row.status==3 || row.status==4 ?
-                //                 `
-                //                 `
-                //                 :`<div class="d-flex justify-content-center flex-shrink-0">
-                //                     <a href="javascript:;" class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up view" data-id="${data}"
-                //                     data-bs-toggle="tooltip" title="View Details">
-                //                         <i class="ki-duotone ki-pencil fs-2x">
-                //                             <span class="path1"></span>
-                //                             <span class="path2"></span>
-                //                             <span class="path3"></span>
-                //                             <span class="path4"></span>
-                //                         </i>
-                //                     </a>
-                //                     <a href="javascript:;" class="btn btn-icon btn-icon btn-light-danger btn-sm me-1 hover-elevate-up remove" data-id="${data}"
-                //                     data-bs-toggle="tooltip" title="Remove item from accountability">
-                //                         <i class="ki-duotone ki-cross fs-2x">
-                //                             <span class="path1"></span>
-                //                             <span class="path2"></span>
-                //                         </i>
-                //                     </a>
-                //                 </div>`
-                //             }
-                //         `;
-                //     },
-                // },
             ],
             null,
         );

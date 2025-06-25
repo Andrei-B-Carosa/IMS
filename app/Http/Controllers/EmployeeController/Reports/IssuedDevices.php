@@ -39,8 +39,13 @@ class IssuedDevices extends Controller
             }
 
             $array_accountable_to = [];
+            $form_no = null;
+
             foreach($acountability_item->accountable_to as $accountable_to){
                 $array_accountable_to[] = $accountable_to->employee->fullname();
+                if($accountable_to->accountability){
+                    $form_no = $accountable_to->accountability->form_no;
+                }
             }
 
             $description = $item->description;
@@ -98,6 +103,7 @@ class IssuedDevices extends Controller
             $item->serial_number = $item->serial_number;
             $item->price = $item->price;
             $item->type = $item_type;
+            $item->form_no = $form_no;
             $item->accountability_status = $acountability_item->status;
             $item->encrypted_id = Crypt::encrypt($item->id);
 
@@ -139,8 +145,13 @@ class IssuedDevices extends Controller
             }
 
             $array_accountable_to = [];
+            $form_no = null;
+
             foreach($acountability_item->accountable_to as $accountable_to){
                 $array_accountable_to[] = $accountable_to->employee->fullname();
+                if($accountable_to->accountability){
+                    $form_no = $accountable_to->accountability->form_no;
+                }
             }
 
             $description = $item->description;
@@ -190,6 +201,7 @@ class IssuedDevices extends Controller
             $item->issued_at = $issued_at;
             $item->returned_at = $returned_at;
 
+            $item->form_no = $form_no;
             $item->accountable_to = implode(', ', $array_accountable_to);
             $item->tag_number = $tag_number;
             $item->name =  $item->name ?? $description;
