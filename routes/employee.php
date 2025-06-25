@@ -305,7 +305,7 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
 
         Route::controller(DeviceProcurement::class)->prefix('device-procurement')->group(function() {
             Route::post('/dt', 'dt');
-            Route::post('/export', 'export');
+            Route::post('/export', 'export')->name('reports.devices.export');
         });
 
     });

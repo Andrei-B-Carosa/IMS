@@ -5,7 +5,8 @@ import {RequestHandler} from "../../../global/request.js";
 
 export var DeviceProcurementController = function (page, param) {
 
-    let _page = $('.page-device-procurement');
+    const _page = $('.page-device-procurement');
+    const _request = new RequestHandler;
 
     async function loadDataTable(paginate_page=1)
     {
@@ -51,6 +52,43 @@ export var DeviceProcurementController = function (page, param) {
         }
 
         loadDataTable();
+
+        _page.on('click','.export-device-procurement',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+
+                let _this = $(this);
+                let id    =_this.attr('data-id');
+                let formData = new FormData;
+                formData.append('encrypted_id','');
+
+                _request.postBlob('/reports/device-procurement/export', formData, true)
+                .then(response => {
+                    const blob = response.data;
+                    const disposition = response.headers['content-disposition'];
+
+                    let filename = 'report.pdf'; // fallback
+                    if (disposition) {
+                        const match = disposition.match(/filename\*?=(?:UTF-8'')?"?([^";\n]*)"?/);
+                        if (match && match[1]) {
+                            filename = decodeURIComponent(match[1].replace(/['"]/g, ''));
+                        }
+                    }
+
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch((error) => {
+                    Alert.alert('error', "Something went wrong. Try again later", false);
+                });
+
+        })
 
         setTimeout(() => {
             page_block.release();

@@ -10,8 +10,7 @@
 
             <div class="card-toolbar">
                 <div class="d-flex align-items-center position-relative my-1">
-                    <button type="button" class="btn btn-light-primary me-3"
-                        data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
+                    <button type="button" class="btn btn-light-primary me-3 export-device-procurement">
                         <i class="ki-outline ki-exit-up fs-2"></i> Export
                     </button>
                 </div>
