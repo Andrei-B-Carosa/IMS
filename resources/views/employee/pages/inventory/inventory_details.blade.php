@@ -348,7 +348,7 @@
     @endif
 
     {{-- Item Logs --}}
-    @if($data->item_type_id == 1 || $data->item_type_id ==8)
+    @if($data->item_type->display_to == 1 || $data->item_type->display_to == 3)
         <div class="card card-flush py-4 mb-10">
             <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_item_logs_collapsible">
                 <div class="card-title">Item Logs</div>
