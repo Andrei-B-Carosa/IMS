@@ -59,10 +59,12 @@
                         </select>
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                     </div>
-                    <div class="mb-7 fv-row">
-                        <label class="required form-label">Tag Number</label>
-                        <input type="text" name="tag_number" class="form-control mb-2" placeholder="Item Name" value="{{ $data->generate_tag_number() }}" disabled/>
-                    </div>
+                    @if($data->item_type->display_to == 1 || $data->item_type->display_to == 3)
+                        <div class="mb-7 fv-row">
+                            <label class="required form-label">Tag Number</label>
+                            <input type="text" name="tag_number" class="form-control mb-2" placeholder="Item Name" value="{{ $data->generate_tag_number() }}" disabled/>
+                        </div>
+                    @endif
                     @if($data->item_type_id != 1 && $data->item_type_id !=8)
                         <div class="fv-row mb-7 fv-plugins-icon-container" id="">
                             <label class="fs-6 fw-semibold mb-2">Description</label>
