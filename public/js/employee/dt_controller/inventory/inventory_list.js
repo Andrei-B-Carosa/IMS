@@ -26,14 +26,14 @@ export var dtInventoryList = function (table,param='') {
                 id:param,
             },
             [
-                {
-                    data: "count",
-                    name: "count",
-                    title: " ",
-                    responsivePriority: -3,
-                    searchable:false,
-                    className:'text-muted',
-                },
+                // {
+                //     data: "count",
+                //     name: "count",
+                //     title: " ",
+                //     responsivePriority: -3,
+                //     searchable:false,
+                //     className:'text-muted',
+                // },
                 {
                     data: "tag_number", name: "tag_number", title: "Tag Number",
                     className:'text-muted',
