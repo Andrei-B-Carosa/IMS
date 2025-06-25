@@ -31,14 +31,14 @@ class DeviceProcurement extends Controller
         ];
 
         $inventory = ImsItemInventory::select(
-            DB::raw('YEAR(created_at) as year'),
-            DB::raw('MONTH(created_at) as month'),
+            DB::raw('YEAR(received_at) as year'),
+            DB::raw('MONTH(received_at) as month'),
             'item_type_id',
             DB::raw('COUNT(*) as qty'),
             DB::raw('SUM(price) as total_value')
         )
         ->whereIn('item_type_id', array_values($deviceTypes))
-        ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'), 'item_type_id')
+        ->groupBy(DB::raw('YEAR(received_at)'), DB::raw('MONTH(received_at)'), 'item_type_id')
         ->orderBy('year')
         ->orderBy('month')
         ->get();
@@ -86,14 +86,14 @@ class DeviceProcurement extends Controller
         ];
 
         $inventory = ImsItemInventory::select(
-                DB::raw('YEAR(created_at) as year'),
-                DB::raw('MONTH(created_at) as month'),
+                DB::raw('YEAR(received_at) as year'),
+                DB::raw('MONTH(received_at) as month'),
                 'item_type_id',
                 DB::raw('COUNT(*) as qty'),
                 DB::raw('SUM(price) as total_value')
             )
             ->whereIn('item_type_id', array_values($deviceTypes))
-            ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'), 'item_type_id')
+            ->groupBy(DB::raw('YEAR(received_at)'), DB::raw('MONTH(received_at)'), 'item_type_id')
             ->orderBy('year')
             ->orderBy('month')
             ->get();
