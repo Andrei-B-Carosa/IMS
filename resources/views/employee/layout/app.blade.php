@@ -54,7 +54,7 @@
                             <div class="d-flex align-items-center pt-1">
                                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
                                     <li class="breadcrumb-item text-white fw-bold lh-1">
-                                        <a href="index.html" class="text-white text-hover-primary">
+                                        <a href="javascript:;" class="text-white text-hover-primary">
                                             <i class="ki-outline ki-home text-gray-700 fs-6"></i> </a>
                                     </li>
                                     <li class="breadcrumb-item">

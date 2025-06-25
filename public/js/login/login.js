@@ -52,7 +52,12 @@ var fvLogin = (function () {
                     })
                     .catch((error) => {
                         console.log(error);
-                        Alert.alert('error', "Something went wrong. Try again later", false);
+                        if (error.response && error.response.status === 419) {
+                            Alert.alert('error', "Session expired. Please refresh the page and try again.", false);
+                        } else {
+                            Alert.alert('error', "Something went wrong. Try again later.", false);
+                        }
+                        submit.attr("data-kt-indicator", "off").attr('disabled', false);
                     })
                     .finally((error) => {
                         //code here
