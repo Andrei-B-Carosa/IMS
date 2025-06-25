@@ -318,7 +318,7 @@ class RegisterDeviceController extends Controller
             'received_by' => $received_by,
             'form_no' => $rq->form_no,
             'remarks' => 'Data came from online registration',
-            'created_by'=>1,
+            'created_by'=>$issued_by,
         ]);
 
         //Insert accountabled employee
@@ -340,7 +340,7 @@ class RegisterDeviceController extends Controller
                 'department_id'=>$find_emp_id->emp_details->department_id,
                 'position_id'=>$find_emp_id->emp_details->position_id,
                 'remarks'=>'This data is from online registration',
-                'created_by'=>1,
+                'created_by'=>$issued_by,
             ]);
         }
 
@@ -351,7 +351,7 @@ class RegisterDeviceController extends Controller
             'status'=>1,
             'issued_at'=>Carbon::now(),
             'remarks'=>'This data is from online registration',
-            'created_by'=>1,
+            'created_by'=>$issued_by,
         ];
 
         //This array is accessories
@@ -363,7 +363,7 @@ class RegisterDeviceController extends Controller
                 'status'=>1,
                 'issued_at'=>Carbon::now(),
                 'remarks'=>'This data is from online registration',
-                'created_by'=>1,
+                'created_by'=>$issued_by,
             ];
 
             ImsItemInventoryLog::create([
@@ -385,7 +385,7 @@ class RegisterDeviceController extends Controller
             'issued_at'=>Carbon::now(),
             'activity_table'=>'ACCOUNTABILITY',
             'activity_log'=>'Item is currently issued to '. implode(', ', $employee).'. The accountability form no is: "'. $rq->form_no.'"',
-            'created_by'=>1
+            'created_by'=>$issued_by
         ]);
         return ImsAccountabilityItem::insert($items_array);
     }
