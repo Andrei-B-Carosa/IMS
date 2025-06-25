@@ -336,6 +336,7 @@ class RegisterDeviceController extends Controller
             ImsAccountabilityIssuedTo::create([
                 'accountability_id' => $accountability->id,
                 'emp_id'=>$emp_id,
+                'issued_at'=>Carbon::now(),
                 'department_id'=>$find_emp_id->emp_details->department_id,
                 'position_id'=>$find_emp_id->emp_details->position_id,
                 'remarks'=>'This data is from online registration',
