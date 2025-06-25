@@ -42,6 +42,9 @@ class IssuedDevices extends Controller
             $form_no = null;
 
             foreach($acountability_item->accountable_to as $accountable_to){
+                if($accountable_to->status !=1){
+                    continue;
+                }
                 $array_accountable_to[] = $accountable_to->employee->fullname();
                 if($accountable_to->accountability){
                     $form_no = $accountable_to->accountability->form_no;
