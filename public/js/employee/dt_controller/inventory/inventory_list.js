@@ -36,7 +36,7 @@ export var dtInventoryList = function (table,param='') {
                 },
                 {
                     data: "tag_number", name: "tag_number", title: "Tag Number",
-                    className:'',
+                    className:'text-muted',
                     sortable:false,
                 },
                 {

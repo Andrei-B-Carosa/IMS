@@ -79,7 +79,7 @@ class ImsItemInventory extends Model
         $itemTypeCode = $this->item_type ? $this->item_type->item_code : 'XXX';
         $itemId = $this->id ?? 0;
 
-        return config('company.item_code').'-'.strtoupper($companyLocationName). '-' .$itemTypeCode. '-'.str_pad($itemId, 5, '0', STR_PAD_LEFT);
+        return strtoupper($companyLocationName). '-' .$itemTypeCode. '-'.str_pad($itemId, 5, '0', STR_PAD_LEFT);
     }
 
     public function accountability_item()
