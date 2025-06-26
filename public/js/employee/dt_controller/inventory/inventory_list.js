@@ -83,7 +83,6 @@ export var dtInventoryList = function (table,param='') {
                     data: "description", name: "description", title: "Description",
                     className:'',
                     sortable:false,
-                    searchable:false,
                 },
                 {
                     data: "location", name: "location", title: "Location",
