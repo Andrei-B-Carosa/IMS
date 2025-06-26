@@ -72,10 +72,7 @@
                                                 class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto sfilter"
                                                 data-control="select2" data-hide-search="true"
                                                 data-dropdown-css-class="w-150px" name="filter_category">
-                                                <option></option>
-                                                <option value="Show All" selected>Show All</option>
-                                                <option value="a">Category A</option>
-                                                <option value="b">Category B</option>
+                                                <option value="all" selected>Show all</option>
                                             </select>
                                         </div>
                                         <div class="d-flex align-items-center fw-bold">
@@ -98,6 +95,18 @@
                                                 data-control="select2" data-minimum-results-for-search="Infinity" data-hide-search="true"
                                                 data-dropdown-css-class="w-150px"
                                                 data-placeholder="" name="filter_location">
+                                                <option value="all" selected>Show all</option>
+                                            </select>
+                                        </div>
+                                        <div class="d-flex align-items-center fw-bold">
+                                            <div class="text-gray-400 fs-7 me-2">Year</div>
+                                            <select
+                                                class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto sfilter"
+                                                data-control="select2" data-minimum-results-for-search="Infinity" data-hide-search="true"
+                                                data-dropdown-css-class="w-150px"
+                                                data-placeholder="" name="filter_year">
+                                                <option value="all" selected>Show all</option>
+
                                             </select>
                                         </div>
                                     </div>

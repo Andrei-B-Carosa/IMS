@@ -24,6 +24,7 @@ export var dtInventoryList = function (table,param='') {
                 filter_category:$('select[name="filter_category"]').val(),
                 filter_status:$('select[name="filter_status"]').val(),
                 filter_location:$('select[name="filter_location"]').val(),
+                filter_year:$('select[name="filter_year"]').val(),
                 id:param,
             },
             [
