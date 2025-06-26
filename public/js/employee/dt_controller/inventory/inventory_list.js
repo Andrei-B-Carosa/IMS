@@ -21,8 +21,9 @@ export var dtInventoryList = function (table,param='') {
         dataTableHelper.initTable(
             _url+'dt',
             {
-                filter_item:$('select[name="filter_item"]').val(),
+                filter_category:$('select[name="filter_category"]').val(),
                 filter_status:$('select[name="filter_status"]').val(),
+                filter_location:$('select[name="filter_location"]').val(),
                 id:param,
             },
             [
@@ -266,11 +267,13 @@ export var dtInventoryList = function (table,param='') {
                 }
             })
 
-            _card.on('click','button.filter',function(e){
-                e.preventDefault()
-                e.stopImmediatePropagation()
+            _card.on('change',`select.sfilter`,function(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
                 initTable();
             })
+
 
             $(`#${table}_table`).on('click','.remove',function(e){
                 e.preventDefault()

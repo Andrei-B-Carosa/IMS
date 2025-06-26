@@ -14,6 +14,7 @@ class CompanyLocationOptions
         $query = HrisCompanyLocation::where('is_deleted',null)->when($rq->view!='all', fn($q) => $q->where('is_active', $rq->view));
         return match($rq->type){
             'options' => $this->options($rq,$query),
+            'filter' => $this->filter($rq,$query),
         };
     }
 
@@ -23,6 +24,23 @@ class CompanyLocationOptions
         $data = $query->get();
         if ($data->isNotEmpty()) {
             $html = '<option></option>';
+            foreach ($data as $row) {
+                $selected = $search === $row->id ? 'selected' : '';
+                $id = Crypt::encrypt($row->id);
+                $html .= '<option value="'.e($id).'"'.e($selected).'>'.e($row->name).'</option>';
+            }
+            return $html;
+        } else {
+            return '<option disabled>No Available Option</option>';
+        }
+    }
+
+    public function filter($rq,$query)
+    {
+        $search = isset($rq->id) ? Crypt::decrypt($rq->id) : false;
+        $data = $query->get();
+        if ($data->isNotEmpty()) {
+            $html = '<option value="all" selected>Show All</option>';
             foreach ($data as $row) {
                 $selected = $search === $row->id ? 'selected' : '';
                 $id = Crypt::encrypt($row->id);

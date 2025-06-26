@@ -23,19 +23,26 @@ class Lists extends Controller
     public function dt(Request $rq)
     {
 
-        $filter_item = $rq->filter_item != 'all' ? $rq->filter_item : false;
+        $filter_category = $rq->filter_category != 'all' ? Crypt::decrypt($rq->filter_category) : false;
         $filter_status = $rq->filter_status != 'all' ? $rq->filter_status : false;
+        $filter_location = $rq->filter_location != 'all' ? Crypt::decrypt($rq->filter_location) : false;
         $id = $rq->id?Crypt::decrypt($rq->id):'';
 
         $data = ImsItemInventory::with('item_type')
         ->when($filter_status,function($q) use($filter_status){
             $q->where('status',$filter_status);
         })
-        ->when($filter_item,function($q) use($filter_item){
-            $q->whereHas('item_type',function($q2) use($filter_item){
-                $q2->where('display_to',$filter_item);
-            });
+        ->when($filter_location,function($q) use($filter_location){
+            $q->where('company_location_id',$filter_location);
         })
+        ->when($filter_category,function($q) use($filter_category){
+            $q->where('item_type_id',$filter_category);
+        })
+        // ->when($filter_item,function($q) use($filter_item){
+        //     $q->whereHas('item_type',function($q2) use($filter_item){
+        //         $q2->where('display_to',$filter_item);
+        //     });
+        // })
         ->where([['is_deleted',null]])
         ->get();
 

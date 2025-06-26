@@ -23,7 +23,7 @@
                             <div class="card-toolbar">
                                 <div class="d-flex align-items-center position-relative my-1">
 
-                                    <button type="button" class="btn btn-light-primary me-3"
+                                    {{-- <button type="button" class="btn btn-light-primary me-3"
                                         data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                         <i class="ki-outline ki-filter fs-2"></i> Filter
                                     </button>
@@ -64,13 +64,43 @@
                                                     data-kt-menu-dismiss="true">Apply</button>
                                             </div>
                                         </div>
+                                    </div> --}}
+                                    <div class="d-flex flex-stack flex-wrap gap-4">
+                                        <div class="d-flex align-items-center fw-bold">
+                                            <div class="text-gray-400 fs-7 me-2">Category</div>
+                                            <select
+                                                class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto sfilter"
+                                                data-control="select2" data-hide-search="true"
+                                                data-dropdown-css-class="w-150px" name="filter_category">
+                                                <option></option>
+                                                <option value="Show All" selected>Show All</option>
+                                                <option value="a">Category A</option>
+                                                <option value="b">Category B</option>
+                                            </select>
+                                        </div>
+                                        <div class="d-flex align-items-center fw-bold">
+                                            <div class="text-gray-400 fs-7 me-2">Status</div>
+                                            <select
+                                                class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto sfilter"
+                                                data-control="select2" data-hide-search="true" data-minimum-results-for-search="Infinity"
+                                                data-dropdown-css-class="w-150px"
+                                                data-placeholder="Select an option" name="filter_status">
+                                                <option></option>
+                                                <option value="all" selected>Show All</option>
+                                                <option value="1">Available</option>
+                                                <option value="2">Issued</option>
+                                            </select>
+                                        </div>
+                                        <div class="d-flex align-items-center fw-bold">
+                                            <div class="text-gray-400 fs-7 me-2">Location</div>
+                                            <select
+                                                class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto sfilter"
+                                                data-control="select2" data-minimum-results-for-search="Infinity" data-hide-search="true"
+                                                data-dropdown-css-class="w-150px"
+                                                data-placeholder="" name="filter_location">
+                                            </select>
+                                        </div>
                                     </div>
-
-                                    <button type="button" class="btn btn-light-primary me-3"
-                                        data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
-                                        <i class="ki-outline ki-exit-up fs-2"></i> Export
-                                    </button>
-
                                     <a href="{{ route('employee.new_inventory') }}" type="button" class="btn btn-primary">
                                         <i class="ki-outline ki-plus fs-2"></i> New Inventory
                                     </a>

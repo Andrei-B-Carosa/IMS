@@ -26,6 +26,7 @@ class ItemTypeOption
 
         return match($rq->type){
             'get_item_type' => $this->get_item_type($query,$search,$html),
+            'filter_item_type' => $this->filter_item_type($query,$search,$html),
         };
     }
 
@@ -40,6 +41,27 @@ class ItemTypeOption
             $selected = $search === $row->id ? 'selected' : '';
             $id = Crypt::encrypt($row->id);
             $html .= '<option value="'.e($id).'"'.e($selected).'>'.e($row->name).'</option>';
+        }
+        return $html;
+    }
+
+    public function filter_item_type($query,$search,$html)
+    {
+        $ssd_id = ImsItemType::getSSDId();
+        $hdd_id = ImsItemType::getHDDId();
+        $gpu_id = ImsItemType::getGPUId();
+        $ram_id = ImsItemType::getRAMId();
+        $ink_id = ImsItemType::getItemTypeId('ink');
+
+        $data = $query->whereNotIn('id',[$ssd_id,$hdd_id,$gpu_id,$ram_id,$ink_id])->get();
+        if ($data->isEmpty()) {
+            return '<option disabled>No Available Option</option>';
+        }
+
+        $html = '<option value="all" selected>Show All</option>';
+        foreach ($data as $row) {
+            $id = Crypt::encrypt($row->id);
+            $html .= '<option value="'.e($id).'">'.e($row->name).'</option>';
         }
         return $html;
     }
