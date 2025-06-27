@@ -91,7 +91,7 @@ class Page
                     $rq = $rq->merge([
                         'id' => null,
                         'view'=>'1',
-                        'type'=>'accountability_items',
+                        'type'=>'search_ram',
                         'search'=>null
                     ]);
                     $ram_options[] =[
