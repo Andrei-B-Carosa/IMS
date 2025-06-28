@@ -436,7 +436,7 @@ class Details extends Controller
 
             $data = [
                 'status'=>$query->status,
-                'issued_at'=>$query->issued_at,
+                'issued_at'=>Carbon::parse($query->issued_at)->format('m-d-Y'),
                 'removed_at'=>$query->removed_at,
                 'remarks'=>$query->remarks,
                 'name'=>$query->employee->fullname(),

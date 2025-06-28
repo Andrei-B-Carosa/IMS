@@ -204,7 +204,6 @@ export var dtIssuedTo = function (table,param=false) {
                 _request.post('/'+_url+'info-issued-to',formData)
                 .then((res) => {
                     let payload = JSON.parse(window.atob(res.payload));
-
                     $('input[name="issued_at"]')[0]._flatpickr.setDate(payload.issued_at, true);
                     $('input[name="issued_at"]').prev('label').text('Started At');
 
