@@ -63,6 +63,7 @@ class Lists extends Controller
                 $issued_to = [];
                 foreach($item->issued_to as $row)
                 {
+                    if($row->status ==2){  continue; }
                     $issued_to[] =
                     [
                         'id'=>Crypt::encrypt($row->emp_id),
