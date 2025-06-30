@@ -39,6 +39,7 @@ class DeviceProcurement extends Controller
             DB::raw('SUM(price) as total_value'),
         )
         ->whereIn('item_type_id', array_values($deviceTypes))
+        ->where('is_deleted',null)
         ->when($filter_year =='all', fn($q) => $q->whereYear('received_at', '>=', 2025))
         ->when($filter_year !='all', fn($q) => $q->whereYear('received_at', '=', $filter_year))
         ->groupBy(DB::raw('YEAR(received_at)'), DB::raw('MONTH(received_at)'), 'item_type_id')
@@ -99,6 +100,7 @@ class DeviceProcurement extends Controller
                 DB::raw('SUM(price) as total_value')
             )
         ->whereIn('item_type_id', array_values($deviceTypes))
+        ->where('is_deleted',null)
         ->when($filter_year =='all', fn($q) => $q->whereYear('received_at', '>=', 2025))
         ->when($filter_year !='all', fn($q) => $q->whereYear('received_at', '=', $filter_year))
         ->groupBy(DB::raw('YEAR(received_at)'), DB::raw('MONTH(received_at)'), 'item_type_id')

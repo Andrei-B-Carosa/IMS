@@ -82,6 +82,7 @@ class DevicePerSite extends Controller
 
         $inventory = ImsItemInventory::select('company_location_id', 'item_type_id', DB::raw('COUNT(*) as total'))
             ->whereIn('item_type_id', array_values($deviceTypes))
+            ->where([['status','!=',0],['is_deleted',null]])
             ->groupBy('company_location_id', 'item_type_id')
             ->get();
 
