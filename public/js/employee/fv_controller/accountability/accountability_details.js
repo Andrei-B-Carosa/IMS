@@ -446,6 +446,16 @@ export function fvOtherAccountabilityDetails(_table=false,param=false){
                 })
             })
 
+            $(modal_id).on('change','select[name="status"]',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+                if($(this).val() == 2){
+                    fv.addField('returned_at',fv_validator());
+                }else if($(this).val() != 2 && fv.getElements('returned_at')){
+                    fv.removeField('returned_at');
+                }
+            });
+
 
         }
 
