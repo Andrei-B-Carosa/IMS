@@ -45,6 +45,7 @@ class DevicePerDepartment extends Controller
         }
         foreach ($accountabilities as $acc) {
             foreach ($acc->issued_to as $issued) {
+                if($issued->status ==2){ continue; }
                 $deptId = $issued->department_id ?? null;
                 $deptName = $departments[$deptId] ?? null;
 
