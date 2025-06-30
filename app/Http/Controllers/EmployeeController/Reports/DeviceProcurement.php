@@ -30,7 +30,7 @@ class DeviceProcurement extends Controller
             'GrandTotalValue' => 0,
         ];
 
-        $filter_year = $rq->filter_year == 'all' ? 2025 : $rq->filter_year;
+        $filter_year = $rq->filter_year;
         $inventory = ImsItemInventory::select(
             DB::raw('YEAR(received_at) as year'),
             DB::raw('MONTH(received_at) as month'),
@@ -39,7 +39,8 @@ class DeviceProcurement extends Controller
             DB::raw('SUM(price) as total_value'),
         )
         ->whereIn('item_type_id', array_values($deviceTypes))
-        ->when($filter_year, fn($q) => $q->whereYear('received_at', '>=', $filter_year))
+        ->when($filter_year =='all', fn($q) => $q->whereYear('received_at', '>=', 2025))
+        ->when($filter_year !='all', fn($q) => $q->whereYear('received_at', '==', $filter_year))
         ->groupBy(DB::raw('YEAR(received_at)'), DB::raw('MONTH(received_at)'), 'item_type_id')
         ->orderBy('month')
         ->orderBy('year')
@@ -80,6 +81,8 @@ class DeviceProcurement extends Controller
 
     public function export(Request $rq)
     {
+        $filter_year = $rq->filter_year == 'all' ? 2025 : $rq->filter_year;
+
         // Reuse same logic from report
         $deviceTypes = [
             'Laptop' => ImsItemType::getLaptopId(),
@@ -95,11 +98,13 @@ class DeviceProcurement extends Controller
                 DB::raw('COUNT(*) as qty'),
                 DB::raw('SUM(price) as total_value')
             )
-            ->whereIn('item_type_id', array_values($deviceTypes))
-            ->groupBy(DB::raw('YEAR(received_at)'), DB::raw('MONTH(received_at)'), 'item_type_id')
-            ->orderBy('year')
-            ->orderBy('month')
-            ->get();
+        ->whereIn('item_type_id', array_values($deviceTypes))
+        ->when($filter_year =='all', fn($q) => $q->whereYear('received_at', '>=', 2025))
+        ->when($filter_year !='all', fn($q) => $q->whereYear('received_at', '==', $filter_year))
+        ->groupBy(DB::raw('YEAR(received_at)'), DB::raw('MONTH(received_at)'), 'item_type_id')
+        ->orderBy('year')
+        ->orderBy('month')
+        ->get();
 
         $report = [];
         $totalValuePerType = [
@@ -136,6 +141,7 @@ class DeviceProcurement extends Controller
             }
         }
 
+        uksort($report, fn($a, $b) => strtotime($a) <=> strtotime($b));
         $export = new DeviceProcurementReport($report, $totalValuePerType);
         $filename = 'device_procurement_' . now()->format('Ymd_His') . '.xlsx';
         return Excel::download($export,$filename);

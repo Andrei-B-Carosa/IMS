@@ -64,6 +64,7 @@ export var DeviceProcurementController = function (page, param) {
                 let id    =_this.attr('data-id');
                 let formData = new FormData;
                 formData.append('encrypted_id','');
+                formData.append('filter_year',$(`select[name="filter_year"]`).val());
 
                 _request.postBlob('/reports/device-procurement/export', formData, true)
                 .then(response => {
