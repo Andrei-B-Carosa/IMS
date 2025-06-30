@@ -19,6 +19,7 @@ class FilterYearOptions
             $user_id = isset($rq->id) && $rq->id=='true'? Auth::user()->emp_id:false;
             $data =  match($rq->type){
                 'filter_inventory_year'=> self::filter_inventory_year(),
+                'filter_device_procurement'=> self::filter_device_procurement(),
                 // '2'=> self::get_leave_year($user_id),
                 // '3'=> self::get_ob_year($user_id),
             };
@@ -39,6 +40,16 @@ class FilterYearOptions
     public function filter_inventory_year()
     {
         return ImsItemInventory::query()
+            ->selectRaw('YEAR(received_at) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+    }
+
+    public function filter_device_procurement()
+    {
+        return ImsItemInventory::query()
+            ->whereYear('received_at', '>=', 2025)
             ->selectRaw('YEAR(received_at) as year')
             ->distinct()
             ->orderBy('year', 'desc')

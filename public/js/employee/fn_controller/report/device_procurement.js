@@ -2,6 +2,7 @@
 import { page_state } from "../../../global.js";
 import {Alert} from "../../../global/alert.js";
 import {RequestHandler} from "../../../global/request.js";
+import { get_filter_inventory_year } from "../../../global/select.js";
 
 export var DeviceProcurementController = function (page, param) {
 
@@ -24,6 +25,7 @@ export var DeviceProcurementController = function (page, param) {
         formData.append('page',paginate_page);
         formData.append('search',$('.search').val());
         formData.append('array_search',array_search);
+        formData.append('filter_year',$(`select[name="filter_year"]`).val());
 
         request.post('/reports/device-procurement/dt',formData)
         .then((res) => {
@@ -51,6 +53,7 @@ export var DeviceProcurementController = function (page, param) {
             page_block.block();
         }
 
+        await get_filter_inventory_year('select[name="filter_year"]','','filter_device_procurement',1);
         loadDataTable();
 
         _page.on('click','.export-device-procurement',function(e){
@@ -89,6 +92,19 @@ export var DeviceProcurementController = function (page, param) {
                 });
 
         })
+
+        _page.on('change',`select[name="filter_year"]`,function(e){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                if (!page_block.isBlocked()) {
+                    page_block.block();
+                }
+                loadDataTable();
+                setTimeout(() => {
+                    page_block.release();
+                }, 500);
+            })
 
         setTimeout(() => {
             page_block.release();

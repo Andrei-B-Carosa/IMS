@@ -30,17 +30,19 @@ class DeviceProcurement extends Controller
             'GrandTotalValue' => 0,
         ];
 
+        $filter_year = $rq->filter_year == 'all' ? 2025 : $rq->filter_year;
         $inventory = ImsItemInventory::select(
             DB::raw('YEAR(received_at) as year'),
             DB::raw('MONTH(received_at) as month'),
             'item_type_id',
             DB::raw('COUNT(*) as qty'),
-            DB::raw('SUM(price) as total_value')
+            DB::raw('SUM(price) as total_value'),
         )
         ->whereIn('item_type_id', array_values($deviceTypes))
+        ->when($filter_year, fn($q) => $q->whereYear('received_at', '>=', $filter_year))
         ->groupBy(DB::raw('YEAR(received_at)'), DB::raw('MONTH(received_at)'), 'item_type_id')
-        ->orderBy('year')
         ->orderBy('month')
+        ->orderBy('year')
         ->get();
 
         $report = [];
@@ -69,6 +71,7 @@ class DeviceProcurement extends Controller
             }
         }
 
+        uksort($report, fn($a, $b) => strtotime($a) <=> strtotime($b));
         $render = view('employee.pages.reports.elements.tbl_device_procurement',compact('report','totalValuePerType'))->render();
         $payload = base64_encode(json_encode($render));
 

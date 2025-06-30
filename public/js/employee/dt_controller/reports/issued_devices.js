@@ -57,7 +57,7 @@ export var dtIssuedDevices = function (table,param=false) {
                     data: "description", name: "description", title: "Description",
                     className:'',
                     sortable:false,
-                    searchable:false,
+                    // searchable:false,
                     render: function (data, type, row) {
                         if(!data){
                             return '--';
@@ -74,7 +74,7 @@ export var dtIssuedDevices = function (table,param=false) {
                 {
                     data: "form_no", name: "form_no", title: "Accontability No.",
                     sortable:false,
-                    searchable:false,
+                    // searchable:false,
                     render: function (data, type, row) {
                         if(!data){
                             return '--';
