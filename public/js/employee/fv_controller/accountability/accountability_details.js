@@ -446,7 +446,7 @@ export function fvOtherAccountabilityDetails(_table=false,param=false){
                 })
             })
 
-            $(modal_id).on('change','select[name="status"]',function(e){
+            $(modal_id).on('change','select[name="accountability_status"]',function(e){
                 e.preventDefault()
                 e.stopImmediatePropagation()
                 if($(this).val() == 2){
