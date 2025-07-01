@@ -277,6 +277,9 @@ class RegisterDeviceController extends Controller
                     'remarks'=>'Data came from online registration',
                     'company_location_id' =>Crypt::decrypt($rq->company_location),
                     'created_by'=>1,
+                    'supplier_id'=>1,
+                    'received_at'=>Carbon::now(),
+
                 ]);
             }
         }
@@ -300,6 +303,8 @@ class RegisterDeviceController extends Controller
                     'remarks'=>'Data came from online registration',
                     'company_location_id' =>Crypt::decrypt($rq->company_location),
                     'created_by'=>1,
+                    'supplier_id'=>1,
+                    'received_at'=>Carbon::now(),
                 ]);
             }
         }
