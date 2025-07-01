@@ -170,6 +170,8 @@ class RegisterDeviceController extends Controller
 
     public function register_laptop($rq,$data)
     {
+        $created_by = Crypt::decrypt($rq->issued_by);
+
         $array_storage = [];
         foreach($data['storage'] as $storage)
         {
@@ -245,7 +247,9 @@ class RegisterDeviceController extends Controller
             'status' =>2,
             'remarks' => 'Data came from online registration',
             'company_location_id' =>Crypt::decrypt($rq->company_location),
-            'created_by'=>1,
+            'created_by'=>$created_by,
+            'supplier_id'=>1,
+            'received_at'=>Carbon::now(),
         ]);
     }
 

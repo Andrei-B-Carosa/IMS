@@ -32,6 +32,13 @@
     </div> --}}
     <!--end::Alert-->
 
+    <div class="d-flex align-items-center gap-2 gap-lg-3 mb-5">
+        <a href="/inventory" class="btn btn-sm fw-bold btn-danger">
+            <i class="ki-duotone ki-black-left fs-2"></i>
+            Exit Inventory Details
+        </a>
+    </div>
+
     {{-- General Details --}}
     <div class="card card-flush py-4 my-10" id="card-general-details">
         <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_general_details_collapsible">
@@ -50,28 +57,19 @@
                         <label class="required form-label">Name</label>
                         <input type="text" name="name" class="form-control mb-2" placeholder="Item Name" value="{{ $data->name }}" />
                     </div>
-                    <div class="fv-row mb-7 col-12 fv-plugins-icon-container">
-                        <label class="required form-label">Company Location</label>
-                        <select class="form-select mb-2" name="company_location"
-                                data-control="select2" data-hide-search="true" data-allow-clear="true"
-                                data-placeholder="Select an option">
-                                {!! $clocation_options !!}
-                        </select>
-                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-                    </div>
-                    @if($data->item_type->display_to == 1 || $data->item_type->display_to == 3)
+                    {{-- @if($data->item_type->display_to == 1 || $data->item_type->display_to == 3)
                         <div class="mb-7 fv-row">
                             <label class="required form-label">Tag Number</label>
                             <input type="text" name="tag_number" class="form-control mb-2" placeholder="Item Name" value="{{ $data->generate_tag_number() }}" disabled/>
                         </div>
-                    @endif
+                    @endif --}}
                     @if($data->item_type_id != 1 && $data->item_type_id !=8)
                         <div class="fv-row mb-7 fv-plugins-icon-container" id="">
                             <label class="fs-6 fw-semibold mb-2">Description</label>
                             <textarea class="form-control form-control-solid" rows="5" name="description" placeholder="Description">{{ $data->description }}</textarea>
                         </div>
                     @endif
-                    <div class="row mb-7">
+                    {{-- <div class="row mb-7">
                         <div class="fv-row col-6 flex-md-root">
                             <label class="required form-label">Item Type</label>
                             <select class="form-select mb-2" name="item_type"
@@ -88,49 +86,64 @@
                                 {!! $item_brand_options !!}
                             </select>
                         </div>
-                    </div>
-                    <div class="mb-7 fv-row">
+                    </div> --}}
+                    <div class="row">
+                        <div class="mb-7 fv-row col-6">
                         <label class="form-label">Serial Number</label>
                         <input type="text" name="serial_number" class="form-control mb-2"  placeholder="Serial Number" value="{{ $data->serial_number }}" />
-                    </div>
-                    <div class="mb-7 fv-row">
-                        <label class=" form-label">Price</label>
-                        <input type="text" name="price" class="form-control mb-2"  placeholder="Price" value="{{ $data->price }}" />
-                    </div>
-                    <div class="row mb-7">
-                        <div class="fv-row col-6 flex-md-root">
-                            <label class="required fw-semibold fs-6 mb-2">Received At</label>
-                            <input type="text" name="received_at" input-control="date-picker" value="{{ date('m-d-Y',strtotime($data->received_at)) }}" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
-                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                         </div>
-
-                        <div class="fv-row col-6 flex-md-root">
-                            <label class="required form-label">Received By</label>
-                            <select class="form-select mb-2" name="received_by"
-                                data-control="select2" data-hide-search="true" data-allow-clear="true"
-                                data-placeholder="Select an option">
-                                {!! $mis_personnel_options !!}
-                            </select>
+                        <div class="mb-7 fv-row col-6">
+                            <label class=" form-label">Price</label>
+                            <input type="text" name="price" class="form-control mb-2"  placeholder="Price" value="{{ $data->price }}" />
                         </div>
                     </div>
-                    <div class="fv-row mb-7 ">
+                    {{-- <div class="fv-row mb-7 ">
                         <label class="form-label">Supplier</label>
                         <select class="form-select mb-2" name="supplier"
                             data-control="select2" data-hide-search="true" data-allow-clear="true"
                             data-placeholder="Select an option">
                             {!! $supplier_options !!}
                         </select>
+                    </div> --}}
+                    <div class="row">
+                        <div class="fv-row col-6 flex-md-root col-6">
+                            <label class="required fw-semibold fs-6 mb-2">Purchased Date</label>
+                            <input type="text" name="received_at" input-control="date-picker" value="{{ date('m-d-Y',strtotime($data->received_at)) }}" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                        </div>
+                        <div class="fv-row mb-7 col-6">
+                            <label class="fw-semibold fs-6 mb-2 me-2">
+                                Warranty End At
+                            </label>
+                                @if($data->warranty_end_at > $data->received_at && (isset($data->warranty_end_at) && isset($data->received_at)))
+                                    <span class="badge badge-danger">Warranty Ended</span>
+                                @endif
+                            <input type="text" name="warranty_end_at" input-control="date-picker" value="{{ isset($data->warranty_end_at) ? date('m-d-Y',strtotime($data->warranty_end_at)) : null }}" default-date="" class="form-control  mb-3 mb-lg-0 flatpickr">
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                        </div>
                     </div>
-                    <div class="fv-row mb-7">
-                        <label class="fw-semibold fs-6 mb-2">Warranty End At</label>
-                        <input type="text" name="warranty_end_at" input-control="date-picker" value="{{ isset($data->warranty_end_at) ? date('m-d-Y',strtotime($data->warranty_end_at)) : null }}" default-date="" class="form-control  mb-3 mb-lg-0 flatpickr">
+                    <div class="fv-row fv-plugins-icon-container mb-7">
+                        <label class="required form-label">Received By</label>
+                        <select class="form-select mb-2" name="received_by"
+                            data-control="select2" data-hide-search="true" data-allow-clear="true"
+                            data-placeholder="Select an option">
+                            {!! $mis_personnel_options !!}
+                        </select>
+                    </div>
+                    <div class="fv-row mb-7 col-12 fv-plugins-icon-container">
+                        <label class="required form-label">Item Located At</label>
+                        <select class="form-select mb-2" name="company_location"
+                                data-control="select2" data-hide-search="true" data-allow-clear="true"
+                                data-placeholder="Select an option">
+                                {!! $clocation_options !!}
+                        </select>
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                     </div>
                     <div class="fv-row mb-7 fv-plugins-icon-container">
                         <x-elements.select
                             id="status"
                             name="status"
-                            label="Status"
+                            label="Item Status"
                             :options="['0'=>'Disposed','1' => 'Available', '2' => 'Issued', '3'=>'Temporary Issued', '4'=>'Under Repair']"
                             {{-- :options="['1' => 'Available', '2' => 'Issued']" --}}
                             placeholder="Select an option"

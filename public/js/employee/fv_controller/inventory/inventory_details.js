@@ -344,14 +344,14 @@ export function fvGeneralDetails(_table=false,param=false){
                 fv = FormValidation.formValidation(form, {
                     fields: {
                         'name':fv_validator(),
-                        'item_type':fv_validator(),
+                        // 'item_type':fv_validator(),
                         // 'item_brand':fv_validator(),
                         // 'serial_number':fv_validator(),
                         // 'received_at':fv_validator(),
                         // 'price':fv_validator(),
                         'received_by':fv_validator(),
                         'company_location':fv_validator(),
-                        'supplier':fv_validator(),
+                        // 'supplier':fv_validator(),
                     },
                     plugins: {
                     trigger: new FormValidation.plugins.Trigger(),

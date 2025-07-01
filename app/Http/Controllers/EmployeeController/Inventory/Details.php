@@ -77,9 +77,9 @@ class Details extends Controller
 
             if($query->item_type_id == 1 || $query->item_type_id == 8){
                 $description = json_decode($query->description,true);
-                if($query->item_brand_id != $item_brand_id){
-                    $description['brand'] = ImsItemBrand::find($item_brand_id)->value('name');
-                }
+                // if($query->item_brand_id != $item_brand_id){
+                //     $description['brand'] = ImsItemBrand::find($item_brand_id)->value('name');
+                // }
                 if($query->serial_number != $rq->serial_number){
                     $description['serial_number'] = $rq->serial_number;
                 }
@@ -89,9 +89,9 @@ class Details extends Controller
             $query->serial_number = $rq->serial_number;
             $query->price = $rq->price;
 
-            $query->item_brand_id = $item_brand_id;
-            $query->item_type_id = $item_type_id;
-            $query->supplier_id = $rq->supplier? Crypt::decrypt($rq->supplier):null;
+            // $query->item_brand_id = $item_brand_id;
+            // $query->item_type_id = $item_type_id;
+            // $query->supplier_id = $rq->supplier? Crypt::decrypt($rq->supplier):null;
 
             $query->received_at = isset($rq->received_at) ? Carbon::createFromFormat('m-d-Y', $rq->received_at)->format('Y-m-d') : null;
             $query->warranty_end_at = isset($rq->warranty_end_at) ? Carbon::createFromFormat('m-d-Y', $rq->warranty_end_at)->format('Y-m-d') : null;

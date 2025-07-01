@@ -31,6 +31,7 @@ export function fvNewInventory(_table=false,param=false){
                         'received_at':fv_validator(),
                         'supplier':fv_validator(),
                         'status':fv_validator(),
+                        'company_location':fv_validator(),
                     },
                     plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
