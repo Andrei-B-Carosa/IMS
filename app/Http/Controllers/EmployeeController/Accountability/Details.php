@@ -555,11 +555,14 @@ class Details extends Controller
             $id = Crypt::decrypt($rq->encrypted_id);
             $user_id = Auth::user()->emp_id;
 
-            $query = ImsAccountabilityItem::find($id);
+            if($rq->status == 2 && !$rq->returned_at){
+                return response()->json(['status' => 'error', 'message'=>'Returned At field is required']);
+            }
 
+            $query = ImsAccountabilityItem::find($id);
             $query->status = $rq->status;
             $query->issued_at = Carbon::createFromFormat('m-d-Y', $rq->issued_at)->format('Y-m-d');
-            $query->removed_at = $rq->removed_at ? Carbon::createFromFormat('m-d-Y', $rq->removed_at)->format('Y-m-d') : null;
+            $query->removed_at = $rq->returned_at ? Carbon::createFromFormat('m-d-Y', $rq->returned_at)->format('Y-m-d') : null;
             $query->remarks = $rq->remarks;
             $query->updated_by = $user_id;
             $query->save();
@@ -582,9 +585,13 @@ class Details extends Controller
             $id = Crypt::decrypt($rq->encrypted_id);
             $user_id = Auth::user()->emp_id;
 
+            if($rq->status == 2 && !$rq->returned_at){
+                return response()->json(['status' => 'error', 'message'=>'Returned At field is required']);
+            }
+
             $query = ImsAccountabilityIssuedTo::find($id);
             $query->issued_at = Carbon::createFromFormat('m-d-Y', $rq->issued_at)->format('Y-m-d');
-            $query->removed_at = $rq->removed_at ? Carbon::createFromFormat('m-d-Y', $rq->removed_at)->format('Y-m-d') : null;
+            $query->removed_at = $rq->returned_at ? Carbon::createFromFormat('m-d-Y', $rq->returned_at)->format('Y-m-d') : null;
             $query->remarks = $rq->remarks;
             $query->status = $rq->status;
             $query->updated_by = $user_id;
