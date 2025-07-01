@@ -229,16 +229,19 @@ export var dtInventoryList = function (table,param='') {
                                         <span class="path4"></span>
                                     </i>
                                 </button>
-                                <button class="btn btn-icon btn-icon btn-light-danger btn-sm me-1 hover-elevate-up remove" data-id="${data}"
-                                data-bs-toggle="tooltip" title="Remove item from inventory">
-                                    <i class="ki-duotone ki-trash fs-2x">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                        <span class="path5"></span>
-                                    </i>
-                                </button>
+                                ${row.status!=2 && row.status!=4 && row.status!=3 && row.status!=0 ?`
+                                    <button class="btn btn-icon btn-icon btn-light-danger btn-sm me-1 hover-elevate-up remove" data-id="${data}"
+                                        data-bs-toggle="tooltip" title="Remove item from inventory">
+                                            <i class="ki-duotone ki-trash fs-2x">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                    </button>
+                                `:``}
+
                             </div>`}
                         `;
                     },
