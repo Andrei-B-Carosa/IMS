@@ -22,9 +22,9 @@
     </div>
     <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
         <div></div>
-        <a href="javascript:;" class="link-primary">
+        {{-- <a href="javascript:;" class="link-primary">
             Forgot Password ?
-        </a>
+        </a> --}}
     </div>
     <div class="d-grid mb-10">
         <button type="button" class="btn btn-primary submit">
