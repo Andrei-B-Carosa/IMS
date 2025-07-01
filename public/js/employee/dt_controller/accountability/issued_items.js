@@ -95,6 +95,12 @@ export var dtIssuedItems = function (table,param=false) {
                     },
                 },
                 {
+                    data: "accountability_status", name: "accountability_status", title: "Accountability Status",
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
+                },
+                {
                     data: "issued_at", name: "issued_at", title: "Issued At",
                     sortable:false,
                     searchable:false,
@@ -140,9 +146,8 @@ export var dtIssuedItems = function (table,param=false) {
                     responsivePriority: -1,
                     render: function (data, type, row) {
                         return `${
-                                row.status ==2 || row.status==3 || row.status==4 ?
-                                `
-                                `
+                                row.status ==2 || row.status==3 || row.status==4 || row.accountability_status == 2 ?
+                                ``
                                 :`<div class="d-flex justify-content-center flex-shrink-0">
                                     <a href="javascript:;" class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up view" data-id="${data}"
                                     data-bs-toggle="tooltip" title="View Details">

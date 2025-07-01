@@ -115,6 +115,7 @@ class Details extends Controller
             $item->description = $description;
             $item->serial_number = $item_inventory->serial_number;
             $item->price = $item_inventory->price;
+            $item->accountability_status = $item->accountability->status;
             $item->type = $item_type;
             $item->encrypted_id = Crypt::encrypt($item->id);
             return $item;
@@ -181,7 +182,7 @@ class Details extends Controller
             $item->emp_no = $emp->emp_no;
             $item->department = $emp_details->department->name;
             $item->position = $emp_details->position->name;
-
+            $item->accountability_status = $item->accountability->status;
             $item->encrypted_id = Crypt::encrypt($item->id);
             return $item;
         });

@@ -77,6 +77,12 @@ export var dtIssuedTo = function (table,param=false) {
                     visible:false,
                 },
                 {
+                    data: "accountability_status", name: "accountability_status", title: "Accountability Status",
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
+                },
+                {
                     data: "status", name: "status", title: "Status",
                     sortable:false,
                     searchable:false,
@@ -137,7 +143,7 @@ export var dtIssuedTo = function (table,param=false) {
                     responsivePriority: -1,
                     render: function (data, type, row) {
                         return `${
-                            row.status ==2 ? ``
+                            row.status ==2 || row.accountability_status == 2 ? ``
                             :
                             `<a href="javascript:;" class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up view" data-id="${data}"
                              data-bs-toggle="tooltip" title="View accountable details">
