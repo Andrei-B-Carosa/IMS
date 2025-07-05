@@ -34,9 +34,6 @@ class Lists extends Controller
             $q->where('form_no', 'like', "%$search%")
               ->orWhereHas('issued_to.employee', function($q) use($search) {
                   $q->whereRaw("CONCAT(fname, ' ', lname) LIKE ?", ["%$search%"]);
-              })
-              ->orWhereHas('accountability_item.item_inventory', function($q) use($search) {
-                  $q->whereRaw("", ["%$search%"]);
               });
         })
         ->when($filter_tag_number,function($q) use($filter_tag_number){
