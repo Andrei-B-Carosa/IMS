@@ -7,6 +7,7 @@ use App\Service\Select\EmployeeOptions;
 use App\Service\Select\FilterYearOptions;
 use App\Service\Select\ItemTypeOption;
 use App\Service\Select\PositionOptions;
+use App\Service\Select\TagNumberOptions;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix'=>'select'], function() {
@@ -18,6 +19,7 @@ Route::group(['prefix'=>'select'], function() {
     Route::post('/employee', [EmployeeOptions::class, 'list']);
     Route::post('/company-location', [CompanyLocationOptions::class, 'list']);
     Route::post('/filter-year', [FilterYearOptions::class, 'list']);
+    Route::post('/tag-number', [TagNumberOptions::class, 'list']);
 ;
 
 });

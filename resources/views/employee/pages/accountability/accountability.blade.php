@@ -14,7 +14,7 @@
             <div class="card-toolbar">
                 <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
 
-                    <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                    {{-- <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                         <i class="ki-duotone ki-filter fs-2">
                             <span class="path1"></span>
                             <span class="path2"></span>
@@ -28,18 +28,6 @@
                         </div>
                         <div class="separator border-gray-200"></div>
                         <div class="px-7 py-5">
-                            {{-- <div class="mb-7">
-                                <label class="form-label fs-5 fw-semibold mb-3">Department:</label>
-                                <select class="form-select form-select-solid fw-bold" name="filter_year" data-kt-select2="true" data-minimum-results-for-search="Infinity" data-placeholder="Select option" data-allow-clear="true">
-                                    <option></option>
-                                </select>
-                            </div>
-                            <div class="mb-7">
-                                <label class="form-label fs-5 fw-semibold mb-3">Year:</label>
-                                <select class="form-select form-select-solid fw-bold" name="filter_month" data-kt-select2="true" data-minimum-results-for-search="Infinity"  data-placeholder="Select option" data-allow-clear="true">
-                                    <option></option>
-                                </select>
-                            </div> --}}
                             <div class="mb-7">
                                 <label class="form-label fs-5 fw-semibold mb-3">Status:</label>
                                 <div class="d-flex flex-column flex-wrap fw-semibold">
@@ -68,8 +56,32 @@
                                 <button type="button" class="btn btn-primary filter" data-kt-menu-dismiss="true">Apply</button>
                             </div>
                         </div>
+                    </div> --}}
+                    <div class="d-flex flex-stack flex-wrap gap-4">
+                        <div class="d-flex align-items-center fw-bold">
+                            <div class="text-gray-400 fs-7 me-2">Tag&nbsp;Number</div>
+                            <select
+                                class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bold py-0 ps-3 w-auto sfilter"
+                                data-control="select2" data-hide-search="true"
+                                data-dropdown-css-class="w-150px" name="filter_tag_number">
+                                <option value="all" selected>Show all</option>
+                            </select>
+                        </div>
                     </div>
 
+                    <div class="d-flex align-items-center fw-bold">
+                        <div class="text-gray-400 fs-7 me-2">Status</div>
+                        <select
+                            class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto sfilter"
+                            data-control="select2" data-hide-search="true" data-minimum-results-for-search="Infinity"
+                            data-dropdown-css-class="w-150px"
+                            data-placeholder="Select an option" name="filter_status">
+                            <option></option>
+                            <option value="all" selected>Show All</option>
+                            <option value="1">Active</option>
+                            <option value="2">Inactive</option>
+                        </select>
+                    </div>
                     <a href={{ route('employee.new_accountability') }} class="btn btn-primary btn-lg rounded-1 fs-6">
                         <i class="ki-outline ki-plus fs-2"></i>
                         New Accountability

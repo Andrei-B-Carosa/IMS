@@ -42,7 +42,7 @@
     {{-- General Details --}}
     <div class="card card-flush py-4 my-10" id="card-general-details">
         <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_general_details_collapsible">
-            <div class="card-title">General Details</div>
+            <div class="card-title">General Details ({{ $data->generate_tag_number() }})</div>
             <div class="card-toolbar">
                 <div class="card-toolbar rotate-180">
                     <i class="ki-duotone ki-down fs-1"></i>

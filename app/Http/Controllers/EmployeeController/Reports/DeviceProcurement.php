@@ -40,8 +40,11 @@ class DeviceProcurement extends Controller
         )
         ->whereIn('item_type_id', array_values($deviceTypes))
         ->where('is_deleted',null)
-        ->when($filter_year =='all', fn($q) => $q->whereYear('received_at', '>=', 2025))
+        ->when($filter_year =='all', fn($q) => $q->whereYear('received_at', '<=', now()->year))
         ->when($filter_year !='all', fn($q) => $q->whereYear('received_at', '=', $filter_year))
+        ->when($filter_year != 'all', fn($q) =>
+            $q->whereYear('received_at', '=', $filter_year)
+        )
         ->groupBy(DB::raw('YEAR(received_at)'), DB::raw('MONTH(received_at)'), 'item_type_id')
         ->orderBy('month')
         ->orderBy('year')
@@ -49,8 +52,13 @@ class DeviceProcurement extends Controller
 
         $report = [];
 
-        foreach ($inventory as $row) {
+        foreach ($inventory as $key => $row) {
+        // dd($row);
+
         $monthKey = Carbon::create($row->year, $row->month)->format('F Y');
+        if($key ==2){
+
+        }
             if (!isset($report[$monthKey])) {
                 $report[$monthKey] = [
                     'Laptop' => 0,
@@ -61,8 +69,10 @@ class DeviceProcurement extends Controller
                     'TotalValue' => 0,
                 ];
             }
+
             $typeName = array_search($row->item_type_id, $deviceTypes);
             if ($typeName) {
+
                 $report[$monthKey][$typeName] += $row->qty;
                 $report[$monthKey]['TotalQty'] += $row->qty;
                 $report[$monthKey]['TotalValue'] += $row->total_value;
@@ -71,6 +81,7 @@ class DeviceProcurement extends Controller
                 $totalValuePerType[$typeName] += $row->total_value;
                 $totalValuePerType['GrandTotalValue'] += $row->total_value;
             }
+
         }
 
         uksort($report, fn($a, $b) => strtotime($a) <=> strtotime($b));

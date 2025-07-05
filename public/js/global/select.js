@@ -276,3 +276,71 @@ export async function get_filter_inventory_year(_element,param='',type,view='all
             });
     });
 }
+
+export async function get_tag_number(_element,param='',type,view='all') {
+    return new Promise((resolve, reject) => {
+        let element = $(_element);
+        let modal = element.closest('.modal');
+
+        element.attr('disabled', true);
+
+        element.select2({
+            dropdownParent: modal.length ? '#' + modal.attr('id') : null,
+            width: '100%',
+            minimumInputLength: 0,
+            ajax: {
+                url: "/select/tag-number",
+                type: 'POST',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    let formData = {
+                        search: params.term,
+                        id: param,
+                        type: type,
+                        view: view
+                    };
+                    return formData;
+                },
+                processResults: function (data) {
+                    data.unshift({ id: 'all', text: 'Show all' });
+                    return { results: data };
+                },
+                cache: true
+            }
+        })
+        .on('select2:open', function() {
+            element.attr('data-select2-initialized', true);
+        })
+        .on('select2:select', function() {
+            resolve(true);
+        });
+
+        element.attr('disabled', false);
+        resolve(true);
+    });
+
+        // let formData = new FormData();
+        // formData.append('id', param);
+        // formData.append('type',type);
+        // formData.append('view',view);
+
+
+        // (new RequestHandler).post("/select/tag-number", formData)
+        //     .then((res) => {
+        //         element.empty().append(res);
+        //         element.attr('data-select2-initialized',true);
+        //         element.select2({
+        //             dropdownParent: modal.length ? '#'+modal.attr('id') : null,
+        //             width: '100%',
+        //         });
+        //         resolve(true);
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //         resolve(false);
+        //     })
+        //     .finally(() => {
+        //         element.attr('disabled', false);
+        //     });
+}

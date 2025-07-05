@@ -2,6 +2,7 @@
 import { modal_state, page_state } from "../../../global.js";
 import {Alert} from "../../../global/alert.js";
 import {RequestHandler} from "../../../global/request.js";
+import { get_tag_number } from "../../../global/select.js";
 
 export var AccountabilityListController = function (page, param) {
 
@@ -18,11 +19,13 @@ export var AccountabilityListController = function (page, param) {
             }))
         );
 
-        let filter_status = $('input[name="filter_status"]:checked').val();
+        let filter_status = $('select[name="filter_status"]').val();
+        let filter_tag_number = $('select[name="filter_tag_number"]').val();
         let search = $('input[name="search"]').val();
 
         formData.append('page',paginate_page);
         formData.append('filter_status',filter_status);
+        formData.append('filter_tag_number',filter_tag_number);
         formData.append('search',search);
 
         formData.append('array_search',array_search);
@@ -172,17 +175,17 @@ export var AccountabilityListController = function (page, param) {
         if (!page_block.isBlocked()) {
             page_block.block();
         }
+
+        await get_tag_number(`select[name="filter_tag_number"]`,'','filter',2);
         await loadAccountabilityList(1,'all');
 
         setTimeout(() => {
             page_block.release();
         }, 500);
 
-        _page.on('click','.filter',function(e){
+        _page.on('change','select.sfilter',function(e){
             e.preventDefault();
             e.stopImmediatePropagation();
-
-            let filter_status = $('input[name="filter_status"]:checked').val();
 
             page_block.block();
             loadAccountabilityList();
@@ -190,6 +193,8 @@ export var AccountabilityListController = function (page, param) {
                 page_block.release();
             }, 500);
         })
+
+        // $('select[name="filter_tag_number"]').val('all').trigger('change');
 
         _page.on('keyup','.input-search',function(e){
             e.preventDefault()

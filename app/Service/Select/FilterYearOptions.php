@@ -49,7 +49,7 @@ class FilterYearOptions
     public function filter_device_procurement()
     {
         return ImsItemInventory::query()
-            ->whereYear('received_at', '>=', 2025)
+            // ->whereYear('received_at', '>=', 2025)
             ->selectRaw('YEAR(received_at) as year')
             ->distinct()
             ->orderBy('year', 'desc')

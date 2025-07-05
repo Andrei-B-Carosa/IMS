@@ -112,18 +112,18 @@ export var dtInventoryList = function (table,param='') {
                         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
                     },
                 },
-                // {
-                //     data: "received_date", name: "received_date", title: "Received At",
-                //     sortable:false,
-                //     searchable:false,
-                //     className:'text-muted text-start min-w-100px',
-                //     render: function (data, type, row) {
-                //         if(!data){
-                //             return '--';
-                //         }
-                //         return data;
-                //     },
-                // },
+                {
+                    data: "received_date", name: "received_date", title: "Received At",
+                    // sortable:false,
+                    searchable:false,
+                    className:'text-muted text-start min-w-100px',
+                    render: function (data, type, row) {
+                        if(!data){
+                            return '--';
+                        }
+                        return data;
+                    },
+                },
                 // {
                 //     data: "received_by", name: "received_by", title: "Received By",
                 //     sortable:false,
@@ -229,9 +229,15 @@ export var dtInventoryList = function (table,param='') {
                                         <span class="path4"></span>
                                     </i>
                                 </button>
-                                ${row.status!=2 && row.status!=4 && row.status!=3 && row.status!=0 ?`
-                                    <button class="btn btn-icon btn-icon btn-light-danger btn-sm me-1 hover-elevate-up remove" data-id="${data}"
-                                        data-bs-toggle="tooltip" title="Remove item from inventory">
+
+                                    <button class="btn btn-icon btn-icon btn-sm me-1 hover-elevate-up
+                                    ${row.status!=2 && row.status!=4 && row.status!=3 && row.status!=0 ?`remove btn-light-danger`:`btn-secondary`}
+
+                                     " data-id="${data}"
+                                        data-bs-toggle="tooltip" title="${row.status!=2 && row.status!=4 && row.status!=3 && row.status!=0 ?
+                                            `Remove item from inventory`
+                                            :`Item is currently issued and cannot be remove from the inventory list`
+                                        }">
                                             <i class="ki-duotone ki-trash fs-2x">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
@@ -240,7 +246,6 @@ export var dtInventoryList = function (table,param='') {
                                                 <span class="path5"></span>
                                             </i>
                                     </button>
-                                `:``}
 
                             </div>`}
                         `;

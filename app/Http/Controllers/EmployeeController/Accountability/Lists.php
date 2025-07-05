@@ -21,28 +21,28 @@ class Lists extends Controller
     public function list(Request $rq)
     {
         $filter_status = $rq->filter_status != 'all' ? $rq->filter_status : false;
+        $filter_tag_number = $rq->filter_tag_number != 'all' ? $rq->filter_tag_number : false;
         $page = $rq->page;
         $search = $rq->search;
         $perPage = 12;
 
-        $query = ImsAccountability::with([
-            // 'issued_to' => function ($q) {
-            //     $q->where('status', 1);
-            // },
-            // 'accountability_item' => function ($q) {
-            //     $q->where('status', 1);
-            // },
-            'issued_by_emp'
-        ])
+        $query = ImsAccountability::with(['issued_by_emp'])
         ->when($filter_status,function($q) use($filter_status){
-            // $filter_status = $filter_status == 'active'?1:2;
             $q->where('status',$filter_status);
         })
         ->when($search, function($q) use($search) {
             $q->where('form_no', 'like', "%$search%")
               ->orWhereHas('issued_to.employee', function($q) use($search) {
                   $q->whereRaw("CONCAT(fname, ' ', lname) LIKE ?", ["%$search%"]);
+              })
+              ->orWhereHas('accountability_item.item_inventory', function($q) use($search) {
+                  $q->whereRaw("", ["%$search%"]);
               });
+        })
+        ->when($filter_tag_number,function($q) use($filter_tag_number){
+            $q->whereHas('accountability_item',function($q2) use($filter_tag_number){
+                $q2->where('item_inventory_id', $filter_tag_number);
+            });
         })
         ->where('is_deleted',null)->paginate($perPage,['*'], 'page', $page);
 
@@ -63,7 +63,7 @@ class Lists extends Controller
                 $issued_to = [];
                 foreach($item->issued_to as $row)
                 {
-                    if($row->status ==2){  continue; }
+                    // if($row->status ==2){  continue; }
                     $issued_to[] =
                     [
                         'id'=>Crypt::encrypt($row->emp_id),
