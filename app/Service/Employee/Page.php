@@ -230,6 +230,20 @@ class Page
         return view('employee.pages.inventory.new_inventory',compact('mis_personnel_options','supplier_options','item_options'))->render();
     }
 
+    public function new_consumables($rq)
+    {
+        $rq = $rq->merge(['id' => null, 'view'=>'1', 'type'=>'mis_personnel']);
+        $mis_personnel_options = (new EmployeeOptions)->list($rq);
+
+        $rq = $rq->merge(['id' => null, 'view'=>'1', 'type'=>'get_supplier']);
+        $supplier_options = (new SupplierOptions)->list($rq);
+
+        $rq = $rq->merge(['id' => null, 'view'=>'1', 'type'=>'get_consumable']);
+        $item_options = (new ItemOption)->list($rq);
+
+        return view('employee.pages.inventory.new_consumables',compact('mis_personnel_options','supplier_options','item_options'))->render();
+    }
+
     public function new_material_issuance($rq)
     {
 

@@ -40,33 +40,44 @@ export var dtInventoryList = function (table,param='') {
                     data: "tag_number", name: "tag_number", title: "Tag Number",
                     className:'text-muted',
                     sortable:false,
+                    render: function (data, type, row) {
+                        return `<span class="text-muted fw-bold">${data}</span>`;
+                    },
                 },
                 {
                     data: "name", name: "name", title: "Item",
                     sortable:false,
                     className:'text-start',
                     render: function (data, type, row) {
-                        if(row.serial_number){
+                        if(row.item_type_id == 1 || row.item_type_id == 8){
                             return `
                             <div class="d-flex flex-column">
-                                <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                                <a href="javascript:;" class="text-gray-800 text-hover-primary mb-2 fw-bold">
                                     ${data}
                                 </a>
-                                <span class="text-muted">S/N : ${row.serial_number}</span>
+                                <span class="text-muted fw-bold">${row.description}</span>
                             </div>
                             `;
                         }
                         return `
                         <div class="d-flex flex-column">
-                            <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                            <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1 fw-bold">
                                 ${data}
                             </a>
+                            ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
                         </div>
                         `;
                     }
                 },
                 {
-                    data: "item_name", name: "item_name", title: "Item Type",
+                    data: "item_name", name: "item_name", title: "Item Name",
+                    className:'',
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
+                },
+                {
+                    data: "item_type_id", name: "item_type_id", title: "Item Type",
                     className:'',
                     sortable:false,
                     searchable:false,
@@ -83,6 +94,7 @@ export var dtInventoryList = function (table,param='') {
                     data: "description", name: "description", title: "Description",
                     className:'',
                     sortable:false,
+                    visible:false,
                 },
                 {
                     data: "location", name: "location", title: "Location",
@@ -113,10 +125,9 @@ export var dtInventoryList = function (table,param='') {
                     },
                 },
                 {
-                    data: "received_date", name: "received_date", title: "Received At",
+                    data: "form_no", name: "form_no", title: "Form No.",
                     // sortable:false,
-                    searchable:false,
-                    className:'text-muted text-start min-w-100px',
+                    // searchable:false,
                     render: function (data, type, row) {
                         if(!data){
                             return '--';
@@ -125,7 +136,44 @@ export var dtInventoryList = function (table,param='') {
                     },
                 },
                 // {
-                //     data: "received_by", name: "received_by", title: "Received By",
+                //     data: "accountability_status", name: "accountability_status", title: "Status",
+                //     sortable:false,
+                //     searchable:false,
+                //     render: function (data, type, row) {
+                //         let status = {
+                //             1: ["success", "Issued"],
+                //             2: ["info", "Returned"],
+                //             3: ["secondary", "Temporary Issued"],
+                //             4: ["danger", "Under Repair"],
+
+                //         };
+                //         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
+                //     },
+                // },
+                {
+                    data: "accountable_to", name: "accountable_to", title: "Issued To",
+                    // sortable:false,
+                    // searchable:false,
+                    render: function (data, type, row) {
+                        if(!data){
+                            return '--';
+                        }
+                        return data;
+                    },
+                },
+                // {
+                //     data: "received_date", name: "received_date", title: "Received At",
+                //     searchable:false,
+                //     className:'text-muted text-start min-w-100px',
+                //     render: function (data, type, row) {
+                //         if(!data){
+                //             return '--';
+                //         }
+                //         return data;
+                //     },
+                // },
+                // {
+                //     data: "remarks", name: "remarks", title: "Remarks",
                 //     sortable:false,
                 //     searchable:false,
                 //     className:'text-start text-muted',
@@ -136,18 +184,6 @@ export var dtInventoryList = function (table,param='') {
                 //         return data;
                 //     },
                 // },
-                {
-                    data: "remarks", name: "remarks", title: "Remarks",
-                    sortable:false,
-                    searchable:false,
-                    className:'text-start text-muted',
-                    render: function (data, type, row) {
-                        if(!data){
-                            return '--';
-                        }
-                        return data;
-                    },
-                },
                 {
                     data: "encrypted_id",
                     name: "encrypted_id",
@@ -183,13 +219,13 @@ export var dtInventoryList = function (table,param='') {
                                         <div class="separator mb-3 opacity-75"></div>
                                         <div class="menu-item px-3">
                                             <a href="/inventory-details/${data}" class="menu-link px-3">
-                                                View Details
+                                                View Item Details
                                             </a>
                                         </div>
                                         ${row.status!=4 && row.status!=0 ?`
                                             <div class="menu-item px-3">
                                                 <a href="javascript:;" class="menu-link px-3 request-repair" data-id="${data}">
-                                                    Request Repair
+                                                    Request Item Repair
                                                 </a>
                                             </div>`:``}
                                         ${row.status==4 && row.status!=0? `<div class="menu-item px-3">
@@ -209,7 +245,7 @@ export var dtInventoryList = function (table,param='') {
                                     :
                                     `
                                     <a href="/inventory-details/${data}" class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up"
-                                        data-bs-toggle="tooltip" title="View Details">
+                                        data-bs-toggle="tooltip" title="View Item Details">
                                         <i class="ki-duotone ki-pencil fs-1">
                                             <span class="path1"></span>
                                             <span class="path2"></span>

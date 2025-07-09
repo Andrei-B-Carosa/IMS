@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\EmployeeController\Inventory;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\EmployeeController\Settings\FileMaintenance\Item;
 use App\Models\HrisCompanyLocation;
 use App\Models\ImsItem;
 use App\Models\ImsItemInventory;
@@ -23,13 +24,11 @@ class Lists extends Controller
     public function dt(Request $rq)
     {
 
-        $filter_category = $rq->filter_category != 'all' ? Crypt::decrypt($rq->filter_category) : false;
-        $filter_status = $rq->filter_status != 'all' ? $rq->filter_status : false;
-        $filter_location = $rq->filter_location != 'all' ? Crypt::decrypt($rq->filter_location) : false;
-        $filter_year = $rq->filter_year != 'all' ? $rq->filter_year : false;
-        $id = $rq->id?Crypt::decrypt($rq->id):'';
+        $filter_status = $rq->filter_status && $rq->filter_status != 'all' ? $rq->filter_status : false;
+        $filter_location = $rq->filter_location &&  $rq->filter_location != 'all' ? Crypt::decrypt($rq->filter_location) : false;
+        $filter_year = $rq->filter_year && $rq->filter_year != 'all' ? $rq->filter_year : false;
 
-        $data = ImsItemInventory::with('item_type')
+        $data = ImsItemInventory::with(['item_type','updated_by_emp','created_by_emp',])
         ->when($filter_status,function($q) use($filter_status){
             $q->where('status',$filter_status);
         })
@@ -39,8 +38,15 @@ class Lists extends Controller
         ->when($filter_location,function($q) use($filter_location){
             $q->where('company_location_id',$filter_location);
         })
-        ->when($filter_category,function($q) use($filter_category){
-            $q->where('item_type_id',$filter_category);
+        ->when(isset($rq->is_consumable),function($q){
+            $q->whereHas('item_type',function($q2){
+                $q2->where('display_to',2);
+            });
+        })
+        ->when(!isset($rq->is_consumable),function($q){
+            $q->whereHas('item_type',function($q2){
+                $q2->where('display_to',1);
+            });
         })
         ->where([['is_deleted',null]])
         ->get();
@@ -55,6 +61,22 @@ class Lists extends Controller
             }elseif($item->created_by !=null){
                 $last_updated_by = optional($item->created_by_emp)->fullname();
                 $last_update_at = Carbon::parse($item->created_at)->format('m-d-Y');
+            }
+
+            $array_accountable_to = [];
+            $form_no = null;
+
+            $acountability_item = $item->active_accountability_item;
+            if($acountability_item){
+                foreach($acountability_item->accountable_to as $accountable_to){
+                    if($accountable_to->status !=1){
+                        continue;
+                    }
+                    $array_accountable_to[] = $accountable_to->employee->fullname();
+                    if($accountable_to->accountability){
+                        $form_no = $accountable_to->accountability->form_no;
+                    }
+                }
             }
 
             $received_by_emp = optional($item->received_by_emp)->fullname();
@@ -117,6 +139,11 @@ class Lists extends Controller
             $item->item_name = $item->item_type->name ?? '--';
             $item->enable_quick_actions = $enable_quick_actions;
             $item->tag_number = $item->generate_tag_number();
+
+            $item->accountable_to = implode(', ', $array_accountable_to);
+            $item->form_no = $form_no;
+            $item->accountability_status = $item->status;
+
             $item->encrypted_id = Crypt::encrypt($item->id);
             return $item;
         });
@@ -169,6 +196,67 @@ class Lists extends Controller
             ];
 
             ImsItemInventory::insert($create);
+            DB::commit();
+            return response()->json(['status' => 'success', 'message'=>'New Inventory is saved']);
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+
+        }
+    }
+
+    public function update_consumables(Request $rq)
+    {
+        try {
+            DB::beginTransaction();
+
+            $issued_item = json_decode($rq->issued_item,true);
+
+            $company_location_id = Crypt::decrypt($rq->company_location);
+            $supplier_id = isset($rq->supplier) ? Crypt::decrypt($rq->supplier):null;
+
+            $received_at = Carbon::createFromFormat('m-d-Y',$rq->received_at)->format('Y-m-d');
+            $warranty_end_at = isset($rq->warranty_end_at)?Carbon::createFromFormat('m-d-Y',$rq->warranty_end_at)->format('Y-m-d'):null;
+
+            $received_by = Crypt::decrypt($rq->received_by);
+            $created_by = Auth::user()->emp_id;
+
+            $insert = [];
+            foreach($issued_item as $row)
+            {
+                $id = Crypt::decrypt($row['id']);
+                $query = ImsItem::find($id);
+                if(!$query){
+                    return false;
+                }
+                $description = $query->description;
+                for($x=1;$x<=$row['quantity'];$x++){
+                    $insert[] = [
+                        'item_brand_id'=> $query->item_brand_id,
+                        'item_type_id'=> $query->item_type_id,
+                        'company_location_id'=>$company_location_id,
+                        'name'=> $query->name,
+                        'description'=> $description,
+                        'price'=> $query->price,
+                        'serial_number'=> $rq->serial_number,
+                        'received_at'=> $received_at,
+                        'warranty_end_at'=> $warranty_end_at,
+                        'received_by'=> $received_by,
+                        'supplier_id'=> $supplier_id,
+                        'remarks'=> $rq->remarks,
+                        'status'=> $rq->status,
+                        'created_by'=> $created_by,
+                    ];
+                }
+
+            }
+            if(empty($insert)){
+                return response()->json(['status' => 'error', 'message'=>'Something went wrong, try again later']);
+            }
+            ImsItemInventory::insert($insert);
             DB::commit();
             return response()->json(['status' => 'success', 'message'=>'New Inventory is saved']);
         }catch(Exception $e){

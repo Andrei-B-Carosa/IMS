@@ -99,6 +99,8 @@ class IssuedDevices extends Controller
             $item->returned_at = $returned_at;
 
             $item->accountable_to = implode(', ', $array_accountable_to);
+            $item->form_no = $form_no;
+
             $item->tag_number = $tag_number;
             $item->name =  $item->name ?? $description;
             $item->description = $description;
@@ -106,7 +108,6 @@ class IssuedDevices extends Controller
             $item->serial_number = $item->serial_number;
             $item->price = $item->price;
             $item->type = $item_type;
-            $item->form_no = $form_no;
             $item->accountability_status = $acountability_item->status;
             $item->encrypted_id = Crypt::encrypt($item->id);
 

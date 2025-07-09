@@ -42,7 +42,7 @@
     {{-- General Details --}}
     <div class="card card-flush py-4 my-10" id="card-general-details">
         <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_general_details_collapsible">
-            <div class="card-title">General Details ({{ $data->generate_tag_number() }})</div>
+            <div class="card-title">General Details @if($data->item_type->display_to == 1) ({{ $data->generate_tag_number() }}) @endif</div>
             <div class="card-toolbar">
                 <div class="card-toolbar rotate-180">
                     <i class="ki-duotone ki-down fs-1"></i>
@@ -115,7 +115,7 @@
                             <label class="fw-semibold fs-6 mb-2 me-2">
                                 Warranty End At
                             </label>
-                                @if($data->warranty_end_at > $data->received_at && (isset($data->warranty_end_at) && isset($data->received_at)))
+                                @if(isset($data->warranty_end_at) && (now()->gt($data->warranty_end_at)))
                                     <span class="badge badge-danger">Warranty Ended</span>
                                 @endif
                             <input type="text" name="warranty_end_at" input-control="date-picker" value="{{ isset($data->warranty_end_at) ? date('m-d-Y',strtotime($data->warranty_end_at)) : null }}" default-date="" class="form-control  mb-3 mb-lg-0 flatpickr">

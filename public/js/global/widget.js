@@ -65,3 +65,35 @@ export async function get_cellphone_count() {
             });
     });
 }
+
+export async function get_monitor_count() {
+    return new Promise((resolve, reject) => {
+        const count = new countUp.CountUp("count-monitor");
+        (new RequestHandler).get("/widget/monitor-count")
+            .then((res) => {
+                count.update(res.payload);
+            })
+            .catch((error) => {
+                console.error(error);
+                resolve(false);
+            })
+            .finally(() => {
+            });
+    });
+}
+
+export async function get_router_count() {
+    return new Promise((resolve, reject) => {
+        const count = new countUp.CountUp("count-router");
+        (new RequestHandler).get("/widget/router-count")
+            .then((res) => {
+                count.update(res.payload);
+            })
+            .catch((error) => {
+                console.error(error);
+                resolve(false);
+            })
+            .finally(() => {
+            });
+    });
+}

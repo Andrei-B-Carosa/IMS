@@ -33,6 +33,13 @@ class ImsItemType extends Model
                    ->value('id');
     }
 
+    public static function getInkId()
+    {
+        return self::whereRaw('LOWER(name) = ?', ['ink'])
+                   ->where('is_active', 1)
+                   ->value('id');
+    }
+
     public static function getLaptopId()
     {
         return self::whereRaw('LOWER(name) = ?', ['laptop'])

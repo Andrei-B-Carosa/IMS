@@ -21,6 +21,7 @@ import { DevicePerSite } from './fn_controller/report/devices_per_site.js';
 import { DevicePerDepartment } from './fn_controller/report/devices_per_department.js';
 import { IssuedDevicesController } from './fn_controller/report/issued_devices.js';
 import { DeviceProcurementController } from './fn_controller/report/device_procurement.js';
+import { NewConsumablesController } from './fn_controller/inventory/new_consumables.js';
 
 async function init_page(_default) {
     let pathname = window.location.pathname;
@@ -85,6 +86,8 @@ const _handlers = {
     devices_per_department:(page,param)=>DevicePerDepartment(page,param),
     issued_devices:(page,param)=>IssuedDevicesController(page,param),
     device_procurement:(page,param)=>DeviceProcurementController(page,param),
+    new_consumables:(page,param)=>NewConsumablesController(page,param),
+
 };
 
 jQuery(document).ready(function() {

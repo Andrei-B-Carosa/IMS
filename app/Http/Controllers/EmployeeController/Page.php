@@ -80,7 +80,6 @@ class Page extends Controller
     {
         $page = new EmployeePage;
         $role = 'employee';
-
         $rq->session()->put($role . '_page', $rq->page ?? 'dashboard');
         $view = $rq->session()->get($role . '_page');
 
@@ -89,6 +88,7 @@ class Page extends Controller
             'new-accountability' => fn() => $page->new_accountability($rq),
             'inventory-details' => fn() => $page->inventory_details($rq),
             'new-inventory' => fn() => $page->new_inventory($rq),
+            'new-consumables' => fn() => $page->new_consumables($rq),
             'new-material-issuance' => fn() => $page->new_material_issuance($rq),
             'material-issuance-details' => fn() => $page->material_issuance_details($rq),
             'item-details' => fn() => $page->item_details($rq),

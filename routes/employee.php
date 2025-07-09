@@ -45,6 +45,8 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
 
     Route::get('/inventory-details/{id}', 'system_file');
     Route::get('/new-inventory','system_file')->name('employee.new_inventory');
+    Route::get('/new-consumables','system_file')->name('employee.new_inventory.consumables');
+
 
     Route::get('/new-material-issuance','system_file')->name('employee.new_material_issuance');
     Route::get('/material-issuance-details/{id}', 'system_file');
@@ -100,7 +102,10 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
 
     Route::controller(InventoryLists::class)->prefix('inventory')->group(function() {
         Route::post('/dt', 'dt');
+
         Route::post('/update', 'update');
+        Route::post('/update-consumables', 'update_consumables');
+
         Route::post('/download-qr', 'download_qr');
         // Route::post('/check-item-tag', 'check_item_tag');
 

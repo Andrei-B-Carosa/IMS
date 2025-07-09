@@ -61,18 +61,18 @@ export var dtIssuedItems = function (table,param=false) {
                         `;
                     }
                 },
-                {
-                    data: "description", name: "description", title: "Description",
-                    className:'',
-                    sortable:false,
-                    searchable:false,
-                    render: function (data, type, row) {
-                        if(!data){
-                            return '--';
-                        }
-                        return data;
-                    },
-                },
+                // {
+                //     data: "description", name: "description", title: "Description",
+                //     className:'',
+                //     sortable:false,
+                //     searchable:false,
+                //     render: function (data, type, row) {
+                //         if(!data){
+                //             return '--';
+                //         }
+                //         return data;
+                //     },
+                // },
                 {
                     data: "serial_number", name: "serial_number", title: "Serial Number",
                     sortable:false,

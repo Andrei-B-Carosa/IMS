@@ -2,14 +2,14 @@
     <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
         <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
             <li class="nav-item">
-                <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#tab_devices">Devices</a>
+                <a class="nav-link text-active-primary pb-4" data-tab="devices" data-bs-toggle="tab" href="#tab_devices">Devices</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#tab_consumables">Consumables</a>
+                <a class="nav-link text-active-primary pb-4" data-tab="consumables" data-bs-toggle="tab" href="#tab_consumables">Consumables</a>
             </li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane fade show active" id="tab_devices" role="tab-panel">
+            <div class="tab-pane fade" id="tab_devices" role="tab-panel">
                 <div class="d-flex flex-column gap-7 gap-lg-10">
                     <div class="card card-inventory-list">
                         <div class="card-header border-0 pt-6">
@@ -22,49 +22,6 @@
 
                             <div class="card-toolbar">
                                 <div class="d-flex align-items-center position-relative my-1">
-
-                                    {{-- <button type="button" class="btn btn-light-primary me-3"
-                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                        <i class="ki-outline ki-filter fs-2"></i> Filter
-                                    </button>
-                                    <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px"
-                                        data-kt-menu="true">
-                                        <div class="px-7 py-5">
-                                            <div class="fs-5 text-dark fw-bold">Filter Options</div>
-                                        </div>
-                                        <div class="separator border-gray-200"></div>
-                                        <div class="px-7 py-5" data-kt-user-table-filter="form">
-                                            <div class="mb-10">
-                                                <label class="form-label fs-6 fw-semibold">Item:</label>
-                                                <select class="form-select form-select-solid fw-bold"
-                                                    data-placeholder="Select option"
-                                                    data-allow-clear="true"
-                                                    data-hide-search="true" name="filter_item">
-                                                    <option></option>
-                                                    <option value="all" selected>All</option>
-                                                    <option value="1">Accountability</option>
-                                                    <option value="2">Material Issuance</option>
-                                                </select>
-                                            </div>
-                                            <div class="mb-10">
-                                                <label class="form-label fs-6 fw-semibold">Status:</label>
-                                                <select class="form-select form-select-solid fw-bold"
-                                                    data-placeholder="Select option"
-                                                    data-allow-clear="true"
-                                                    data-hide-search="true" name="filter_status">
-                                                    <option></option>
-                                                    <option value="all" selected>All</option>
-                                                    <option value="1">Available</option>
-                                                    <option value="2">Issued</option>
-                                                </select>
-                                            </div>
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button"
-                                                    class="btn btn-primary fw-semibold px-6 filter"
-                                                    data-kt-menu-dismiss="true">Apply</button>
-                                            </div>
-                                        </div>
-                                    </div> --}}
                                     <div class="d-flex flex-stack flex-wrap gap-4">
                                         <div class="d-flex align-items-center fw-bold">
                                             <div class="text-gray-400 fs-7 me-2">Category</div>
@@ -75,6 +32,71 @@
                                                 <option value="all" selected>Show all</option>
                                             </select>
                                         </div>
+                                        <div class="d-flex align-items-center fw-bold">
+                                            <div class="text-gray-400 fs-7 me-2">Status</div>
+                                            <select
+                                                class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto sfilter"
+                                                data-control="select2" data-hide-search="true" data-minimum-results-for-search="Infinity"
+                                                data-dropdown-css-class="w-150px"
+                                                data-placeholder="Select an option" name="filter_status">
+                                                <option></option>
+                                                <option value="all" selected>Show All</option>
+                                                <option value="0">For Disposal</option>
+                                                <option value="1">Available</option>
+                                                <option value="2">Issued</option>
+                                                <option value="4">Under Repair</option>
+                                            </select>
+                                        </div>
+                                        <div class="d-flex align-items-center fw-bold">
+                                            <div class="text-gray-400 fs-7 me-2">Location</div>
+                                            <select
+                                                class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto sfilter"
+                                                data-control="select2" data-minimum-results-for-search="Infinity" data-hide-search="true"
+                                                data-dropdown-css-class="w-150px"
+                                                data-placeholder="" name="filter_location">
+                                                <option value="all" selected>Show all</option>
+                                            </select>
+                                        </div>
+                                        <div class="d-flex align-items-center fw-bold">
+                                            <div class="text-gray-400 fs-7 me-2">Year</div>
+                                            <select
+                                                class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto sfilter"
+                                                data-control="select2" data-minimum-results-for-search="Infinity" data-hide-search="true"
+                                                data-dropdown-css-class="w-150px"
+                                                data-placeholder="" name="filter_year">
+                                                <option value="all" selected>Show all</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <a href="{{ route('employee.new_inventory') }}" type="button" class="btn btn-primary">
+                                        <i class="ki-outline ki-plus fs-2"></i> New Device
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card-body pt-0">
+                            <x-elements.datatable id="inventory-list" class="table-striped table-sm align-middle table-row-dashed dataTable">
+                            </x-elements.datatable>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab_consumables" role="tab-panel">
+                <div class="d-flex flex-column gap-7 gap-lg-10">
+                    <div class="card card-consumable-list">
+                        <div class="card-header border-0 pt-6">
+                            <div class="card-title">
+                                <div class="d-flex align-items-center position-relative my-1">
+                                    <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
+                                    <input type="text" class="form-control form-control-solid w-250px ps-13 search" placeholder="Search here . . ." />
+                                </div>
+                            </div>
+
+                            <div class="card-toolbar">
+                                <div class="d-flex align-items-center position-relative my-1">
+                                    <div class="d-flex flex-stack flex-wrap gap-4">
                                         <div class="d-flex align-items-center fw-bold">
                                             <div class="text-gray-400 fs-7 me-2">Status</div>
                                             <select
@@ -110,22 +132,18 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <a href="{{ route('employee.new_inventory') }}" type="button" class="btn btn-primary">
-                                        <i class="ki-outline ki-plus fs-2"></i> New Inventory
+                                    <a href="{{ route('employee.new_inventory.consumables') }}" type="button" class="btn btn-primary">
+                                        <i class="ki-outline ki-plus fs-2"></i> New Consumables
                                     </a>
                                 </div>
 
                             </div>
                         </div>
                         <div class="card-body pt-0">
-                            <x-elements.datatable id="inventory-list" class="table-striped table-sm align-middle table-row-dashed dataTable">
+                            <x-elements.datatable id="inventory-consumable-list" class="table-striped table-sm align-middle table-row-dashed dataTable">
                             </x-elements.datatable>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="tab-pane fade show active" id="tab_consumables" role="tab-panel">
-                <div class="d-flex flex-column gap-7 gap-lg-10">
                 </div>
             </div>
         </div>

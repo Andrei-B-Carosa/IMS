@@ -4,7 +4,7 @@ import {RequestHandler} from "../../../global/request.js"
 import {modal_state,fv_validator, initFormValidation} from "../../../global.js"
 import { dtInventoryList } from "../../dt_controller/inventory/inventory_list.js";
 
-export function fvRepairRequest(_table=false,param=false){
+export function fvRepairRequest(_table='#inventory-list_table',param=false){
 
     var init_RepairRequest = (function () {
 
@@ -82,7 +82,11 @@ export function fvRepairRequest(_table=false,param=false){
                                         $(modal_id).find('select[name="is_active"]').val('').trigger('change');
                                         $(modal_id).find('.submit').attr('data-id','');
                                         $(modal_id).find('.submit').attr('data-inventory-id','');
-                                        dtInventoryList('inventory-list').init();
+                                        if($(_table).length){
+                                            $(_table).DataTable().ajax.reload(null,false);
+                                        }else{
+                                            dtInventoryList('inventory-list').init();
+                                        }
                                     }
                                 })
                                 .catch((error) => {

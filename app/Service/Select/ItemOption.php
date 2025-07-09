@@ -27,6 +27,7 @@ class ItemOption
 
         return match($rq->type){
             'get_item'=> $this->get_item($query,$search,$html),
+            'get_consumable'=> $this->get_consumable($query,$search,$html),
             'monitor' => $this->get_monitor($query,$search,$html),
             'accessories' => $this->get_other_accessories($query,$search,$html),
             'search_ram'=> $this->search_ram($rq,$query,$html),
@@ -41,9 +42,10 @@ class ItemOption
         $gpu_id = ImsItemType::getGPUId();
         $hdd_id = ImsItemType::getHDDId();
         $ssd_id = ImsItemType::getSSDId();
+        $ink_id = ImsItemType::getInkId();
 
         $data = $query
-        ->whereNotIn('item_type_id',[$ram_id,$gpu_id,$ssd_id,$hdd_id])
+        ->whereNotIn('item_type_id',[$ram_id,$gpu_id,$ssd_id,$hdd_id,$ink_id])
         ->get();
         if ($data->isEmpty()) {
             return '<option disabled>No Available Option</option>';
@@ -56,6 +58,27 @@ class ItemOption
         }
         return $html;
     }
+
+    public function get_consumable($query,$search,$html)
+    {
+        $ink_id = ImsItemType::getInkId();
+
+        $data = $query
+        ->where('item_type_id',$ink_id)
+        ->get();
+        if ($data->isEmpty()) {
+            return '<option disabled>No Available Option</option>';
+        }
+        foreach ($data as $row) {
+            $selected = $search === $row->id ? 'selected' : '';
+            $id = Crypt::encrypt($row->id);
+            $name = $row->name??$row->description;
+            $html .= '<option value="'.e($id).'"'.e($selected).'>'.e($name).'</option>';
+        }
+        return $html;
+    }
+
+
 
     public function get_monitor($query,$search,$html)
     {

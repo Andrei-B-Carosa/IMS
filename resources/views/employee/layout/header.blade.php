@@ -100,11 +100,11 @@
 
                                <div class="separator my-2"></div>
 
-                               <div class="menu-item px-5">
+                               {{-- <div class="menu-item px-5">
                                    <a href="account/overview.html" class="menu-link px-5">
                                        My Profile
                                    </a>
-                               </div>
+                               </div> --}}
                                <div class="menu-item px-5">
                                 <a target="_blank" class="menu-link px-5 text-danger" onclick="event.preventDefault();
                                             document.getElementById('logout').submit();">
