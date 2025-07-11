@@ -144,7 +144,10 @@ class Lists extends Controller
                 'created_by'=> $created_by,
             ];
 
-            ImsItemInventory::insert($create);
+            $create = ImsItemInventory::create($create);
+            $create->tag_number = $create->generate_tag_number();
+            $create->save();
+
             DB::commit();
             return response()->json(['status' => 'success', 'message'=>'New Inventory is saved']);
         }catch(Exception $e){
