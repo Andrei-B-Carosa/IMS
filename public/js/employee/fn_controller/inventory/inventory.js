@@ -13,7 +13,7 @@ export var InventoryListController = async function (page, param) {
     let tabLoaded = [];
 
     async function loadActiveTab(tab=false){
-        tab = (tab == false ? (localStorage.getItem("inventory_tab") || 'device') : tab);
+        tab = (tab == false ? (localStorage.getItem("inventory_tab") || 'devices') : tab);
 
         const _tab = {
             "devices": deviceTab,
