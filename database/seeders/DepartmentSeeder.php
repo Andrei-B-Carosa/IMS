@@ -183,19 +183,19 @@ class DepartmentSeeder extends Seeder
             //     'created_at' => now(),
             //     'updated_at' => now(),
             // ],
-            [
-                'name' => 'Safety Department',
-                'description' => 'Safety Department',
-                'is_active' => 1,
-                'code' => 'OOP',
-                'is_deleted' => null,
-                'deleted_by' => null,
-                'deleted_at' => null,
-                'created_by' => 1,
-                'updated_by' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            // [
+            //     'name' => 'Safety Department',
+            //     'description' => 'Safety Department',
+            //     'is_active' => 1,
+            //     'code' => 'OOP',
+            //     'is_deleted' => null,
+            //     'deleted_by' => null,
+            //     'deleted_at' => null,
+            //     'created_by' => 1,
+            //     'updated_by' => 1,
+            //     'created_at' => now(),
+            //     'updated_at' => now(),
+            // ],
         ]);
     }
 }

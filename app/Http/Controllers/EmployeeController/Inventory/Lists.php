@@ -9,6 +9,7 @@ use App\Models\ImsItem;
 use App\Models\ImsItemInventory;
 use App\Models\ImsItemRepairLog;
 use App\Models\ImsItemType;
+use App\Models\ImsStoredProcedure;
 use App\Service\Reusable\Datatable;
 use Carbon\Carbon;
 use Exception;
@@ -26,66 +27,22 @@ class Lists extends Controller
 
         $filter_status = $rq->filter_status && $rq->filter_status != 'all' ? $rq->filter_status : false;
         $filter_location = $rq->filter_location &&  $rq->filter_location != 'all' ? Crypt::decrypt($rq->filter_location) : false;
+        $filter_category = $rq->filter_category &&  $rq->filter_category != 'all' ? Crypt::decrypt($rq->filter_category) : false;
         $filter_year = $rq->filter_year && $rq->filter_year != 'all' ? $rq->filter_year : false;
 
-        $data = ImsItemInventory::with(['item_type','updated_by_emp','created_by_emp',])
-        ->when($filter_status,function($q) use($filter_status){
-            $q->where('status',$filter_status);
-        })
-        ->when($filter_year,function($q) use($filter_year){
-            $q->whereYear('received_at', $filter_year);
-        })
-        ->when($filter_location,function($q) use($filter_location){
-            $q->where('company_location_id',$filter_location);
-        })
-        ->when(isset($rq->is_consumable),function($q){
-            $q->whereHas('item_type',function($q2){
-                $q2->where('display_to',2);
-            });
-        })
-        ->when(!isset($rq->is_consumable),function($q){
-            $q->whereHas('item_type',function($q2){
-                $q2->where('display_to',1);
-            });
-        })
-        ->where([['is_deleted',null]])
-        ->get();
+        $data = ImsStoredProcedure::sp_get_inventory_accountability(
+            $filter_status,
+            $filter_location,
+            $filter_year,
+            (isset($rq->is_consumable)? 1:0),
+            $filter_category,
+        );
 
         $data->transform(function ($item, $key) {
-
-            $last_updated_by = null;
-            $last_update_at = null;
-            if($item->updated_by != null){
-                $last_updated_by = optional($item->updated_by_emp)->fullname();
-                $last_update_at = Carbon::parse($item->updated_at)->format('m-d-Y');
-            }elseif($item->created_by !=null){
-                $last_updated_by = optional($item->created_by_emp)->fullname();
-                $last_update_at = Carbon::parse($item->created_at)->format('m-d-Y');
-            }
-
-            $array_accountable_to = [];
-            $form_no = null;
-
-            $acountability_item = $item->active_accountability_item;
-            if($acountability_item){
-                foreach($acountability_item->accountable_to as $accountable_to){
-                    if($accountable_to->status !=1){
-                        continue;
-                    }
-                    $array_accountable_to[] = $accountable_to->employee->fullname();
-                    if($accountable_to->accountability){
-                        $form_no = $accountable_to->accountability->form_no;
-                    }
-                }
-            }
-
-            $received_by_emp = optional($item->received_by_emp)->fullname();
-            $received_at = Carbon::parse($item->received_at)->format('M d, Y') ?? '--';
-
-            $name = $item->name;
-            $description = $item->description;
             $item_type = $item->item_type_id;
-            $enable_quick_actions = $item->item_type->display_to == 1 ? true:false ;
+            $description = $item->description;
+            $enable_quick_actions = $item->display_to == 1 ? true:false ;
+            $received_at = Carbon::parse($item->received_at)->format('M d, Y') ?? '--';
 
             if($item_type == 1 || $item_type == 8) {
                 $array = json_decode($description,true);
@@ -126,25 +83,17 @@ class Lists extends Controller
             }
 
             $item->count = $key + 1;
-            $item->last_updated_by = $last_updated_by;
-            $item->last_update_at = $last_update_at;
-
-            $item->received_date = $received_at;
-            $item->received_by = $received_by_emp;
-
-            $item->name =  $name ?? $description;
-            $item->location =  $item->company_location->name;
-            $item->description = $description;
-            $item->item_number = $item->item_type->item_number ??'';
-            $item->item_name = $item->item_type->name ?? '--';
             $item->enable_quick_actions = $enable_quick_actions;
-            $item->tag_number = $item->generate_tag_number();
 
-            $item->accountable_to = implode(', ', $array_accountable_to);
-            $item->form_no = $form_no;
-            $item->accountability_status = $item->status;
+            $item->description = $description;
+            $item->location =  $item->company_location;
+            $item->received_at =  $received_at;
+            $item->accountable_to = $item->issued_to_names;
 
             $item->encrypted_id = Crypt::encrypt($item->id);
+            $item->accountability_id = Crypt::encrypt($item->accountability_id);
+
+
             return $item;
         });
 

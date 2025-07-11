@@ -39,7 +39,7 @@ export var dtInventoryList = function (table,param='') {
                 {
                     data: "tag_number", name: "tag_number", title: "Tag Number",
                     className:'text-muted',
-                    sortable:false,
+                    // sortable:false,
                     render: function (data, type, row) {
                         return `<span class="text-muted fw-bold">${data}</span>`;
                     },
@@ -56,6 +56,7 @@ export var dtInventoryList = function (table,param='') {
                                     ${data}
                                 </a>
                                 <span class="text-muted fw-bold">${row.description}</span>
+                                ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
                             </div>
                             `;
                         }
@@ -126,8 +127,23 @@ export var dtInventoryList = function (table,param='') {
                 },
                 {
                     data: "form_no", name: "form_no", title: "Form No.",
-                    // sortable:false,
-                    // searchable:false,
+                    sortable:false,
+                    visible:false,
+                },
+                {
+                    data: "received_at", name: "received_at", title: "Received At",
+                    searchable:false,
+                    className:'text-muted text-start min-w-100px',
+                    render: function (data, type, row) {
+                        if(!data){ return '--'; }
+                        return data;
+                    },
+                },
+                {
+                    data: "remarks", name: "remarks", title: "Remarks",
+                    sortable:false,
+                    searchable:false,
+                    className:'text-start text-muted',
                     render: function (data, type, row) {
                         if(!data){
                             return '--';
@@ -135,55 +151,29 @@ export var dtInventoryList = function (table,param='') {
                         return data;
                     },
                 },
-                // {
-                //     data: "accountability_status", name: "accountability_status", title: "Status",
-                //     sortable:false,
-                //     searchable:false,
-                //     render: function (data, type, row) {
-                //         let status = {
-                //             1: ["success", "Issued"],
-                //             2: ["info", "Returned"],
-                //             3: ["secondary", "Temporary Issued"],
-                //             4: ["danger", "Under Repair"],
-
-                //         };
-                //         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
-                //     },
-                // },
+                {
+                    data: "accountability_id", name: "accountability_id", title: "Accountabiity ID",
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
+                },
                 {
                     data: "accountable_to", name: "accountable_to", title: "Issued To",
-                    // sortable:false,
-                    // searchable:false,
+                    sortable:false,
                     render: function (data, type, row) {
-                        if(!data){
-                            return '--';
-                        }
-                        return data;
-                    },
+                        if(!data){  return '--';  }
+                        return `
+                        <a  href="/accountability-details/${row.accountability_id}" class="text-hover-primary">
+                            <div class="d-flex flex-column">
+                                <span class="text-gray-800 fw-bold">
+                                    ${data}
+                                </span>
+                                <span class="text-muted fw-bold">Accountability No : ${row.form_no}</span>
+                            </div>
+                        </a>
+                        `;
+                    }
                 },
-                // {
-                //     data: "received_date", name: "received_date", title: "Received At",
-                //     searchable:false,
-                //     className:'text-muted text-start min-w-100px',
-                //     render: function (data, type, row) {
-                //         if(!data){
-                //             return '--';
-                //         }
-                //         return data;
-                //     },
-                // },
-                // {
-                //     data: "remarks", name: "remarks", title: "Remarks",
-                //     sortable:false,
-                //     searchable:false,
-                //     className:'text-start text-muted',
-                //     render: function (data, type, row) {
-                //         if(!data){
-                //             return '--';
-                //         }
-                //         return data;
-                //     },
-                // },
                 {
                     data: "encrypted_id",
                     name: "encrypted_id",
