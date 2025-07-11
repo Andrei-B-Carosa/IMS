@@ -13,7 +13,7 @@ class ImsTagNumberSeeder extends Seeder
      */
     public function run(): void
     {
-        $items = ImsItemInventory::all();
+        $items = ImsItemInventory::where('tag_number',null)->get();
 
         foreach ($items as $item) {
             // call your model function to get tag number
