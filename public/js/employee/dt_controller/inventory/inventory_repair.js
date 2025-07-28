@@ -37,7 +37,7 @@ export var dtInventoryRepair = function (table,param='') {
                 {
                     data: "tag_number", name: "tag_number", title: "Tag Number",
                     className:'text-muted',
-                    // sortable:false,
+                    sortable:false,
                     render: function (data, type, row) {
                         return `<span class="text-muted fw-bold">${data}</span>`;
                     },
@@ -77,9 +77,9 @@ export var dtInventoryRepair = function (table,param='') {
                 },
                 {
                     data: "serial_number", name: "serial_number", title: "Serial Number",
-                    sortable:false,
                     className:'text-center',
                     visible:false,
+                    sortable:false,
                 },
                 {
                     data: "item_type_id", name: "item_type_id", title: "Item Type",
