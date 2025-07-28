@@ -97,4 +97,74 @@ class ImsItemInventory extends Model
     {
         return $this->hasMany(ImsItemRepairLog::class,'item_inventory_id','id');
     }
+
+    public function status_badge(){
+        $status = [
+            0 => ['warning', 'Disposed'],
+            1 => ['info', 'Available'],
+            2 => ['success', 'Issued'],
+            3 => ['secondary', 'Temporary Issued'],
+            4 => ['danger', 'Under Repair'],
+        ];
+
+        if (!isset($status[$this->status])) {
+            return '<span class="badge badge-light">Unknown</span>';
+        }
+
+        [$color, $label] = $status[$this->status];
+
+        return "<span class=\"badge badge-{$color}\">{$label}</span>";
+    }
+
+    public function description_construct()
+    {
+        if ($this->item_type_id == 1 || $this->item_type_id == 8) {
+        $array = json_decode($this->description, true);
+
+        $storage_html = '';
+        if (!empty($array['storage'])) {
+            $storage = json_decode($array['storage'], true);
+            foreach ($storage as $row) {
+                $storage_html .= 'Storage: ' . ($row['description'] ?? '') . '<br>';
+            }
+        }
+
+        $ram_html = '';
+        if (!empty($array['ram'])) {
+            $ram = json_decode($array['ram'], true);
+            $ram_html = collect($ram)
+                ->groupBy('name')
+                ->map(function ($items, $size) {
+                    return (count($items) > 1 ? count($items) . 'x' : '') . $size;
+                })
+                ->implode(', ');
+        }
+
+        $gpu_html = '';
+        if (!empty($array['gpu'])) {
+            $gpu = json_decode($array['gpu'], true);
+            foreach ($gpu as $row) {
+                if (($row['type'] ?? '') === 'Integrated') {
+                    continue;
+                }
+                $gpu_html .= 'GPU: ' . ($row['description'] ?? '') . '<br>';
+            }
+        }
+
+        $description = '<div class="fs-6">'
+            . ($this->item_type_id == 8 ? 'Model: ' . ($array['model'] ?? '') . '<br>' : '')
+            . 'CPU: ' . ($array['cpu'] ?? '') . '<br>'
+            . 'RAM: ' . $ram_html . '<br>'
+            . $storage_html
+            . 'OS: ' . ($array['windows_version'] ?? '') . '<br>'
+            . $gpu_html
+            . 'Device Name: ' . ($array['device_name'] ?? '') . '<br>'
+            . '</div>';
+
+        return $description;
+    }
+
+    // If item_type_id doesn't match
+    return $this->description;
+    }
 }

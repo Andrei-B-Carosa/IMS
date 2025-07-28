@@ -6,7 +6,7 @@
 ])
 
 @if ($label ?? false)
-<label for="{{ $id ?? $name }}" class="form-label fw-bold">{{ $label }}</label>
+<label for="{{ $id ?? $name }}" class="fw-semibold fs-6 mb-2">{{ $label }}</label>
 @endif
 
 <textarea

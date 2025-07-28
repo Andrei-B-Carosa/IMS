@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ims_item_repair_logs', function (Blueprint $table) {
+        Schema::create('ims_item_pms', function (Blueprint $table) {
             $table->id();
             $table->integer('item_inventory_id')->nullable();
             $table->integer('issued_by')->nullable();
@@ -19,21 +19,13 @@ return new class extends Migration
             $table->date('start_at');
             $table->date('end_at')->nullable();
 
-            $table->integer('repair_type')->nullable();
             $table->tinyInteger('status')->nullable();
             $table->tinyInteger('item_inventory_status')->nullable();
-            $table->longText('initial_diagnosis')->nullable();
             $table->longText('work_to_be_done')->nullable();
-
-            $table->tinyInteger('is_issued')->nullable();
-            $table->integer('accountability_id')->nullable();
-            $table->text('last_accountable_to')->nullable();
-            $table->string('accountability_form_no')->nullable();
 
             $table->tinyInteger('is_deleted')->nullable();
             $table->tinyInteger('deleted_by')->nullable();
             $table->dateTime('deleted_at')->nullable();
-            $table->string('remarks')->nullable();
 
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
@@ -47,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ims_item_repair_logs');
+        Schema::dropIfExists('ims_item_pms');
     }
 };

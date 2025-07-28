@@ -24,4 +24,18 @@ class ImsStoredProcedure extends Model
             ])
         );
     }
+
+    public static function sp_get_repair_logs(
+            $filter_status,
+            $filter_location,
+            $filter_category,
+    ){
+        return static::hydrate(
+            DB::select('call sp_get_repair_logs(?,?,?)',[
+                $filter_status,
+                $filter_location,
+                $filter_category,
+            ])
+        );
+    }
 }

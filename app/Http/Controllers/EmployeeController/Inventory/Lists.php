@@ -131,7 +131,6 @@ class Lists extends Controller
                 'item_type_id'=> $query->item_type_id,
                 'company_location_id'=>$company_location_id,
                 'name'=> $query->name,
-                // 'tag_number'=> $rq->tag_number,
                 'description'=> $description,
                 'price'=> $query->price,
                 'serial_number'=> $rq->serial_number,
@@ -251,50 +250,12 @@ class Lists extends Controller
         }
     }
 
-    // public function download_qr(Request $rq)
-    // {
-    //     try{
-    //         $id = Crypt::decrypt($rq->encrypted_id);
-    //         $item = ImsItemInventory::findOrFail($id);
-    //         $text_below = $item->generate_tag_number();
-
-    //         $url = 'http://156.67.221.153/qr/'.base64_encode($id);
-
-    //         $qrPng = QrCode::format('png')->size(300)->margin(1)->generate($url);
-    //         $qrImage = Image::read('data:image/png;base64,' . base64_encode($qrPng));
-
-    //         $canvasHeight = $qrImage->height() + 70;
-    //         $canvas = Image::create($qrImage->width(), $canvasHeight)->fill('#ffffff'); // white background
-
-    //         $canvas->place($qrImage, 'top');
-    //         $canvas->text($text_below, $canvas->width() / 2, $qrImage->height() + 20, function ($font) {
-    //             // Optional: Set font file if needed
-    //             $font->filename(public_path('assets/font/Roboto-Bold.ttf'));
-    //             $font->size(18);
-    //             $font->color('#000000');
-    //             $font->align('center');
-    //             $font->valign('top');
-    //         });
-
-    //         $filename = $text_below . '_QR.png';
-    //         return response($canvas->toPng())
-    //         ->header('Content-Type', 'image/png')
-    //         ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
-    //     }catch(Exception $e){
-    //         return response()->json([
-    //             'status' => 400,
-    //             'message' => $e->getMessage(),
-    //         ]);
-    //     }
-
-    // }
-
     public function download_qr(Request $rq)
     {
         try {
             $id = Crypt::decrypt($rq->encrypted_id);
             $item = ImsItemInventory::findOrFail($id);
-            $text_below = $item->generate_tag_number();
+            $text_below = $item->tag_number;
             $url = 'http://156.67.221.153/qr/' . base64_encode($id);
 
             $qrSize = 300;
@@ -369,69 +330,49 @@ class Lists extends Controller
         }
     }
 
-    public function repair_info(Request $rq)
-    {
-        try{
-            $id = Crypt::decrypt($rq->id);
-            $query = ImsItemRepairLog::where([['item_inventory_id',$id],['status',1]])->first();
-            $payload = [
-                'repair_type' =>$query->repair_type,
-                'start_at' =>Carbon::parse($query->start_at)->format('m-d-Y'),
-                'end_at' => $query->end_at?Carbon::parse($query->end_at)->format('m-d-Y'):null,
-                'description' =>$query->description,
-                'status' =>$query->status,
-                'encrypted_id' =>Crypt::encrypt($query->id),
-            ];
-            return response()->json(['status' => 'success','message'=>'success', 'payload'=>base64_encode(json_encode($payload))]);
-        }catch(Exception $e){
-            return response()->json(['status'=>400,'message' =>$e->getMessage()]);
-        }
-    }
 
-    public function update_repair(Request $rq)
-    {
-        try{
-            DB::beginTransaction();
-            $user_id = Auth::user()->emp_id;
-            $id = isset($rq->id) && $rq->id != "undefined" ? Crypt::decrypt($rq->id):null;
-            $inventory_item_id = Crypt::decrypt($rq->item_inventory_id);
-            $query = ImsItemInventory::find($inventory_item_id);
+    // public function update_repair(Request $rq)
+    // {
+    //     try{
+    //         DB::beginTransaction();
+    //         $user_id = Auth::user()->emp_id;
+    //         $id = isset($rq->id) && $rq->id != "undefined" ? Crypt::decrypt($rq->id):null;
+    //         $inventory_item_id = Crypt::decrypt($rq->item_inventory_id);
+    //         $query = ImsItemInventory::find($inventory_item_id);
 
-            $attribute = [
-                'id'=>$id,
-                'item_inventory_id' => $inventory_item_id,
-            ];
-            $values = [
-                'issued_by' =>$user_id,
-                'repair_type' =>$rq->repair_type,
-                'item_inventory_status' =>$query->status,
-                'start_at' =>Carbon::createFromFormat('m-d-Y',$rq->start_at)->format('Y-m-d'),
-                'end_at' => isset($rq->end_at)? Carbon::createFromFormat('m-d-Y',$rq->end_at)->format('Y-m-d'):null,
-                'description' =>$rq->description,
-                'status' =>$rq->status,
-            ];
-            if(!isset($id)){
-                $values['created_by'] = $user_id;
-            }else{
-                $values['updated_by'] = $user_id;
-            }
-            $query = ImsItemRepairLog::updateOrCreate($attribute,$values);
-            DB::commit();
-            return response()->json(['status' => 'success', 'message'=>'Success']);
-        }catch(Exception $e){
-            DB::rollback();
-            return response()->json([
-                'status' => 400,
-                'message' => $e->getMessage(),
-            ]);
-        }
-    }
+    //         $attribute = [
+    //             'id'=>$id,
+    //             'item_inventory_id' => $inventory_item_id,
+    //         ];
+    //         $values = [
+    //             'issued_by' =>$user_id,
+    //             'repair_type' =>$rq->repair_type,
+    //             'item_inventory_status' =>$query->status,
+    //             'start_at' =>Carbon::createFromFormat('m-d-Y',$rq->start_at)->format('Y-m-d'),
+    //             'end_at' => isset($rq->end_at)? Carbon::createFromFormat('m-d-Y',$rq->end_at)->format('Y-m-d'):null,
+    //             'description' =>$rq->description,
+    //             'status' =>$rq->status,
+    //         ];
+    //         if(!isset($id)){
+    //             $values['created_by'] = $user_id;
+    //         }else{
+    //             $values['updated_by'] = $user_id;
+    //         }
+    //         $query = ImsItemRepairLog::updateOrCreate($attribute,$values);
+    //         DB::commit();
+    //         return response()->json(['status' => 'success', 'message'=>'Success']);
+    //     }catch(Exception $e){
+    //         DB::rollback();
+    //         return response()->json([
+    //             'status' => 400,
+    //             'message' => $e->getMessage(),
+    //         ]);
+    //     }
+    // }
 
     public function generate_report(Request $rq)
     {
         try{
-
-
 
         }catch(Exception $e){
 

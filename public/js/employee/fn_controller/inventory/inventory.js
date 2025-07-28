@@ -2,9 +2,10 @@
 import { modal_state, page_state } from "../../../global.js";
 import {Alert} from "../../../global/alert.js";
 import {RequestHandler} from "../../../global/request.js";
-import { get_company_location, get_filter_inventory_year, get_item_type } from "../../../global/select.js";
+import { get_company_location, get_filter_inventory_year, get_inventory, get_item, get_item_type } from "../../../global/select.js";
 import { dtInventoryConsumable } from "../../dt_controller/inventory/inventory_consumable.js";
 import { dtInventoryList } from "../../dt_controller/inventory/inventory_list.js";
+import { dtInventoryRepair } from "../../dt_controller/inventory/inventory_repair.js";
 import { fvRepairRequest } from "../../fv_controller/inventory/inventory.js";
 
 export var InventoryListController = async function (page, param) {
@@ -18,6 +19,7 @@ export var InventoryListController = async function (page, param) {
         const _tab = {
             "devices": deviceTab,
             "consumables": consumableTab,
+            "repair": RepairRequestTab,
         };
 
         // if (!page_block.isBlocked()) {  page_block.block(); }
@@ -41,11 +43,16 @@ export var InventoryListController = async function (page, param) {
 
     async function deviceTab(tab){
         dtInventoryList('inventory-list').init();
-        fvRepairRequest();
     }
 
     async function consumableTab(tab){
         dtInventoryConsumable('inventory-consumable-list','',true).init();
+    }
+
+    async function RepairRequestTab(tab){
+        dtInventoryRepair('repair-list','',false).init();
+        fvRepairRequest();
+        get_inventory(`select[name="device"]`,'','repair_items','all');
     }
 
     $(async function () {

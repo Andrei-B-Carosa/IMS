@@ -25,6 +25,7 @@ class InventoryOption
         return match($rq->type){
             'accountability_items' => $this->get_accountability_items($query,$search,$html),
             'material_issuance_items' => $this->get_material_issuance_items($query,$search,$html),
+            'repair_items' => $this->get_repair_items($query,$search,$html),
         };
     }
 
@@ -42,7 +43,30 @@ class InventoryOption
             $value = Crypt::encrypt($row->id);
             $selected = $search === $row->id ? 'selected' : '';
             $name = $row->name ?? $row->description;
-            $name = $name.' ( '. $row->generate_tag_number() .' )';
+            $name = $name.' ( '. $row->tag_number .' )';
+
+            $html .= '<option value="'.e($value).'"'.e($selected).'>'
+                        .e($name).
+                    '</option>';
+        }
+        return $html;
+    }
+
+    public function get_repair_items($query,$search,$html)
+    {
+        $data = $query->where('status','!=','4')->whereHas('item_type',function($q){
+            $q->where('display_to',1)->orWhere('display_to',null);
+        })->get();
+
+        if ($data->isEmpty()) {
+            return '<option disabled>No Available Option</option>';
+        }
+
+        foreach ($data as $row) {
+            $value = Crypt::encrypt($row->id);
+            $selected = $search === $row->id ? 'selected' : '';
+            $name = $row->name ?? $row->description;
+            $name = $name.' ( '. $row->tag_number .' )';
 
             $html .= '<option value="'.e($value).'"'.e($selected).'>'
                         .e($name).

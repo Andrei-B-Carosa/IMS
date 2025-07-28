@@ -7,6 +7,8 @@ use App\Http\Controllers\EmployeeController\Inventory\Lists as InventoryLists;
 use App\Http\Controllers\EmployeeController\MaterialIssuance\Details as MaterialIssuanceDetails;
 use App\Http\Controllers\EmployeeController\MaterialIssuance\Lists as MaterialIssuanceLists;
 use App\Http\Controllers\EmployeeController\Page;
+use App\Http\Controllers\EmployeeController\Repair\Details as RepairDetails;
+use App\Http\Controllers\EmployeeController\Repair\Lists as RepairLists;
 use App\Http\Controllers\EmployeeController\Reports\DevicePerDepartment;
 use App\Http\Controllers\EmployeeController\Reports\DevicePerSite;
 use App\Http\Controllers\EmployeeController\Reports\DeviceProcurement;
@@ -102,21 +104,24 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
 
     Route::controller(InventoryLists::class)->prefix('inventory')->group(function() {
         Route::post('/dt', 'dt');
-
         Route::post('/update', 'update');
         Route::post('/update-consumables', 'update_consumables');
-
         Route::post('/download-qr', 'download_qr');
-        // Route::post('/check-item-tag', 'check_item_tag');
-
-        // Route::post('/request-repair', 'request_repair');
-        Route::post('/update-repair', 'update_repair');
-        Route::post('/repair-info', 'repair_info');
-
         Route::post('/generate-report', 'generate_report');
+        Route::post('/delete', 'delete');
 
+                // Route::post('/update-repair', 'update_repair');
+        // Route::post('/repair-info', 'repair_info');
+    });
+
+    Route::controller(RepairLists::class)->prefix('repair')->group(function() {
+        Route::post('/dt', 'dt');
+        Route::post('/get-item-details', 'item_details');
+        Route::post('/info', 'info');
+        Route::post('/update', 'update');
         Route::post('/delete', 'delete');
     });
+
 
     Route::controller(InventoryDetails::class)->prefix('inventory-details')->group(function() {
         Route::post('update-general-details', 'update_general_details');
