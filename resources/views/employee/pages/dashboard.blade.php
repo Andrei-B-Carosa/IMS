@@ -107,7 +107,7 @@
                         </div>
                         <div class="m-0">
                             <span class="fw-semibold fs-6 text-gray-500">
-                                Router
+                                Network Device
                             </span>
                         </div>
                     </div>
