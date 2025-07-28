@@ -4,6 +4,7 @@ import {RequestHandler} from "../../../global/request.js"
 import {modal_state,fv_validator, initFormValidation} from "../../../global.js"
 import { dtInventoryList } from "../../dt_controller/inventory/inventory_list.js";
 import { dtInventoryRepair } from "../../dt_controller/inventory/inventory_repair.js";
+import { get_inventory } from "../../../global/select.js";
 
 export function fvRepairRequest(_table='#repair-list_table',param=false){
 
@@ -110,6 +111,7 @@ export function fvRepairRequest(_table='#repair-list_table',param=false){
                                         form.reset();
                                         $(modal_id).find('.submit').attr('data-id','');
                                         $(modal_id).find('.other-details').remove().addClass('d-none');
+                                        get_inventory(`select[name="device"]`,'','repair_items','all');
                                         if($(_table).length){
                                             $(_table).DataTable().ajax.reload(null,false);
                                         }else{
