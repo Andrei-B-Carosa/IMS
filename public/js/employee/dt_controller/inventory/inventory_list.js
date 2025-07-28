@@ -212,17 +212,6 @@ export var dtInventoryList = function (table,param='') {
                                                 View Item Details
                                             </a>
                                         </div>
-                                        ${row.status!=4 && row.status!=0 ?`
-                                            <div class="menu-item px-3">
-                                                <a href="javascript:;" class="menu-link px-3 request-repair" data-id="${data}">
-                                                    Request Item Repair
-                                                </a>
-                                            </div>`:``}
-                                        ${row.status==4 && row.status!=0? `<div class="menu-item px-3">
-                                            <a href="javascript:;" class="menu-link px-3 update-repair" data-id="${data}">
-                                                Update Repair
-                                            </a>
-                                        </div>`:``}
                                         <div class="separator mt-3 opacity-75"></div>
                                         <div class="menu-item px-3">
                                             <div class="menu-content px-3 py-3">
