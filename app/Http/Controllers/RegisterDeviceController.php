@@ -157,7 +157,7 @@ class RegisterDeviceController extends Controller
         $desktop_id = ImsItemType::getDesktopId();
         if(!$desktop_id){ return false; }
 
-        return ImsItemInventory::create([
+        $query = ImsItemInventory::create([
             'item_type_id' => $desktop_id,
             'name' =>$name,
             'description'=>$description,
@@ -166,6 +166,10 @@ class RegisterDeviceController extends Controller
             'remarks' => 'Data came from online registration',
             'created_by'=>1
         ]);
+
+        $query->tag_number = $query->generate_tag_number();
+        $query->save();
+        return $query;
     }
 
     public function register_laptop($rq,$data)
@@ -238,7 +242,7 @@ class RegisterDeviceController extends Controller
         $laptop_id = ImsItemType::getLaptopId();
         if(!$laptop_id){   return false; }
 
-        return ImsItemInventory::create([
+        $query = ImsItemInventory::create([
             'item_type_id' => $laptop_id,
             'item_brand_id' => $brand_id,
             'name' =>$name,
@@ -251,6 +255,10 @@ class RegisterDeviceController extends Controller
             'supplier_id'=>1,
             'received_at'=>Carbon::now(),
         ]);
+
+        $query->tag_number = $query->generate_tag_number();
+        $query->save();
+        return $query;
     }
 
     public function register_accessories($rq,$dataParam,$device_type)
@@ -267,7 +275,7 @@ class RegisterDeviceController extends Controller
                     return false;
                 }
 
-                $accessory_ids[] = ImsItemInventory::create([
+                $create = ImsItemInventory::create([
                     'item_brand_id' =>$query->item_brand_id,
                     'item_type_id' => $query->item_type_id,
                     'name'=>$query->name,
@@ -281,6 +289,9 @@ class RegisterDeviceController extends Controller
                     'received_at'=>Carbon::now(),
 
                 ]);
+                $create->tag_number = $create->generate_tag_number();
+                $create->save();
+                $accessory_ids[] = $create;
             }
         }
         if($device_type == 'system unit' && !empty($dataParam['monitors'])){
@@ -293,7 +304,8 @@ class RegisterDeviceController extends Controller
                         'brand'=>$row['manufacturer'],
                     ],'Monitor');
                 }
-                $accessory_ids[] = ImsItemInventory::create([
+
+                $create = ImsItemInventory::create([
                     'item_brand_id' =>$monitor->item_brand_id,
                     'item_type_id' => $monitor->item_type_id,
                     'name'=>$monitor->name,
@@ -306,6 +318,9 @@ class RegisterDeviceController extends Controller
                     'supplier_id'=>1,
                     'received_at'=>Carbon::now(),
                 ]);
+                $create->tag_number = $create->generate_tag_number();
+                $create->save();
+                $accessory_ids[] = $create;
             }
         }
         return $accessory_ids;
