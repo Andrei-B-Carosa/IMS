@@ -78,6 +78,7 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
     Route::controller(AccountabilityLists::class)->prefix('accountability')->group(function() {
         Route::post('/dt', 'dt');
         Route::post('/list', 'list');
+        Route::post('/update', 'update');
         Route::post('/delete', 'delete');
     });
 
