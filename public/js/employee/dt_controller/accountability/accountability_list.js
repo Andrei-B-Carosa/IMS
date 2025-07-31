@@ -36,7 +36,7 @@ export var dtAccountability = function (table,param='') {
                     data: "form_no", name: "form_no", title: "Form No.",
                     className:'',
                     render: function (data, type, row) {
-                        return `<span class="">${data}</span>`;
+                        return `<span class="text-muted fw-bold">${data}</span>`;
                     },
                 },
                 {
@@ -44,7 +44,7 @@ export var dtAccountability = function (table,param='') {
                     className:'',
                     sortable:false,
                     render: function (data, type, row) {
-                        return `<span class="=">${data}</span>`;
+                        return `<span class="text-muted">${data}</span>`;
                     },
                 },
                 {
@@ -52,7 +52,7 @@ export var dtAccountability = function (table,param='') {
                     className:'',
                     sortable:false,
                     render: function (data, type, row) {
-                        return `<span class="=">${data}</span>`;
+                        return `<span class="text-muted">${data}</span>`;
                     },
                 },
                 {
@@ -66,7 +66,7 @@ export var dtAccountability = function (table,param='') {
                     className:'',
                     sortable:false,
                     render: function (data, type, row) {
-                        return `<span class="fw-bold">${data}</span>`;
+                        return `<span class="text-muted">${data}</span>`;
                     },
                 },
                 {
@@ -74,7 +74,7 @@ export var dtAccountability = function (table,param='') {
                     className:'',
                     sortable:false,
                     render: function (data, type, row) {
-                        return `<span class="fw-bold">${data}</span>`;
+                        return `<span class="text-muted">${data}</span>`;
                     },
                 },
                 // {
