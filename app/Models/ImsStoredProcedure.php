@@ -38,4 +38,15 @@ class ImsStoredProcedure extends Model
             ])
         );
     }
+
+
+    public static function sp_get_accountability_list(
+            $filter_status,
+    ){
+        return static::hydrate(
+            DB::select('call sp_get_accountability_list(?)',[
+                $filter_status,
+            ])
+        );
+    }
 }

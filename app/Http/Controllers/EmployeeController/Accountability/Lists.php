@@ -8,6 +8,7 @@ use App\Models\ImsAccountability;
 use App\Models\ImsAccountabilityIssuedTo;
 use App\Models\ImsAccountabilityItem;
 use App\Models\ImsItemInventory;
+use App\Models\ImsStoredProcedure;
 use App\Service\Reusable\Datatable;
 use Carbon\Carbon;
 use Exception;
@@ -18,94 +19,37 @@ use Illuminate\Support\Facades\DB;
 
 class Lists extends Controller
 {
-    public function list(Request $rq)
+    public function dt(Request $rq)
     {
-        $filter_status = $rq->filter_status != 'all' ? $rq->filter_status : false;
-        $filter_tag_number = $rq->filter_tag_number != 'all' ? $rq->filter_tag_number : false;
-        $page = $rq->page;
-        $search = $rq->search;
-        $perPage = 12;
+        $filter_status = $rq->filter_status && $rq->filter_status != 'all' ? $rq->filter_status : false;
+        $data = ImsStoredProcedure::sp_get_accountability_list($filter_status);
+        $data->transform(function ($item, $key) {
+            $issued_at = Carbon::parse($item->a_issued_at)->format('M d, Y') ?? '--';
+            $returned_at = isset($item->a_returned_at)?Carbon::parse($item->a_returned_at)->format('M d, Y') : '--';
+            $item->count = $key + 1;
+            $item->issued_at =  $issued_at;
+            $item->returned_at =  $returned_at;
+            $item->tag_number =  $item->item_tag_number_html;
+            $item->status =  $item->a_status;
+            $item->issued_by = $item->issued_by_name;
+            $item->issued_to = $item->accountability_issued_to_html;
+            $item->issued_items = $item->accountability_items_html;
 
-        $query = ImsAccountability::with(['issued_by_emp'])
-        ->when($filter_status,function($q) use($filter_status){
-            $q->where('status',$filter_status);
-        })
-        ->when($search, function($q) use($search) {
-            $q->where('form_no', 'like', "%$search%")
-              ->orWhereHas('issued_to.employee', function($q) use($search) {
-                  $q->whereRaw("CONCAT(fname, ' ', lname) LIKE ?", ["%$search%"]);
-              });
-        })
-        ->when($filter_tag_number,function($q) use($filter_tag_number){
-            $q->whereHas('accountability_item',function($q2) use($filter_tag_number){
-                $q2->where('item_inventory_id', $filter_tag_number);
-            });
-        })
-        ->where('is_deleted',null)->paginate($perPage,['*'], 'page', $page);
+            $item->encrypted_id = Crypt::encrypt($item->a_id);
 
-        $data = [];
-        if(!empty($query)){
-            foreach($query as $item)
-            {
-                $last_updated_by = null;
-                $last_updated_at = null;
-                if($item->updated_by != null){
-                    $last_updated_by = optional($item->updated_by_emp)->fullname();
-                    $last_updated_at = Carbon::parse($item->updated_at)->format('m-d-Y');
-                }elseif($item->created_by !=null){
-                    $last_updated_by = optional($item->created_by_emp)->fullname();
-                    $last_updated_at = Carbon::parse($item->created_at)->format('m-d-Y');
-                }
+            return $item;
+        });
 
-                $issued_to = [];
-                foreach($item->issued_to as $row)
-                {
-                    // if($row->status ==2){  continue; }
-                    $issued_to[] =
-                    [
-                        'id'=>Crypt::encrypt($row->emp_id),
-                        'fullname'=>$row->employee->fullname(),
-                    ];
-                }
+        $table = new Datatable($rq, $data);
+        $table->renderTable();
 
-                $issued_item = [];
-                foreach($item->accountability_item as $row)
-                {
-                    $item_inventory = $row->item_inventory;
-                    $issued_item[] = [
-                        'id'=>Crypt::encrypt($row->item_inventory_id),
-                        'name'=>$item_inventory->name,
-                        'description'=>$item_inventory->description,
-                    ];
-                }
+        return response()->json([
+            'draw' => $table->getDraw(),
+            'recordsTotal' => $table->getRecordsTotal(),
+            'recordsFiltered' =>  $table->getRecordsFiltered(),
+            'data' => $table->getRows()
+        ]);
 
-                $data[]=[
-                    'form_no' => $item->form_no,
-                    'status' => $item->status,
-                    'issued_at' => $item->issued_at?Carbon::parse($item->issued_at)->format('m-d-Y') : '--',
-                    'issued_to' => $issued_to,
-                    'issued_item'=> $issued_item,
-                    'issued_by' => $item->issued_by_emp->fullname(),
-                    'last_updated_by' => $last_updated_by,
-                    'last_updated_at' => $last_updated_at,
-                    'encrypted_id' => Crypt::encrypt($item->id),
-                ];
-            }
-        }
-
-        return [
-            'status'=>'success',
-            'message' => 'success',
-            'payload' => base64_encode(json_encode([
-                'data' => $data,
-                'pagination' => [
-                    'current_page' => $query->currentPage(),
-                    'last_page' => $query->lastPage(),
-                    'total' => $query->total(),
-                    'per_page' => $query->perPage()
-                ]
-            ]))
-        ];
     }
 
     public function update(Request $rq)
@@ -181,6 +125,35 @@ class Lists extends Controller
                 'message' => $e->getMessage(),
             ]);
 
+        }
+    }
+
+    public function delete(Request $rq)
+    {
+        try{
+            DB::beginTransaction();
+            $user_id = Auth::user()->emp_id;
+            $id =  Crypt::decrypt($rq->encrypted_id);
+
+            $query = ImsAccountability::find($id);
+            $query->is_deleted = 1;
+            $query->remarks = $query->remarks.', Reason for deletion: '.$rq->remarks;
+            $query->deleted_by = $user_id;
+            $query->deleted_at = Carbon::now();
+            $query->save();
+
+            DB::commit();
+            return response()->json([
+                'status' => 'info',
+                'message'=>'Accountability is removed',
+                'payload' => ImsItemInventory::where('is_deleted',null)->count()
+            ]);
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
