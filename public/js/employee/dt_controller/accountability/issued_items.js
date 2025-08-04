@@ -94,6 +94,13 @@ export var dtIssuedItems = function (table,param=false) {
                     visible:false,
                 },
                 {
+                    data: "item_type_id", name: "item_type_id", title: "Item Type",
+                    className:'',
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
+                },
+                {
                     data: "serial_number", name: "serial_number", title: "Serial Number",
                     sortable:false,
                     visible:false,
@@ -404,6 +411,13 @@ export var dtAvailableItems = function (table,param=false) {
                         </div>
                         `;
                     }
+                },
+                {
+                    data: "item_type_id", name: "item_type_id", title: "Item Type",
+                    className:'',
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
                 },
                 {
                     data: "description", name: "description", title: "Description",

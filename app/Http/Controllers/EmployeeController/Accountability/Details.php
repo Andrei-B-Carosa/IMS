@@ -278,7 +278,7 @@ class Details extends Controller
 
             $item->count = $key + 1;
 
-            $item->name =  $name ?? $description;
+            $item->name =  $name;
             $item->description = $description;
             $item->tag_number = $item->generate_tag_number();
             $item->serial_number = $item->serial_number;
