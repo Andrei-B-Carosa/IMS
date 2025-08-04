@@ -94,7 +94,7 @@ export var dtIssuedItems = function (table,param=false) {
                     visible:false,
                 },
                 {
-                    data: "item_type_id", name: "item_type_id", title: "Item Type",
+                    data: "type", name: "type", title: "Item Type",
                     className:'',
                     sortable:false,
                     searchable:false,

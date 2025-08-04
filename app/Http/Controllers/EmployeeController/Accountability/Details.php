@@ -87,9 +87,7 @@ class Details extends Controller
                     }
                     $gpu_html .= 'GPU: '.$row['description'].'<br>';
                 };
-            }
 
-            if($item_type == 1 || $item_type == 8){
                 $description = '<div class="fs-6">'
                 . ($item->item_type_id == 8 ? 'Model: ' . $array['model'] . '<br>' : '')
                 . 'CPU: ' . $array['cpu'] . '<br>'
