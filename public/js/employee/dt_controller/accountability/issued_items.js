@@ -38,45 +38,64 @@ export var dtIssuedItems = function (table,param=false) {
                     sortable:false,
                     className:'text-muted',
                 },
+                // {
+                //     data: "name", name: "name", title: "Item",
+                //     sortable:false,
+                //     render: function (data, type, row) {
+                //         if(row.serial_number){
+                //             return `
+                //             <div class="d-flex flex-column">
+                //                 <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                //                     ${data}
+                //                 </a>
+                //                 ${row.serial_number?`<span class="text-muted">S/N: ${row.serial_number}</span>`:``}
+                //             </div>
+                //             `;
+                //         }
+                //         return `
+                //         <div class="d-flex flex-column">
+                //             <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                //                 ${data}
+                //             </a>
+                //         </div>
+                //         `;
+                //     }
+                // },
                 {
                     data: "name", name: "name", title: "Item",
                     sortable:false,
+                    className:'text-start',
                     render: function (data, type, row) {
-                        if(row.serial_number){
+                        if(row.item_type_id == 1 || row.item_type_id == 8){
                             return `
                             <div class="d-flex flex-column">
-                                <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                                <a href="javascript:;" class="text-gray-800 text-hover-primary mb-2 fw-bold">
                                     ${data}
                                 </a>
-                                ${row.serial_number?`<span class="text-muted">S/N: ${row.serial_number}</span>`:``}
+                                <span class="text-muted fw-bold">${row.description}</span>
+                                ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
                             </div>
                             `;
                         }
                         return `
                         <div class="d-flex flex-column">
-                            <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                            <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1 fw-bold">
                                 ${data}
                             </a>
+                            ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
                         </div>
                         `;
                     }
                 },
-                // {
-                //     data: "description", name: "description", title: "Description",
-                //     className:'',
-                //     sortable:false,
-                //     searchable:false,
-                //     render: function (data, type, row) {
-                //         if(!data){
-                //             return '--';
-                //         }
-                //         return data;
-                //     },
-                // },
+                {
+                    data: "description", name: "description", title: "Description",
+                    className:'',
+                    sortable:false,
+                    visible:false,
+                },
                 {
                     data: "serial_number", name: "serial_number", title: "Serial Number",
                     sortable:false,
-                    searchable:false,
                     visible:false,
                 },
                 {
@@ -337,25 +356,51 @@ export var dtAvailableItems = function (table,param=false) {
                     sortable:false,
                     className:'text-muted',
                 },
+                // {
+                //     data: "name", name: "name", title: "Item",
+                //     sortable:false,
+                //     render: function (data, type, row) {
+                //         if(row.serial_number){
+                //             return `
+                //             <div class="d-flex flex-column">
+                //                 <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                //                     ${data}
+                //                 </a>
+                //                 <span>${row.serial_number}</span>
+                //             </div>
+                //             `;
+                //         }
+                //         return `
+                //         <div class="d-flex flex-column">
+                //             <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                //                 ${data}
+                //             </a>
+                //         </div>
+                //         `;
+                //     }
+                // },
                 {
                     data: "name", name: "name", title: "Item",
                     sortable:false,
+                    className:'text-start',
                     render: function (data, type, row) {
-                        if(row.serial_number){
+                        if(row.item_type_id == 1 || row.item_type_id == 8){
                             return `
                             <div class="d-flex flex-column">
-                                <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                                <a href="javascript:;" class="text-gray-800 text-hover-primary mb-2 fw-bold">
                                     ${data}
                                 </a>
-                                <span>${row.serial_number}</span>
+                                <span class="text-muted fw-bold">${row.description}</span>
+                                ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
                             </div>
                             `;
                         }
                         return `
                         <div class="d-flex flex-column">
-                            <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                            <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1 fw-bold">
                                 ${data}
                             </a>
+                            ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
                         </div>
                         `;
                     }
@@ -364,18 +409,19 @@ export var dtAvailableItems = function (table,param=false) {
                     data: "description", name: "description", title: "Description",
                     className:'',
                     sortable:false,
-                    searchable:false,
-                    render: function (data, type, row) {
-                        if(!data){
-                            return '--';
-                        }
-                        return data;
-                    },
+                    // searchable:false,
+                    visible:false,
+                    // render: function (data, type, row) {
+                    //     if(!data){
+                    //         return '--';
+                    //     }
+                    //     return data;
+                    // },
                 },
                 {
                     data: "serial_number", name: "serial_number", title: "Serial Number",
                     sortable:false,
-                    searchable:false,
+                    // searchable:false,
                     visible:false,
                 },
                 {
