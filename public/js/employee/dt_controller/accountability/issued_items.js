@@ -66,7 +66,7 @@ export var dtIssuedItems = function (table,param=false) {
                     sortable:false,
                     className:'text-start',
                     render: function (data, type, row) {
-                        if(row.item_type_id == 1 || row.item_type_id == 8){
+                        if(row.type == 1 || row.type == 8){
                             return `
                             <div class="d-flex flex-column">
                                 <a href="javascript:;" class="text-gray-800 text-hover-primary mb-2 fw-bold">

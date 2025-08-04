@@ -109,7 +109,7 @@ class Details extends Controller
 
             $item->tag_number = $tag_number;
 
-            $item->name =  $name ?? $description;
+            $item->name =  $name;
             $item->description = $description;
             $item->serial_number = $item_inventory->serial_number;
             $item->price = $item_inventory->price;
