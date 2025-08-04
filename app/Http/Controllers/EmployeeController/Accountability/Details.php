@@ -237,30 +237,44 @@ class Details extends Controller
                     }
                     $gpu_html .= 'GPU: '.$row['description'].'<br>';
                 };
+
+                $description = '<div class="fs-6">'
+                . ($item->item_type_id == 8 ? 'Model: ' . $array['model'] . '<br>' : '')
+                . 'CPU: ' . $array['cpu'] . '<br>'
+                . 'RAM: ' . $ram_html . '<br>'
+                . $storage_html
+                . 'OS: ' . $array['windows_version'] . '<br>'
+                . $gpu_html
+                . 'Device Name: ' . $array['device_name'] . '<br>'
+                // . ($item->item_type_id == 8 ? 'Serial Number: ' . (isset($array['serial_number'])? $array['serial_number']:($item->serial_number??'--')) . '<br>' : '')
+                . '</div>';
+
             }
 
-            if($item_type == 1){
-                $description = '<div class=" fs-6">
-                    CPU: '.$array['cpu'].'<br>
-                    RAM: '.$ram_html.'<br>
-                    '.$storage_html.'
-                    OS: '.$array['windows_version'].'<br>
-                    '.$gpu_html.'
-                    Device Name: '.$array['device_name'].'<br>
-                </div>';
-            }
 
-            if($item_type == 8){
-                $description = '<div class=" fs-6">
-                    Model: '.$array['model'].'<br>
-                    CPU: '.$array['cpu'].'<br>
-                    RAM: '.$ram_html.'<br>
-                    '.$storage_html.'
-                    OS: '.$array['windows_version'].'<br>
-                    Device Name: '.$array['device_name'].'<br>
-                    S/N: '.$array['serial_number'].'
-                </div>';
-            }
+            // if($item_type == 1){
+            //     $description = '<div class=" fs-6">
+            //         CPU: '.$array['cpu'].'<br>
+            //         RAM: '.$ram_html.'<br>
+            //         '.$storage_html.'
+            //         OS: '.$array['windows_version'].'<br>
+            //         '.$gpu_html.'
+            //         Device Name: '.$array['device_name'].'<br>
+            //     </div>';
+            // }
+
+            // if($item_type == 8){
+            //     $description = '<div class=" fs-6">
+            //         Model: '.$array['model'].'<br>
+            //         CPU: '.$array['cpu'].'<br>
+            //         RAM: '.$ram_html.'<br>
+            //         '.$storage_html.'
+            //         OS: '.$array['windows_version'].'<br>
+            //         Device Name: '.$array['device_name'].'<br>
+            //         S/N: '.$array['serial_number'].'
+            //     </div>';
+            // }
+
 
             $item->count = $key + 1;
 
