@@ -28,7 +28,7 @@ export function fvRepairRequest(_table='#repair-list_table',param=false){
             if (!form.hasAttribute('data-fv-initialized')) {
                 fv = FormValidation.formValidation(form, {
                     fields: {
-                        // 'device':fv_validator(),
+                        'device':fv_validator(),
                         'start_at':fv_validator(),
                         'repair_type':fv_validator(),
                         'status':fv_validator(),
