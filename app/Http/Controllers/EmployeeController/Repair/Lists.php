@@ -173,6 +173,9 @@ class Lists extends Controller
             DB::beginTransaction();
             $id = isset($rq->id)?Crypt::decrypt($rq->id):false;
             $item_inventory_id = isset($rq->device) ? Crypt::decrypt($rq->device): false;
+            if($id==false && $item_inventory_id==false){
+                response()->json(['status' => 'error', 'message'=>'Select a device first']);
+            }
             $attribute = ['id' =>$id];
             $value = [
                 'issued_by' => Auth::user()->emp_id,
