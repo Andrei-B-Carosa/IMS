@@ -16,7 +16,7 @@
                     <div class="form-floating">
                         <input type="text" class="form-control" id="lname" placeholder="Last Name"
                             value="{{ isset($employee) ? $employee->lname : '' }}" name="lname"
-                            @if (isset($employee) && !$isRegisterEmployee) @disabled(true) @endif />
+                            @if (isset($employee) && !$isRegisterEmployee) @disabled(true) @endif validate-fullname="true"/>
                         <label for="lname">Last Name</label>
                     </div>
                 </div>

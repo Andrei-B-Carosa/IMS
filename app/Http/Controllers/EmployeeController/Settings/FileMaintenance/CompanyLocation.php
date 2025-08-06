@@ -103,7 +103,7 @@ class CompanyLocation extends Controller
         }
     }
 
-    public function validate_request(Request $rq)
+    public function validate(Request $rq)
     {
         try{
             $excluded_id = isset($rq->id) && $rq->id != "undefined"? Crypt::decrypt($rq->id): false;

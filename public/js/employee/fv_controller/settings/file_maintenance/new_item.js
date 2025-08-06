@@ -25,7 +25,24 @@ export function fvNewItemGeneralDetails(_table=false,param=false){
             if (!form.hasAttribute('data-fv-initialized')) {
                 fvNewItemGeneralDetails = FormValidation.formValidation(form, {
                     fields: {
-                        'name':fv_validator(),
+                        'name': {
+                            validators: {
+                                notEmpty: {
+                                    message: 'This field is required'
+                                },
+                                remote: {
+                                    message: 'This item name already exists',
+                                    method: 'POST',
+                                    url: 'file-maintenance/item/validate',
+                                    data: function() {
+                                        return {
+                                            name: form.querySelector('[name="name"]').value
+                                        };
+                                    },
+                                    delay: 500
+                                }
+                            }
+                        },
                         'item_type':fv_validator(),
                         // 'item_brand':fv_validator(),
                         'price':fv_validator(),

@@ -196,6 +196,36 @@ var stepper = (function () {
                     };
                 }
 
+                //Valiate Fullname
+                if (field.hasAttribute('validate-fullname') && field.getAttribute('validate-fullname') === 'true') {
+                    validationRules[fieldName].validators.remote = {
+                        url: '/employee-list/employee-registration/validate-fullname',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: function () {
+                            return {
+                                fname: form.querySelector('[name="fname"]').value,
+                                mname: form.querySelector('[name="mname"]').value,
+                            };
+                        },
+                        delay:500
+                    };
+                }
+
+                //Valiate Emp No.
+                if (field.hasAttribute('validate-empno') && field.getAttribute('validate-empno') === 'true') {
+                    validationRules[fieldName].validators.remote = {
+                        url: '/employee-list/employee-registration/validate-emp-no',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        delay:500
+                    };
+                }
+
                 if (field.hasAttribute('data-required') && field.getAttribute('data-required') === 'false') {
                     return;
                 }

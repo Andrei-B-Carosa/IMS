@@ -34,21 +34,21 @@ export function fvItemType(_table=false,form_id){
                         return;
                     }
 
-                    // if (field.hasAttribute('remote-validation') && field.getAttribute('remote-validation') === 'true') {
-                    //     validationRules[fieldName].validators.remote = {
-                    //         url: '/file-maintenance/' + form_id + '/validate',
-                    //         method: 'POST',
-                    //         headers: {
-                    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    //         },
-                    //         data: function () {
-                    //             let data_id = document.querySelector(modal_id + ' button.submit').getAttribute('data-id');
-                    //             return {
-                    //                 id: data_id
-                    //             };
-                    //         }
-                    //     };
-                    // }
+                    if (field.hasAttribute('remote-validation') && field.getAttribute('remote-validation') === 'true') {
+                        validationRules[fieldName].validators.remote = {
+                            url: '/file-maintenance/' + form_id + '/validate',
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: function () {
+                                let data_id = document.querySelector(modal_id + ' button.submit').getAttribute('data-id');
+                                return {
+                                    id: data_id
+                                };
+                            }
+                        };
+                    }
 
                     validationRules[fieldName].validators.notEmpty = {message: 'This field is required'};
                 });

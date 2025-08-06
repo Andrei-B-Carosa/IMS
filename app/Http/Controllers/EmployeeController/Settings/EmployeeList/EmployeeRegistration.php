@@ -233,4 +233,58 @@ class EmployeeRegistration extends Controller
         }
     }
 
+    public function validate_fullname(Request $rq)
+    {
+        try {
+            $valid = true;
+            $message = '';
+            $normalizedfName = strtolower(str_replace(' ', '', $rq->fname));
+            $normalizedlName = strtolower(str_replace(' ', '', $rq->lname));
+            $normalizedmName = $rq->mname ? strtolower(str_replace(' ', '', $rq->mname)) : null;
+
+            $employee = Employee::whereRaw("REPLACE(LOWER(fname), ' ', '') = ?", [$normalizedfName])
+            // ->when($normalizedmName !== null, function ($query) use ($normalizedmName) {
+            //     // If middle name is provided, match it
+            //     $query->whereRaw("REPLACE(LOWER(mname), ' ', '') = ?", [$normalizedmName]);
+            // }, function ($query) {
+            //     // If no middle name provided, match NULL or empty
+            //     $query->where(function ($q) {
+            //         $q->whereNull('mname')->orWhere('mname', '');
+            //     });
+            // })
+            ->whereRaw("REPLACE(LOWER(lname), ' ', '') = ?", [$normalizedlName])
+            ->where('is_active', 1)
+            ->first();
+
+            if ($employee && $employee->emp_no) {
+                $valid = false;
+                $message = 'Employee fullname already exists and is fully registered';
+            }
+
+            return response()->json(['valid' => $valid, 'message' => $message]);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>400,'message' =>$e->getMessage()]);
+        }
+    }
+
+    public function validate_emp_no(Request $rq)
+    {
+        try {
+            $valid = true;
+            $message = '';
+            $count = Employee::where('emp_no',$rq->emp_no)
+            ->where('is_active', 1)
+            ->count();
+            if ($count > 0) {
+                $valid = false;
+                $message = 'Employee number already exists';
+            }
+            return response()->json(['valid' => $valid, 'message' => $message]);
+
+        }catch(\Exception $e){
+            return response()->json(['status'=>400,'message' =>$e->getMessage()]);
+        }
+    }
+
 }

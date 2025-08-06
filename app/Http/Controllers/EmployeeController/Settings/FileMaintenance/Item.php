@@ -149,7 +149,7 @@ class Item extends Controller
             $query->item_brand_id = $item_brand_id;
             $query->item_type_id = $item_type_id;
             $query->updated_by = Auth::user()->emp_id;
-            $query->remarks = $rq->remarks;
+            // $query->remarks = $rq->remarks;
 
             $query->save();
 
@@ -360,7 +360,7 @@ class Item extends Controller
                 'description' => $description,
                 'is_active' => $rq->is_active,
                 'price' => $rq->price,
-                'remarks' => $rq->remarks,
+                // 'remarks' => $rq->remarks,
                 'created_by' => $created_by,
             ]);
 
@@ -402,6 +402,26 @@ class Item extends Controller
                 'status' => 400,
                 'message' => $e->getMessage(),
             ]);
+        }
+    }
+
+    public function validate(Request $rq)
+    {
+        try {
+            $valid = true;
+            $message = '';
+            $normalizedName = strtolower(str_replace(' ', '', $rq->name));
+            $availableItems = ImsItem::whereRaw("REPLACE(LOWER(name), ' ', '') = ?", [$normalizedName])
+            ->where('is_active', 1)
+            ->count();
+            if ($availableItems > 0) {
+                $valid = false;
+                $message = '';
+            }
+            return response()->json(['valid' => $valid, 'message' => $message]);
+
+        }catch(Exception $e){
+            return response()->json(['status'=>400,'message' =>$e->getMessage()]);
         }
     }
 

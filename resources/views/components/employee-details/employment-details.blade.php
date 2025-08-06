@@ -7,7 +7,7 @@
                     <div class="col-8 fv-row">
                         <input type="text" class="form-control-sm form-control" id="emp_no" placeholder="Employee No. "
                             value="{{ isset($employee) ? $employee->emp_no : '' }}" name="emp_no"
-                            @if (isset($employee) && !$isRegisterEmployee) @disabled(true) @endif />
+                            @if (isset($employee) && !$isRegisterEmployee) @disabled(true) @endif validate-empno="true"/>
                     </div>
                 </div>
                 {{-- <div class="row mb-6">

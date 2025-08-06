@@ -295,6 +295,8 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
         Route::controller(EmployeeRegistration::class)->prefix('employee-registration')->group(function() {
             Route::post('/form', 'form');
             Route::post('/update', 'update');
+            Route::post('/validate-fullname', 'validate_fullname');
+            Route::post('/validate-emp-no', 'validate_emp_no');
         });
     });
 

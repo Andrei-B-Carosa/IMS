@@ -141,6 +141,21 @@ class ItemType extends Controller
 
     public function validate(Request $rq)
     {
+        try {
+            $valid = true;
+            $message = '';
+            $normalizedName = strtolower(str_replace(' ', '', $rq->name));
+            $availableItems = ImsItemType::whereRaw("REPLACE(LOWER(name), ' ', '') = ?", [$normalizedName])
+            ->where('is_active', 1)
+            ->count();
+            if ($availableItems > 0) {
+                $valid = false;
+                $message = 'This name is already in use';
+            }
+            return response()->json(['valid' => $valid, 'message' => $message]);
 
+        }catch(Exception $e){
+            return response()->json(['status'=>400,'message' =>$e->getMessage()]);
+        }
     }
 }
