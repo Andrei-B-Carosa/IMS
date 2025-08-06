@@ -133,7 +133,7 @@ export var dtInventoryList = function (table,param='') {
                 {
                     data: "received_at", name: "received_at", title: "Received At",
                     searchable:false,
-                    className:'text-muted text-start min-w-100px',
+                    className:' text-start min-w-100px',
                     render: function (data, type, row) {
                         if(!data){ return '--'; }
                         return data;
@@ -143,7 +143,7 @@ export var dtInventoryList = function (table,param='') {
                     data: "remarks", name: "remarks", title: "Remarks",
                     sortable:false,
                     searchable:false,
-                    className:'text-start text-muted',
+                    className:'text-start ',
                     render: function (data, type, row) {
                         if(!data){
                             return '--';

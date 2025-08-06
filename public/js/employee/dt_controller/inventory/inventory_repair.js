@@ -191,6 +191,13 @@ export var dtInventoryRepair = function (table,param='') {
                     }
                 },
                 {
+                    data: "is_editable", name: "is_editable", title: "Is Editable",
+                    className:'',
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
+                },
+                {
                     data: "encrypted_id",
                     name: "encrypted_id",
                     title: "Action",
@@ -200,7 +207,8 @@ export var dtInventoryRepair = function (table,param='') {
                     render: function (data, type, row) {
                         return`<div class="d-flex">
                         ${row.status ==1 ?
-                            `<button class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up view" data-bs-toggle="tooltip" title="View Details" data-id="${data}">
+                            `<button class="btn btn-icon btn-icon btn-sm me-1 hover-elevate-up ${row.is_editable?`btn-light-primary view`:`btn-secondary`}" data-bs-toggle="tooltip"
+                                    title="${row.is_editable?`View Details`:`You cannot edit this request because you're not the one who initiated the repair`}" data-id="${data}">
                                 <i class="ki-duotone ki-pencil fs-1">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
@@ -208,8 +216,8 @@ export var dtInventoryRepair = function (table,param='') {
                                     <span class="path4"></span>
                                 </i>
                             </button>`:``}
-                            <button class="btn btn-icon btn-icon btn-sm me-1 hover-elevate-up btn-light-danger remove" data-id="${data}"
-                                data-bs-toggle="tooltip" title="Delete repair request form">
+                            <button class="btn btn-icon btn-icon btn-sm me-1 hover-elevate-up ${row.is_editable?`btn-light-danger remove`:`btn-secondary`}" data-id="${data}"
+                                data-bs-toggle="tooltip" title="${row.is_editable?`Delete repair request form`:`You cannot delete this request because you're not the one who initiated the repair`}">
                                     <i class="ki-duotone ki-trash fs-2x">
                                         <span class="path1"></span>
                                         <span class="path2"></span>

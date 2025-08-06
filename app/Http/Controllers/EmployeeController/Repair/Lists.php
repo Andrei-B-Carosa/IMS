@@ -80,7 +80,7 @@ class Lists extends Controller
             $item->encrypted_id = Crypt::encrypt($item->id);
             $item->item_inventory_id = Crypt::encrypt($item->item_inventory_id);
             $item->accountability_id = Crypt::encrypt($item->accountability_id);
-
+            $item->is_editable = $item->created_by == Auth::user()->emp_id;
             return $item;
         });
 
