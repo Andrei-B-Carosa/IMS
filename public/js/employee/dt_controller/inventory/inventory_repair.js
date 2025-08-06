@@ -26,14 +26,14 @@ export var dtInventoryRepair = function (table,param='') {
                 filter_location:$('select[name="filter_location"]').val(),
             },
             [
-                // {
-                //     data: "count",
-                //     name: "count",
-                //     title: " ",
-                //     responsivePriority: -3,
-                //     searchable:false,
-                //     className:'text-muted',
-                // },
+                {
+                    data: "count",
+                    name: "count",
+                    title: " ",
+                    responsivePriority: -3,
+                    searchable:false,
+                    className:'text-muted',
+                },
                 {
                     data: "tag_number", name: "tag_number", title: "Tag Number",
                     className:'text-muted',
@@ -75,6 +75,21 @@ export var dtInventoryRepair = function (table,param='') {
                         `;
                     }
                 },
+                // {
+                //     data: "repair_type", name: "repair_type", title: "Repair Type",
+                //     className:'',
+                //     sortable:false,
+                //     searchable:false,
+                //     render: function (data, type, row) {
+                //         let status = {
+                //             1: ["info", "Hardware"],
+                //             2: ["success", "Software"],
+
+                //         };
+                //         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
+                //     },
+
+                // },
                 {
                     data: "serial_number", name: "serial_number", title: "Serial Number",
                     className:'text-center',
@@ -95,43 +110,38 @@ export var dtInventoryRepair = function (table,param='') {
                     visible:false,
                 },
                 {
-                    data: "start_at", name: "start_at", title: "Start At",
+                    data: "initial_diagnosis", name: "initial_diagnosis", title: "Repair Notes",
                     className:'',
                     sortable:false,
                     searchable:false,
                 },
                 {
-                    data: "end_at", name: "end_at", title: "End At",
+                    data: "work_to_be_done", name: "work_to_be_done", title: "Action Taken",
                     className:'',
                     sortable:false,
                     searchable:false,
                 },
                 {
-                    data: "initial_diagnosis", name: "initial_diagnosis", title: "Initial Diagnosis",
+                    data: "accountability_form_no", name: "accountability_form_no", title: "Form No.",
+                    sortable:false,
+                    visible:false,
+                },
+                {
+                    data: "accountability_id", name: "accountability_id", title: "Form No.",
+                    sortable:false,
+                    visible:false,
+                },
+                {
+                    data: "start_at", name: "start_at", title: "Start",
                     className:'',
                     sortable:false,
                     searchable:false,
                 },
                 {
-                    data: "work_to_be_done", name: "work_to_be_done", title: "Actual Findinds",
+                    data: "end_at", name: "end_at", title: "End",
                     className:'',
                     sortable:false,
                     searchable:false,
-                },
-                {
-                    data: "repair_type", name: "repair_type", title: "Repair Type",
-                    className:'',
-                    sortable:false,
-                    searchable:false,
-                    render: function (data, type, row) {
-                        let status = {
-                            1: ["info", "Hardware"],
-                            2: ["success", "Software"],
-
-                        };
-                        return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
-                    },
-
                 },
                 {
                     data: "status", name: "status", title: "Status",
@@ -148,17 +158,23 @@ export var dtInventoryRepair = function (table,param='') {
                     },
                 },
                 {
-                    data: "accountability_form_no", name: "accountability_form_no", title: "Form No.",
+                    data: "created_by_name", name: "created_by_name", title: "Repaired By",
                     sortable:false,
-                    visible:false,
+                    render: function (data, type, row) {
+                        if(!data){  return '--';  }
+                        return `
+                        <span class="text-hover-primary">
+                            <div class="d-flex flex-column">
+                                <span class="text-gray-800 fw-bold">
+                                    ${data}
+                                </span>
+                            </div>
+                        </span>
+                        `;
+                    }
                 },
                 {
-                    data: "accountability_id", name: "accountability_id", title: "Form No.",
-                    sortable:false,
-                    visible:false,
-                },
-                {
-                    data: "last_accountable_to", name: "last_accountable_to", title: "Last Accountable",
+                    data: "last_accountable_to", name: "last_accountable_to", title: "Requested By",
                     sortable:false,
                     render: function (data, type, row) {
                         if(!data){  return '--';  }
