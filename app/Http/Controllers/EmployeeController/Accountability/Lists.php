@@ -157,4 +157,143 @@ class Lists extends Controller
         }
     }
 
+    public function info(Request $rq)
+    {
+        try{
+            $id =  Crypt::decrypt($rq->id);
+            $query = ImsAccountability::find($id);
+            $array = [];
+            if($query){
+                $temp_arr = [];
+                foreach($query->active_accountability_item as $items){
+                    $temp_arr['items'][] = $items->item_inventory->name;
+                }
+                foreach($query->issued_to as $issued_to){
+                    $temp_arr['issued_to'][] = $issued_to->employee->fullname();
+                }
+                $array = [
+                    'form_no'=>$query->form_no,
+                    'issued_at'=>$query->issued_at,
+                    'issued_to'=>implode(',',$temp_arr['issued_to']),
+                    'items'=>$temp_arr['items'],
+                ];
+            }
+            $payload = base64_encode(json_encode($array));
+            return response()->json(['status' => 'success', 'message'=>'Success','payload'=>$payload]);
+        }catch(Exception $e){
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function transfer(Request $rq)
+    {
+        try{
+            DB::beginTransaction();
+
+            // $id =  Crypt::decrypt($rq->id);
+            // $query = ImsAccountability::with(['active_accountability_item'])->find($id);
+
+            // $issued_by = Auth::user()->emp_id;
+            // $issued_at = Carbon::createFromFormat('m-d-Y', $rq->issued_at)->format('Y-m-d');
+            // $received_by = Crypt::decrypt($rq->received_by);
+
+            // $accountability = ImsAccountability::create([
+            //     'form_no'=>$rq->form_no,
+            //     'issued_at'=>$issued_at,
+            //     'issued_by'=>$issued_by,
+            //     'received_by'=>$received_by,
+            //     'remarks'=>$rq->remarks,
+            //     'created_by'=>$issued_by,
+            // ]);
+
+            // $received_by_emp = Employee::find($received_by);
+            // $issued_to_array = [
+            //     'accountability_id' => $accountability->id,
+            //     'emp_id'=>$received_by_emp->id,
+            //     'department_id'=>$received_by_emp->department_id,
+            //     'position_id'=>$received_by_emp->position_id,
+            //     'status'=>1,
+            //     'issued_at'=>$issued_at,
+            // ];
+            // ImsAccountabilityIssuedTo::create($issued_to_array);
+
+            // $transfer_item=[];
+            // foreach($query->active_accountability_item as $item){
+            //     $transfer_item[]=[
+            //         'accountability_id' =>$accountability->id,
+            //         'item_inventory_id' =>$item->item_inventory_id,
+            //         'status'=>$item->status,
+            //         'issued_at'=>$issued_at,
+            //         'remarks'=>'Quick transfer to new accountability',
+            //     ];
+            // }
+            // ImsAccountabilityItem::insert($transfer_item);
+
+
+            $id = Crypt::decrypt($rq->id);
+            $issued_by = Auth::user()->emp_id;
+            $issued_at = Carbon::createFromFormat('m-d-Y', $rq->issued_at)->format('Y-m-d');
+            // $returned_at = Carbon::createFromFormat('m-d-Y', $rq->returned_at)->format('Y-m-d');
+            $received_by = Crypt::decrypt($rq->received_by);
+
+            $currentAccountability = ImsAccountability::with('active_accountability_item')->findOrFail($id);
+            $activeItems = $currentAccountability->active_accountability_item->toArray();
+            $currentAccountability->update(['status' => 2, 'updated_by'=>$issued_by, 'returned_at'=>Carbon::now()]);
+
+            $newAccountability = ImsAccountability::create([
+                'form_no'     => $rq->form_no,
+                'issued_at'   => $issued_at,
+                'issued_by'   => $issued_by,
+                'received_by' => $received_by,
+                'remarks'     => $rq->remarks,
+                'created_by'  => $issued_by,
+            ]);
+
+            $received_by_emp = Employee::findOrFail($received_by);
+            ImsAccountabilityIssuedTo::create([
+                'accountability_id' => $newAccountability->id,
+                'emp_id'            => $received_by_emp->id,
+                'department_id'     => $received_by_emp->department_id,
+                'position_id'       => $received_by_emp->position_id,
+                'issued_at'         => $issued_at,
+                'remarks'           => 'Quick transfer to new accountability',
+            ]);
+
+            $transferItems = [];
+            foreach ($activeItems as $item) {
+                $transferItems[] = [
+                    'accountability_id' => $newAccountability->id,
+                    'item_inventory_id' => $item['item_inventory_id'],
+                    'status'            => $item['status'],
+                    'issued_at'         => $issued_at,
+                    'remarks'           => 'Quick transfer to new accountability',
+                ];
+            }
+
+            if (!empty($transferItems)) {
+                ImsAccountabilityItem::insert($transferItems);
+            }
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message' => 'Success']);
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message'=>'Success']);
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function update_accountability($query)
+    {
+
+    }
+
 }

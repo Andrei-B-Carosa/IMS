@@ -38,3 +38,33 @@
         </div>
     </div>
 </div>
+
+<x-elements.modal
+    id="transfer-accountability"
+    title="Transfer Accountability"
+    action="/accountability/transfer">
+    <div class="d-flex flex-column px-5 px-lg-10" style="max-height: 670px;">
+        <div class="card-rounded bg-info bg-opacity-5 p-5 mb-7 other-details d-none">
+        </div>
+        <div class="fv-row mb-7 fv-plugins-icon-container">
+            <div class="col-md-12 fv-row mb-7">
+                <label class="required fw-semibold fs-6 mb-2">Form No.</label>
+                <input type="text" name="form_no" class="form-control" value="">
+            </div>
+            <div class="col-md-12 fv-row mb-7">
+                <label class="required fw-semibold fs-6 mb-2">Issued At</label>
+                <input type="text" name="issued_at" input-control="date-picker" default-date="current" class="form-control mb-3 mb-lg-0 flatpickr">
+                <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+            </div>
+            <div class="col-md-12 fv-row mb-7">
+                <label class="form-label required">Issued To</label>
+                <select class="form-select" data-kt-repeater="select2" data-placeholder="Select an option" name="received_by" data-allow-clear="true">
+                </select>
+            </div>
+            <div class="d-flex fv-row flex-column mb-7" id="">
+                <label class="fs-6 fw-semibold mb-2">Remarks</label>
+                <textarea class="form-control form-control-solid" rows="5" name="remarks" placeholder="Remarks"></textarea>
+            </div>
+        </div>
+    </div>
+</x-elements.modal>

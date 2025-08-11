@@ -55,6 +55,11 @@ class ImsAccountability extends Model
         return $this->hasMany(ImsAccountabilityItem::class,'accountability_id');
     }
 
+    public function active_accountability_item()
+    {
+       return $this->hasMany(ImsAccountabilityItem::class,'accountability_id')->where('status',1);
+    }
+
     public function updated_by_emp()
     {
         return $this->belongsTo(Employee::class,'updated_by')->withDefault();

@@ -79,6 +79,8 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
         Route::post('/dt', 'dt');
         Route::post('/list', 'list');
         Route::post('/update', 'update');
+        Route::post('/info', 'info');
+        Route::post('/transfer', 'transfer');
         Route::post('/delete', 'delete');
     });
 
