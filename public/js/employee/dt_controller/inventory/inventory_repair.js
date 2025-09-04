@@ -175,6 +175,13 @@ export var dtInventoryRepair = function (table,param='') {
                     visible:false,
                 },
                 {
+                    data: "is_submittable", name: "is_submittable", title: "Is Editable",
+                    className:'',
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
+                },
+                {
                     data: "encrypted_id",
                     name: "encrypted_id",
                     title: "Action",
@@ -184,7 +191,7 @@ export var dtInventoryRepair = function (table,param='') {
                     render: function (data, type, row) {
                         return`<div class="d-flex">
                             <button class="btn btn-icon btn-icon btn-sm me-1 hover-elevate-up btn-light-primary view" data-bs-toggle="tooltip"
-                                    title="${row.is_editable?'Edit Details':'View Details'}" data-id="${data}">
+                                    title="View Details" data-id="${data}">
                                 <i class="ki-duotone ki-pencil fs-1">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
