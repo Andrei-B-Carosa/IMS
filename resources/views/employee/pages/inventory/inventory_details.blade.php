@@ -144,8 +144,7 @@
                             id="status"
                             name="status"
                             label="Item Status"
-                            :options="['0'=>'Disposed','1' => 'Available', '2' => 'Issued', '3'=>'Temporary Issued', '4'=>'Under Repair']"
-                            {{-- :options="['1' => 'Available', '2' => 'Issued']" --}}
+                            :options="$status"
                             placeholder="Select an option"
                             selected="{{ $data->status }}"
                             class="fw-bold form-select-solid"
@@ -153,7 +152,7 @@
                             data-placeholder="Select an option"
                             data-minimum-results-for-search="Infinity"
                             data-allow-clear="true"
-                            disabled="{{ $data->status == 2|| $data->status==4 || $data->status==0? 'true':'false' }}"
+                            disabled="{{ 'false' }}"
                         />
                         <div class="alert-status"></div>
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
@@ -167,9 +166,6 @@
 
             <div class="card-footer">
                 <div class="d-flex justify-content-end">
-                    {{-- <button id="" class="btn btn-light me-5 cancel">
-                        Cancel
-                    </button> --}}
                     @if($data->status!=0)
                         <button type="button" class="btn btn-primary submit">
                             <span class="indicator-label">

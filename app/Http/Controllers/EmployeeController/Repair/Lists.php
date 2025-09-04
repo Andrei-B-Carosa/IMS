@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\EmployeeController\Repair;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use App\Models\ImsItemInventory;
 use App\Models\ImsItemRepairLog;
 use App\Models\ImsStoredProcedure;
@@ -19,7 +20,7 @@ class Lists extends Controller
     public function dt(Request $rq)
     {
 
-        $filter_status = $rq->filter_status && $rq->filter_status != 'all' ? $rq->filter_status : false;
+        $filter_status = $rq->filled('filter_status') && $rq->filter_status != 'all' ? $rq->filter_status : false;
         $filter_location = $rq->filter_location &&  $rq->filter_location != 'all' ? Crypt::decrypt($rq->filter_location) : false;
         $filter_category = $rq->filter_category &&  $rq->filter_category != 'all' ? Crypt::decrypt($rq->filter_category) : false;
 
@@ -32,7 +33,6 @@ class Lists extends Controller
         $data->transform(function ($item, $key) {
             $item_type = $item->item_type_id;
             $description = $item->description;
-
             if($item_type == 1 || $item_type == 8) {
                 $array = json_decode($description,true);
                 $ram = json_decode($array['ram']);
@@ -79,7 +79,7 @@ class Lists extends Controller
 
             $item->encrypted_id = Crypt::encrypt($item->id);
             $item->item_inventory_id = Crypt::encrypt($item->item_inventory_id);
-            $item->accountability_id = Crypt::encrypt($item->accountability_id);
+            // $item->accountability_id = Crypt::encrypt($item->accountability_id);
             $item->is_editable = $item->created_by == Auth::user()->emp_id;
             return $item;
         });
@@ -135,16 +135,7 @@ class Lists extends Controller
         try{
             $id = Crypt::decrypt($rq->id);
             $query = ImsItemRepairLog::find($id);
-
             $inventory = $query->item_inventory;
-            $active_accountability = $inventory->active_accountability_item;
-            $accountable_to = [];
-            if($active_accountability){
-                foreach($active_accountability->accountable_to as $row){
-                    $accountable_to[] = $row->employee->fullname();
-                }
-            }
-
             $payload = [
                 'initial_diagnosis' =>$query->initial_diagnosis,
                 'tag_number'=>strtoupper($query->item_inventory->name) .' ( '.$query->item_inventory->tag_number.' )',
@@ -153,13 +144,13 @@ class Lists extends Controller
                 'start_at' =>Carbon::parse($query->start_at)->format('m-d-Y'),
                 'end_at' => $query->end_at?Carbon::parse($query->end_at)->format('m-d-Y'):null,
                 'status' =>$query->status,
-
                 'name'=>$inventory->name,
                 'description'=>$inventory->description_construct(),
                 'serial_number'=>$inventory->serial_number,
-                'form_no'=>optional(optional($active_accountability)->accountability)->form_no,
-                'accountable_to'=> implode(', ', $accountable_to),
+                'accountable_to'=> $query->last_accountable_to,
                 'encrypted_id' =>Crypt::encrypt($query->id),
+                'is_editable' =>Auth::user()->emp_id == $query->created_by??false,
+                'is_submittable'=> $query->status==1??false
             ];
             return response()->json(['status' => 'success','message'=>'success', 'payload'=>base64_encode(json_encode($payload))]);
         }catch(Exception $e){
@@ -172,6 +163,7 @@ class Lists extends Controller
         try {
             DB::beginTransaction();
             $id = isset($rq->id)?Crypt::decrypt($rq->id):false;
+            $requested_by = Crypt::decrypt($rq->requested_by);
             $item_inventory_id = isset($rq->device) ? Crypt::decrypt($rq->device): false;
             if($id==false && $item_inventory_id==false){
                 response()->json(['status' => 'error', 'message'=>'Select a device first']);
@@ -190,17 +182,8 @@ class Lists extends Controller
                 $query = ImsItemInventory::find($item_inventory_id);
                 $value['item_inventory_id'] = $query->id;
                 $value['item_inventory_status'] = $query->status;
-                if($query->active_accountability_item && !$id){
-                    $active_accountability = $query->active_accountability_item;
-                    $accountableToList  = [];
-                    foreach($active_accountability->accountable_to as $accountable_to){
-                        $accountableToList[] = $accountable_to->employee->fullname();
-                    }
-                    $value['is_issued'] = 1;
-                    $value['accountability_id'] = $active_accountability->accountability->id;
-                    $value['accountability_form_no'] = $active_accountability->accountability->form_no;
-                    $value['last_accountable_to'] =implode(', ', $accountableToList);
-                }
+                $employee = Employee::find($requested_by);
+                $value['last_accountable_to'] = $employee->fullname();
             }
             if($id){
                 $value['updated_by'] = Auth::user()->emp_id;

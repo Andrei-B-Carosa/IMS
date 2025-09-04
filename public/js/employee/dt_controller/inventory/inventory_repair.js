@@ -21,9 +21,7 @@ export var dtInventoryRepair = function (table,param='') {
         dataTableHelper.initTable(
             _url+'dt',
             {
-                filter_category:$('select[name="filter_category"]').val(),
-                filter_status:$('select[name="filter_status"]').val(),
-                filter_location:$('select[name="filter_location"]').val(),
+                filter_status:_card.find(`select[name="filter_status"]`).val(),
             },
             [
                 {
@@ -38,6 +36,7 @@ export var dtInventoryRepair = function (table,param='') {
                     data: "tag_number", name: "tag_number", title: "Tag Number",
                     className:'text-muted',
                     sortable:false,
+                    visible:false,
                     render: function (data, type, row) {
                         return `<span class="text-muted fw-bold">${data}</span>`;
                     },
@@ -50,9 +49,9 @@ export var dtInventoryRepair = function (table,param='') {
                     visible:false,
                 },
                 {
-                    data: "name", name: "name", title: "Item",
+                    data: "name", name: "name", title: "Device",
                     sortable:false,
-                    className:'text-start',
+                    className:'min-w-125px',
                     render: function (data, type, row) {
                         if(row.item_type_id == 1 || row.item_type_id == 8){
                             return `
@@ -62,6 +61,7 @@ export var dtInventoryRepair = function (table,param='') {
                                 </a>
                                 <span class="text-muted fw-bold">${row.description}</span>
                                 ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
+                                ${row.tag_number ? `<span class="text-muted fw-bold">Tag # : ${row.tag_number}</span>`:``}
                             </div>
                             `;
                         }
@@ -71,25 +71,11 @@ export var dtInventoryRepair = function (table,param='') {
                                 ${data}
                             </a>
                             ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
+                            ${row.tag_number ? `<span class="text-muted fw-bold">Tag # : ${row.tag_number}</span>`:``}
                         </div>
                         `;
                     }
                 },
-                // {
-                //     data: "repair_type", name: "repair_type", title: "Repair Type",
-                //     className:'',
-                //     sortable:false,
-                //     searchable:false,
-                //     render: function (data, type, row) {
-                //         let status = {
-                //             1: ["info", "Hardware"],
-                //             2: ["success", "Software"],
-
-                //         };
-                //         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
-                //     },
-
-                // },
                 {
                     data: "serial_number", name: "serial_number", title: "Serial Number",
                     className:'text-center',
@@ -110,7 +96,7 @@ export var dtInventoryRepair = function (table,param='') {
                     visible:false,
                 },
                 {
-                    data: "initial_diagnosis", name: "initial_diagnosis", title: "Repair Notes",
+                    data: "initial_diagnosis", name: "initial_diagnosis", title: "Initial Diagnosis",
                     className:'',
                     sortable:false,
                     searchable:false,
@@ -121,28 +107,18 @@ export var dtInventoryRepair = function (table,param='') {
                     sortable:false,
                     searchable:false,
                 },
-                {
-                    data: "accountability_form_no", name: "accountability_form_no", title: "Form No.",
-                    sortable:false,
-                    visible:false,
-                },
-                {
-                    data: "accountability_id", name: "accountability_id", title: "Form No.",
-                    sortable:false,
-                    visible:false,
-                },
-                {
-                    data: "start_at", name: "start_at", title: "Start",
-                    className:'',
-                    sortable:false,
-                    searchable:false,
-                },
-                {
-                    data: "end_at", name: "end_at", title: "End",
-                    className:'',
-                    sortable:false,
-                    searchable:false,
-                },
+                // {
+                //     data: "start_at", name: "start_at", title: "Start Date",
+                //     className:'min-w-125px',
+                //     sortable:false,
+                //     searchable:false,
+                // },
+                // {
+                //     data: "end_at", name: "end_at", title: "End Date",
+                //     className:'min-w-125px',
+                //     sortable:false,
+                //     searchable:false,
+                // },
                 {
                     data: "status", name: "status", title: "Status",
                     sortable:false,
@@ -160,6 +136,7 @@ export var dtInventoryRepair = function (table,param='') {
                 {
                     data: "created_by_name", name: "created_by_name", title: "Repaired By",
                     sortable:false,
+                    className:'min-w-125px',
                     render: function (data, type, row) {
                         if(!data){  return '--';  }
                         return `
@@ -176,17 +153,17 @@ export var dtInventoryRepair = function (table,param='') {
                 {
                     data: "last_accountable_to", name: "last_accountable_to", title: "Requested By",
                     sortable:false,
+                    className:'min-w-125px',
                     render: function (data, type, row) {
                         if(!data){  return '--';  }
                         return `
-                        <a  href="/accountability-details/${row.accountability_id}" class="text-hover-primary">
+                        <span class="text-hover-primary">
                             <div class="d-flex flex-column">
                                 <span class="text-gray-800 fw-bold">
                                     ${data}
                                 </span>
-                                <span class="text-muted fw-bold">Accountability No : ${row.accountability_form_no}</span>
                             </div>
-                        </a>
+                        </span>
                         `;
                     }
                 },
@@ -202,30 +179,20 @@ export var dtInventoryRepair = function (table,param='') {
                     name: "encrypted_id",
                     title: "Action",
                     sortable:false,
-                    className: "text-start",
+                    className: "text-center",
                     responsivePriority: -1,
                     render: function (data, type, row) {
                         return`<div class="d-flex">
-                        ${row.status ==1 ?
-                            `<button class="btn btn-icon btn-icon btn-sm me-1 hover-elevate-up ${row.is_editable?`btn-light-primary view`:`btn-secondary`}" data-bs-toggle="tooltip"
-                                    title="${row.is_editable?`View Details`:`You cannot edit this request because you're not the one who initiated the repair`}" data-id="${data}">
+                            <button class="btn btn-icon btn-icon btn-sm me-1 hover-elevate-up btn-light-primary view" data-bs-toggle="tooltip"
+                                    title="${row.is_editable?'Edit Details':'View Details'}" data-id="${data}">
                                 <i class="ki-duotone ki-pencil fs-1">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
                                     <span class="path4"></span>
                                 </i>
-                            </button>`:``}
-                            <button class="btn btn-icon btn-icon btn-sm me-1 hover-elevate-up ${row.is_editable?`btn-light-danger remove`:`btn-secondary`}" data-id="${data}"
-                                data-bs-toggle="tooltip" title="${row.is_editable?`Delete repair request form`:`You cannot delete this request because you're not the one who initiated the repair`}">
-                                    <i class="ki-duotone ki-trash fs-2x">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                        <span class="path5"></span>
-                                    </i>
                             </button>
+
                         </div>`;
                     },
                 }
@@ -290,7 +257,12 @@ export var dtInventoryRepair = function (table,param='') {
                     form.find('select[name="repair_type"]').val(payload.repair_type).trigger('change');
                     form.find('textarea[name="initial_diagnosis"]').val(payload.initial_diagnosis);
                     form.find('textarea[name="work_to_be_done"]').val(payload.work_to_be_done);
+                    trigger_select(`select[name="requested_by"]`,payload.accountable_to)
                     $(modal_id).find('button.submit').attr('data-id',payload.encrypted_id);
+                    if(!payload.is_editable || !payload.is_submittable){
+                        $(modal_id).find('input, textarea, select').attr('disabled',true);
+                        $(modal_id).find('button.submit').attr('disabled',true);
+                    }
 
                     let html_other_details = `
                         <div class="fw-bold fs-5">Device: </div>
@@ -310,12 +282,11 @@ export var dtInventoryRepair = function (table,param='') {
                             </div> `:``}
 
                         ${payload.form_no && payload.accountable_to?`
-                        <div class="fw-bold fs-5">Issued To: </div>
+                        <div class="fw-bold fs-5">Requested By: </div>
                         <div class="d-flex flex-column text-gray-800 fs-6">
                                 <span class="">
                                     ${payload.accountable_to}
                                 </span>
-                                <span class="">Accountability No : ${payload.form_no}</span>
                             </div>
                             `:``}
                     `;
@@ -332,8 +303,6 @@ export var dtInventoryRepair = function (table,param='') {
                 });
 
             })
-
-
 
         })
     }

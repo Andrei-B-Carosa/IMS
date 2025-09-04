@@ -7,7 +7,7 @@ export async function trigger_select(select, text) {
         $(select).each(function() {
             let val = null;
             $(this).find('option').each(function() {
-                if ($(this).text() === text) {
+                if ($(this).text().trim().toLowerCase() === text.trim().toLowerCase()) {
                     val = $(this).val();
                     return false; // Break out of the loop
                 }

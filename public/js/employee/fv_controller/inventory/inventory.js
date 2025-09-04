@@ -31,7 +31,27 @@ export function fvRepairRequest(_table='#repair-list_table',param=false){
                         // 'device':fv_validator(),
                         'start_at':fv_validator(),
                         'repair_type':fv_validator(),
-                        'status':fv_validator(),
+                        'status':{
+                            validators:{
+                                notEmpty:{
+                                    message:'This field is required'
+                                },
+                                callback: {
+                                    callback: function(input) {
+                                        if(input.value ==1){ return true; }
+                                        const endDate = $(modal_id+' input[name="end_at"]').val(); // or document.querySelector()
+                                        if (endDate == '') {
+                                            return {
+                                                valid: false,
+                                                message: 'Enter the "end date" if the status is Resolved or Not Repairable',
+                                            };
+                                        }
+                                        return true;
+                                    }
+                                }
+                            }
+                        },
+                        'requested_by':fv_validator(),
                         'initial_diagnosis':fv_validator(),
                         'end_at': {
                             validators: {
@@ -44,7 +64,6 @@ export function fvRepairRequest(_table='#repair-list_table',param=false){
                                         if (endAtValue === '') {
                                             return true;
                                         }
-
                                         // If status is still "In Progress" (value = 1)
                                         if (statusValue === '1') {
                                             return {
@@ -82,9 +101,12 @@ export function fvRepairRequest(_table='#repair-list_table',param=false){
                         $(modal_id).find('select[name="status"]').val('').trigger('change');
                         $(modal_id).find('.submit').attr('data-id','');
                         $(modal_id).find('.submit').attr('data-inventory-id','');
-                        $(modal_id).find('.other-details').remove().addClass('d-none');
+                        $(modal_id).find('.other-details').empty().addClass('d-none');
                         $(modal_id).find('select[name="device"]').parent().removeClass('d-none');
                         $(modal_id).find('select[name="device"]').removeAttr('disabled');
+                        $(modal_id).find('select[name="requested_by"]').val('').trigger('change');
+                        $(modal_id).find('button.submit').attr('disabled',false);
+                        $(modal_id).find('input, textarea, select').attr('disabled',false);
                     }
                 })
             })
@@ -110,7 +132,7 @@ export function fvRepairRequest(_table='#repair-list_table',param=false){
                                         fv.resetForm();
                                         form.reset();
                                         $(modal_id).find('.submit').attr('data-id','');
-                                        $(modal_id).find('.other-details').remove().addClass('d-none');
+                                        $(modal_id).find('.other-details').empty().addClass('d-none');
                                         get_inventory(`select[name="device"]`,'','repair_items','all');
                                         if($(_table).length){
                                             $(_table).DataTable().ajax.reload(null,false);
@@ -134,27 +156,27 @@ export function fvRepairRequest(_table='#repair-list_table',param=false){
                 })
             })
 
-            $(modal_id).on('change','select[name="status"]',function(e){
-                e.preventDefault()
-                e.stopImmediatePropagation()
+            // $(modal_id).on('change','select[name="status"]',function(e){
+            //     e.preventDefault()
+            //     e.stopImmediatePropagation()
 
-                if($(this).val() == 1){
-                    if (fv.getFields().hasOwnProperty('end_at') && $(modal_id+' input[name="end_at"]').val() == '') {
-                        fv.removeField('end_at');
-                    }
-                    if (fv.getFields().hasOwnProperty('end_at') && $(modal_id+' input[name="end_at"]').val() == '') {
-                        fv.removeField('work_to_be_done');
-                    }
-                }
-                if($(this).val() == 2 || $(this).val() ==3){
-                    if (!fv.getFields().hasOwnProperty('end_at')) {
-                        fv.addField('end_at',fv_validator());
-                    }
-                    if (!fv.getFields().hasOwnProperty('work_to_be_done')) {
-                        fv.addField('work_to_be_done',fv_validator());
-                    }
-                }
-            })
+            //     if($(this).val() == 1){
+            //         if (fv.getFields().hasOwnProperty('end_at') && $(modal_id+' input[name="end_at"]').val() == '') {
+            //             fv.removeField('end_at');
+            //         }
+            //         if (fv.getFields().hasOwnProperty('end_at') && $(modal_id+' input[name="end_at"]').val() == '') {
+            //             fv.removeField('work_to_be_done');
+            //         }
+            //     }
+            //     if($(this).val() == 2 || $(this).val() ==3){
+            //         if (!fv.getFields().hasOwnProperty('end_at')) {
+            //             fv.addField('end_at',fv_validator());
+            //         }
+            //         if (!fv.getFields().hasOwnProperty('work_to_be_done')) {
+            //             fv.addField('work_to_be_done',fv_validator());
+            //         }
+            //     }
+            // })
 
             $(modal_id).on('change','select[name="device"]',function(e){
                 e.preventDefault()

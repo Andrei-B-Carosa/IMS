@@ -21,10 +21,10 @@ export var dtInventoryList = function (table,param='') {
         dataTableHelper.initTable(
             _url+'dt',
             {
-                filter_category:$('select[name="filter_category"]').val(),
-                filter_status:$('select[name="filter_status"]').val(),
-                filter_location:$('select[name="filter_location"]').val(),
-                filter_year:$('select[name="filter_year"]').val(),
+                filter_category:_card.find('select[name="filter_category"]').val(),
+                filter_status:_card.find('select[name="filter_status"]').val(),
+                filter_location:_card.find('select[name="filter_location"]').val(),
+                filter_year:_card.find('select[name="filter_year"]').val(),
                 id:param,
             },
             [
@@ -296,7 +296,6 @@ export var dtInventoryList = function (table,param='') {
 
                 initTable();
             })
-
 
             $(`#${table}_table`).on('click','.remove',function(e){
                 e.preventDefault()

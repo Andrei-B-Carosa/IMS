@@ -1,8 +1,5 @@
 'use strict';
-import { modal_state, page_state } from "../../../global.js";
-import {Alert} from "../../../global/alert.js";
-import {RequestHandler} from "../../../global/request.js";
-import { get_company_location, get_filter_inventory_year, get_inventory, get_item, get_item_type } from "../../../global/select.js";
+import { get_company_location, get_employee, get_filter_inventory_year, get_inventory, get_item_type } from "../../../global/select.js";
 import { dtInventoryConsumable } from "../../dt_controller/inventory/inventory_consumable.js";
 import { dtInventoryList } from "../../dt_controller/inventory/inventory_list.js";
 import { dtInventoryRepair } from "../../dt_controller/inventory/inventory_repair.js";
@@ -53,6 +50,7 @@ export var InventoryListController = async function (page, param) {
         dtInventoryRepair('repair-list','',false).init();
         fvRepairRequest();
         get_inventory(`select[name="device"]`,'','repair_items','all');
+        get_employee(`select[name="requested_by"]`,'',1);
     }
 
     $(async function () {

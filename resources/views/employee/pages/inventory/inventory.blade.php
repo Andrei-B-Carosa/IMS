@@ -162,7 +162,7 @@
 
                             <div class="card-toolbar">
                                 <div class="d-flex align-items-center position-relative my-1">
-                                    {{-- <div class="d-flex flex-stack flex-wrap gap-4">
+                                    <div class="d-flex flex-stack flex-wrap gap-4">
                                         <div class="d-flex align-items-center fw-bold">
                                             <div class="text-gray-400 fs-7 me-2">Status</div>
                                             <select
@@ -172,32 +172,12 @@
                                                 data-placeholder="Select an option" name="filter_status">
                                                 <option></option>
                                                 <option value="all" selected>Show All</option>
-                                                <option value="1">Available</option>
-                                                <option value="2">Issued</option>
+                                                <option value="1">In Progress</option>
+                                                <option value="2">Resolved</option>
+                                                <option value="3">Not Repairable</option>
                                             </select>
                                         </div>
-                                        <div class="d-flex align-items-center fw-bold">
-                                            <div class="text-gray-400 fs-7 me-2">Location</div>
-                                            <select
-                                                class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto sfilter"
-                                                data-control="select2" data-minimum-results-for-search="Infinity" data-hide-search="true"
-                                                data-dropdown-css-class="w-150px"
-                                                data-placeholder="" name="filter_location">
-                                                <option value="all" selected>Show all</option>
-                                            </select>
-                                        </div>
-                                        <div class="d-flex align-items-center fw-bold">
-                                            <div class="text-gray-400 fs-7 me-2">Year</div>
-                                            <select
-                                                class="form-select form-select-transparent text-dark fs-7 lh-1 fw-bold py-0 ps-3 w-auto sfilter"
-                                                data-control="select2" data-minimum-results-for-search="Infinity" data-hide-search="true"
-                                                data-dropdown-css-class="w-150px"
-                                                data-placeholder="" name="filter_year">
-                                                <option value="all" selected>Show all</option>
-
-                                            </select>
-                                        </div>
-                                    </div> --}}
+                                    </div>
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-request-repair">
                                         <i class="ki-outline ki-plus fs-2"></i>Request Repair
                                     </button>
@@ -267,6 +247,21 @@
                 data-control="select2"
                 data-placeholder="Select an option"
                 data-minimum-results-for-search="Infinity"
+                disabled="false"
+            />
+            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+        </div>
+        <div class="fv-row mb-7 fv-plugins-icon-container">
+            <x-elements.select
+                id="requested_by"
+                name="requested_by"
+                label="Requested By"
+                :options="[]"
+                placeholder="Select an option"
+                selected="1"
+                class="fw-bold "
+                data-control="select2"
+                data-placeholder="Select an option"
                 disabled="false"
             />
             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
