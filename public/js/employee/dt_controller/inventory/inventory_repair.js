@@ -211,6 +211,22 @@ export var dtInventoryRepair = function (table,param='') {
 
             _card.off();
 
+            _card.on('keyup','.search',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+                let searchTerm = $(this).val();
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    dataTableHelper.search(searchTerm);
+                } else if (e.keyCode === 8 || e.key === 'Backspace') {
+                    setTimeout(() => {
+                        let updatedSearchTerm = $(this).val();
+                        if (updatedSearchTerm === '') {
+                            dataTableHelper.search('');
+                        }
+                    }, 0);
+                }
+            })
+
             _card.on('change',`select.sfilter`,function(e){
                 e.preventDefault();
                 e.stopImmediatePropagation();
