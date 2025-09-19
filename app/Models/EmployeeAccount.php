@@ -38,7 +38,9 @@ class EmployeeAccount extends Authenticatable
         $hashedPassword = Hash::make($employee->emp_no);
 
         // Base username (e.g., john.doe)
-        $baseUsername = strtolower($employee->fname . '.' . $employee->lname);
+        $fname = str_replace(' ', '', $employee->fname);
+        $lname = str_replace(' ', '', $employee->lname);
+        $baseUsername = strtolower($fname . '.' . $lname);
         $username = $baseUsername;
 
         // Check if any existing usernames match the pattern (e.g., john.doe, john.doe01, john.doe02, etc.)
