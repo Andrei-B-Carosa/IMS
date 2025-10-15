@@ -131,7 +131,7 @@ export var dtInventoryList = function (table,param='') {
                     visible:false,
                 },
                 {
-                    data: "received_at", name: "received_at", title: "Received At",
+                    data: "received_at", name: "received_at", title: "Purchased Date",
                     searchable:false,
                     className:' text-start min-w-100px',
                     render: function (data, type, row) {
@@ -163,7 +163,7 @@ export var dtInventoryList = function (table,param='') {
                     render: function (data, type, row) {
                         if(!data){  return '--';  }
                         return `
-                        <a  href="/accountability-details/${row.accountability_id}" class="text-hover-primary">
+                        <a  target="_blank" href="/accountability-details/${row.accountability_id}" class="text-hover-primary">
                             <div class="d-flex flex-column">
                                 <span class="text-gray-800 fw-bold">
                                     ${data}
