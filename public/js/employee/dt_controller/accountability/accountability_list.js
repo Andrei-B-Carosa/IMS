@@ -137,7 +137,7 @@ export var dtAccountability = function (table,param='') {
                                     </div>
                                     <div class="separator mb-3 opacity-75"></div>
                                     <div class="menu-item px-3 ">
-                                        <a href="/accountability-details/${data}" class="menu-link px-3">
+                                        <a target="_blank" href="/accountability-details/${data}" class="menu-link px-3">
                                             View Accountability
                                         </a>
                                     </div>

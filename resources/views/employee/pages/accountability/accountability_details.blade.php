@@ -1,5 +1,10 @@
 <div class="page-accountability-details">
-
+    <div class="d-flex align-items-center gap-2 gap-lg-3 mb-5">
+        <a href="/accountability" class="btn btn-sm fw-bold btn-danger">
+            <i class="ki-duotone ki-black-left fs-2"></i>
+            Exit Accountability Details
+        </a>
+    </div>
     <div class="card mb-10 card-accountability-details" id="">
         <div class="card-header cursor-pointer">
             <div class="card-title m-0">
