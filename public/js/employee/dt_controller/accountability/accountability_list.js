@@ -34,14 +34,14 @@ export var dtAccountability = function (table,param='') {
                 },
                 {
                     data: "form_no", name: "form_no", title: "Form No.",
-                    className:'min-w-125px',
+                    className:'',
                     render: function (data, type, row) {
                         return `<span class=" fw-bold">${data}</span>`;
                     },
                 },
                 {
                     data: "issued_items", name: "issued_items", title: "Issued Devices",
-                    className:'min-w-150px',
+                    className:'min-w-125px',
                     sortable:false,
                     render: function (data, type, row) {
                         return `<span class="fw-bold">${data}</span>`;
