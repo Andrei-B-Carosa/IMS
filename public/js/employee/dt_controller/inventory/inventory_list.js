@@ -208,7 +208,7 @@ export var dtInventoryList = function (table,param='') {
                                         </div>
                                         <div class="separator mb-3 opacity-75"></div>
                                         <div class="menu-item px-3">
-                                            <a href="/inventory-details/${data}" class="menu-link px-3">
+                                            <a href="/inventory-details/${data}" class="menu-link px-3" target="_blank">
                                                 View Item Details
                                             </a>
                                         </div>
