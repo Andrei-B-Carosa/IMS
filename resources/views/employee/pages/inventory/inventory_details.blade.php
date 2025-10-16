@@ -1,37 +1,4 @@
 <div class="page-inventory-details">
-
-    <!--begin::Alert-->
-    {{-- <div class="alert alert-dismissible bg-light-danger border border-danger d-flex flex-column flex-sm-row p-5 mb-5">
-        <!--begin::Icon-->
-        <i class="ki-duotone ki-trash fs-2hx text-danger me-4 mt-2 mb-sm-0">
-            <span class="path1"></span>
-            <span class="path2"></span>
-            <span class="path3"></span>
-            <span class="path4"></span>
-            <span class="path5"></span>
-        </i>
-        <!--end::Icon-->
-
-        <!--begin::Wrapper-->
-        <div class="d-flex flex-column pe-0 pe-sm-10">
-            <!--begin::Title-->
-            <h4 class="fw-semibold">Item is Disposed</h4>
-            <!--end::Title-->
-
-            <!--begin::Content-->
-            <span>Scroll down for more details . . .</span>
-            <!--end::Content-->
-        </div>
-        <!--end::Wrapper-->
-
-        <!--begin::Close-->
-        <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
-            <i class="ki-duotone ki-cross fs-1 text-primary"><span class="path1"></span><span class="path2"></span></i>
-        </button>
-        <!--end::Close-->
-    </div> --}}
-    <!--end::Alert-->
-
     <div class="d-flex align-items-center gap-2 gap-lg-3 mb-5">
         <a href="/inventory" class="btn btn-sm fw-bold btn-danger">
             <i class="ki-duotone ki-black-left fs-2"></i>
@@ -40,7 +7,7 @@
     </div>
 
     {{-- General Details --}}
-    <div class="card card-flush py-4 my-10" id="card-general-details">
+    <div class="card card-flush py-4 mb-10" id="card-general-details">
         <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_general_details_collapsible">
             <div class="card-title">General Details @if($data->item_type->display_to == 1) ({{ $data->generate_tag_number() }}) @endif</div>
             <div class="card-toolbar">
@@ -63,12 +30,12 @@
                             <input type="text" name="tag_number" class="form-control mb-2" placeholder="Item Name" value="{{ $data->generate_tag_number() }}" disabled/>
                         </div>
                     @endif --}}
-                    @if($data->item_type_id != 1 && $data->item_type_id !=8)
+                    {{-- @if($data->item_type_id != 1 && $data->item_type_id !=8)
                         <div class="fv-row mb-7 fv-plugins-icon-container" id="">
                             <label class="fs-6 fw-semibold mb-2">Description</label>
                             <textarea class="form-control form-control-solid" rows="5" name="description" placeholder="Description">{{ $data->description }}</textarea>
                         </div>
-                    @endif
+                    @endif --}}
                     {{-- <div class="row mb-7">
                         <div class="fv-row col-6 flex-md-root">
                             <label class="required form-label">Item Type</label>
@@ -147,7 +114,7 @@
                             :options="$status"
                             placeholder="Select an option"
                             selected="{{ $data->status }}"
-                            class="fw-bold form-select-solid"
+                            class="fw-bold"
                             data-control="select2"
                             data-placeholder="Select an option"
                             data-minimum-results-for-search="Infinity"

@@ -63,14 +63,15 @@ class Details extends Controller
             $query = ImsItemInventory::find($id);
             $query->name = $rq->name;
 
-            if(isset($rq->description) && ($query->item_type_id != 1 && $query->item_type_id !=8)){
-                $query->description = $rq->description;
-            }
+            // if(isset($rq->description) && ($query->item_type_id != 1 && $query->item_type_id !=8)){
+            //     $query->description = $rq->description;
+            // }
 
-            if(isset($rq->status)){
-                $query->status = $rq->status;
-            }
+            // if(isset($rq->status)){
+            //     $query->status = $rq->status;
+            // }
 
+            // If laptop or systm unit
             if($query->item_type_id == 1 || $query->item_type_id == 8){
                 $description = json_decode($query->description,true);
                 if($query->serial_number != $rq->serial_number){
@@ -88,7 +89,7 @@ class Details extends Controller
 
             $query->serial_number = $rq->serial_number;
             $query->price = $rq->price;
-
+            $query->status = $rq->status;
             $query->received_at = isset($rq->received_at) ? Carbon::createFromFormat('m-d-Y', $rq->received_at)->format('Y-m-d') : null;
             $query->warranty_end_at = isset($rq->warranty_end_at) ? Carbon::createFromFormat('m-d-Y', $rq->warranty_end_at)->format('Y-m-d') : null;
             $query->received_by = isset($rq->received_by)? Crypt::decrypt($rq->received_by):null;

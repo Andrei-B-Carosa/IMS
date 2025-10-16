@@ -57,7 +57,7 @@ class Lists extends Controller
         try {
             DB::beginTransaction();
 
-            $received_by = Crypt::decrypt($rq->received_by);
+            // $received_by = Crypt::decrypt($rq->received_by);
             $issued_by = Auth::user()->emp_id;
             $issued_at = Carbon::createFromFormat('m-d-Y', $rq->issued_at)->format('Y-m-d');
 
@@ -65,7 +65,7 @@ class Lists extends Controller
                 'form_no'=>$rq->form_no,
                 'issued_at'=>$issued_at,
                 'issued_by'=>$issued_by,
-                'received_by'=>$received_by,
+                // 'received_by'=>$received_by,
                 'remarks'=>$rq->remarks,
                 'created_by'=>$issued_by,
             ]);

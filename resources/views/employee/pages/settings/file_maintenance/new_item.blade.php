@@ -47,7 +47,7 @@
                     <label class=" form-label required">Price</label>
                     <input type="text" name="price" class="form-control mb-2"  placeholder="Price" value="" />
                 </div>
-                <div class="fv-row mb-7 fv-plugins-icon-container">
+                {{-- <div class="fv-row mb-7 fv-plugins-icon-container">
                     <x-elements.select
                         id="is_active"
                         name="is_active"
@@ -55,17 +55,16 @@
                         :options="['1' => 'Active', '2' => 'Inactive']"
                         placeholder="Select an option"
                         selected="1"
-                        class="fw-bold form-select-solid"
+                        class="fw-bold"
                         data-control="select2"
                         data-placeholder="Select an option"
                         data-minimum-results-for-search="Infinity"
                         data-allow-clear="true"
-                        {{-- disabled="{{ $data->is_active == 2? 'true':'false' }}" --}}
                         disabled="false"
                     />
                     <div class="alert-status"></div>
                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-                </div>
+                </div> --}}
                 {{-- <div class="fv-row mb-7 fv-plugins-icon-container" id="">
                     <label class="fs-6 fw-semibold mb-2">Remarks</label>
                     <textarea class="form-control form-control-solid" rows="5" name="remarks" placeholder="Remarks"></textarea>

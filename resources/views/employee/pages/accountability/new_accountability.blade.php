@@ -21,8 +21,8 @@
                         <input type="text" name="form_no" class="form-control" value="">
                     </div>
                     <div class="col-md-12 fv-row mb-7">
-                        <label class="form-label required">Issued By</label>
-                        <select class="form-select" data-kt-repeater="select2" data-placeholder="Select an option" name="issued_by" disabled>
+                        <label class="form-label required">Issued By ?</label>
+                        <select class="form-select" data-kt-repeater="select2" data-placeholder="Select an option" name="issued_by">
                             {!! $issued_by_option !!}
                         </select>
                     </div>
@@ -31,12 +31,12 @@
                         <input type="text" name="issued_at" input-control="date-picker" default-date="current" class="form-control mb-3 mb-lg-0 flatpickr">
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                     </div>
-                    <div class="col-md-12 fv-row mb-7">
+                    {{-- <div class="col-md-12 fv-row mb-7">
                         <label class="form-label required">Received By</label>
                         <select class="form-select" data-kt-repeater="select2" data-placeholder="Select an option" name="received_by" data-allow-clear="true">
                             {!! $employee_option !!}
                         </select>
-                    </div>
+                    </div> --}}
                     <div class="d-flex fv-row flex-column mb-7" id="">
                         <label class="fs-6 fw-semibold mb-2">Remarks</label>
                         <textarea class="form-control form-control-solid" rows="5" name="remarks" placeholder="Remarks"></textarea>
@@ -50,26 +50,36 @@
     <div class="card card-flush mb-10" id="">
         <div class="card-header pt-7" id="">
             <div class="card-title">
-                <h2>Issued Item</h2>
+                <h2>Issued Devices</h2>
             </div>
         </div>
-        <div class="card-body pt-10">
+        <div class="card-body pt-5">
+            <div class="alert alert-dismissible bg-light-primary border border-primary d-flex flex-column flex-sm-row p-5 mb-10">
+                <i class="ki-duotone ki-search-list fs-2hx text-primary me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                <div class="d-flex flex-column pe-0 pe-sm-10">
+                    <h5 class="mb-1">Reminder</h5>
+                    <span>
+                        When issuing an item, make sure you know its <b>Tag Number</b>.
+                        You’ll need the <b>Tag Number</b> to complete the accountability form.
+                        Please take note of it or copy it before proceeding.
+                    </span>
+                </div>
+                <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                    <i class="ki-duotone ki-cross fs-1 text-primary"><span class="path1"></span><span class="path2"></span></i>
+                </button>
+            </div>
             <form class="repeater-issued-item">
                 <div data-repeater-list="issued-item">
                     <div data-repeater-item>
                         <div class="form-group row mb-5">
                             <div class="col-md-10 fv-row">
-                                <label class="form-label">Accessories</label>
+                                <label class="form-label">Devices</label>
                                 <select class="form-select form-accessories" data-kt-repeater="select2" name="accessories" data-allow-clear="true"
                                 data-placeholder="Select an option">
                                     {!! $inventory_options !!}
 
                                 </select>
                             </div>
-                            {{-- <div class="col-md-3 fv-row">
-                                <label class="form-label">Serial Number / Device ID</label>
-                                <input type="text" class="form-control"  name="serial_number" placeholder="Enter serial number" />
-                            </div> --}}
                             <div class="col-md-2 d-none">
                                 <a href="javascript:;" data-repeater-delete class="btn btn-flex btn-sm btn-light-danger mt-3 mt-md-9">
                                     <i class="ki-duotone ki-trash fs-3">
@@ -100,21 +110,31 @@
         <form class="repeater-issued-to">
             <div class="card-header pt-7 border-0" id="">
                 <div class="card-title">
-                    <h2>Issued To</h2>
+                    <h2>Issued To ?</h2>
                 </div>
                 <div class="card-toolbar">
-                    {{-- <a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
-                        <i class="ki-duotone ki-plus fs-3"></i>
-                        Add Employee
-                    </a> --}}
                 </div>
             </div>
-            <div class="card-body pt-10">
+            <div class="card-body pt-5">
+                <div class="alert alert-dismissible bg-light-primary border border-primary d-flex flex-column flex-sm-row p-5 mb-10">
+                    <i class="ki-duotone ki-search-list fs-2hx text-primary me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                    <div class="d-flex flex-column pe-0 pe-sm-10">
+                        <h5 class="mb-1">Reminder</h5>
+                        <span>
+                            If the employee you're issuing to is not in the list, you can add them by going to
+                                <b>Settings</b> → <b>Employee List</b> → <b>Click Add New Employee</b> and fill-up the form.
+
+                        </span>
+                    </div>
+                    <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                        <i class="ki-duotone ki-cross fs-1 text-primary"><span class="path1"></span><span class="path2"></span></i>
+                    </button>
+                </div>
                 <div data-repeater-list="issued-to" class="">
                     <div data-repeater-item>
                         <div class="form-group row mb-7">
                             <div class="col-md-10 fv-row">
-                                <label class="form-label required">Personnel</label>
+                                <label class="form-label required">Employee List</label>
                                 <select class="form-select" data-kt-repeater="select2" data-placeholder="Select an option" name="employee" data-allow-clear="true">
                                     {!! $employee_option !!}
                                 </select>

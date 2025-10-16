@@ -41,7 +41,7 @@ export var dtAccountability = function (table,param='') {
                 },
                 {
                     data: "issued_items", name: "issued_items", title: "Issued Devices",
-                    className:'min-w-125px',
+                    className:'min-w-150px',
                     sortable:false,
                     render: function (data, type, row) {
                         return `<span class="fw-bold">${data}</span>`;
@@ -55,14 +55,15 @@ export var dtAccountability = function (table,param='') {
                         return `<span class="">${data}</span>`;
                     },
                 },
-                // {
-                //     data: "issued_by", name: "issued_by", title: "Issued By",
-                //     className:'',
-                //     sortable:false,
-                //     render: function (data, type, row) {
-                //         return `<span class="">${data}</span>`;
-                //     },
-                // },
+                {
+                    data: "issued_by", name: "issued_by", title: "Issued By",
+                    className:'',
+                    sortable:false,
+                    searchable:false,
+                    render: function (data, type, row) {
+                        return `<span class="">${data}</span>`;
+                    },
+                },
                 {
                     data: "tag_number", name: "tag_number", title: "Tag Number",
                     className:'',
@@ -87,7 +88,7 @@ export var dtAccountability = function (table,param='') {
                 },
                 {
                     data: "a_remarks", name: "a_remarks", title: "Remarks",
-                    className:'',
+                    className:'min-w-25px',
                     sortable:false,
                     render: function (data, type, row) {
                         return `<span class="">${data??'--'}</span>`;

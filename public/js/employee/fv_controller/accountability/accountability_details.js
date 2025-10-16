@@ -375,7 +375,7 @@ export function fvOtherAccountabilityDetails(_table=false,param=false){
                         'date_issued':fv_validator(),
                         'accountability_status':fv_validator(),
                         'issued_by':fv_validator(),
-                        'received_by':fv_validator(),
+                        // 'received_by':fv_validator(),
                     },
                     plugins: {
                     trigger: new FormValidation.plugins.Trigger(),

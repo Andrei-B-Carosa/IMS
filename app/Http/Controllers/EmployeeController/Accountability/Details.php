@@ -543,7 +543,7 @@ class Details extends Controller
             $query->returned_at = isset($rq->returned_at) ?Carbon::createFromFormat('m-d-Y', $rq->returned_at)->format('Y-m-d') : null;
 
             $query->issued_by = Crypt::decrypt($rq->issued_by);
-            $query->received_by = Crypt::decrypt($rq->received_by);
+            // $query->received_by = Crypt::decrypt($rq->received_by);
             $query->updated_by = $user_id;
             $query->status = $rq->accountability_status;
             $query->remarks = $rq->remarks;

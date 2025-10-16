@@ -46,7 +46,7 @@ export function fvNewItemGeneralDetails(_table=false,param=false){
                         'item_type':fv_validator(),
                         // 'item_brand':fv_validator(),
                         'price':fv_validator(),
-                        'is_active':fv_validator(),
+                        // 'is_active':fv_validator(),
                     },
                     plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -109,10 +109,10 @@ export function fvNewItemGeneralDetails(_table=false,param=false){
                             fvNewItemGeneralDetails.removeField('description');
                         }
                     }else {
-                        $('textarea[name="description"]').parent().removeClass('d-none');
+                        // $('textarea[name="description"]').parent().removeClass('d-none');
                         $('#form-new-item-details').attr('data-include-fv',false);
                         $('#card-new-item-details').addClass('d-none').find('.card-header .card-title').text('Item Details');
-                        fvNewItemGeneralDetails.addField('description',fv_validator());
+                        // fvNewItemGeneralDetails.addField('description',fv_validator());
                     }
                 })
 

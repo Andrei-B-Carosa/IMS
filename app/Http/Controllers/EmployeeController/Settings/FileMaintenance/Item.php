@@ -129,13 +129,9 @@ class Item extends Controller
             $item_brand_id = $rq->item_brand? Crypt::decrypt($rq->item_brand):null;
             $item_type_id = $rq->item_type? Crypt::decrypt($rq->item_type):null;
 
-            if(isset($rq->description) && ($query->item_type_id != 1 && $query->item_type_id !=8)){
-                $query->description = $rq->description;
-            }
-
-            if(isset($rq->is_active)){
-                $query->is_active = $rq->is_active;
-            }
+            // if(isset($rq->description) && ($query->item_type_id != 1 && $query->item_type_id !=8)){
+            //     $query->description = $rq->description;
+            // }
 
             if($query->item_type_id == 1 || $query->item_type_id == 8){
                 $description = json_decode($query->description,true);
@@ -148,8 +144,9 @@ class Item extends Controller
             $query->price = $rq->price;
             $query->item_brand_id = $item_brand_id;
             $query->item_type_id = $item_type_id;
+            $query->is_active = $rq->is_active;
             $query->updated_by = Auth::user()->emp_id;
-            // $query->remarks = $rq->remarks;
+            $query->remarks = $rq->remarks;
 
             $query->save();
 
@@ -358,7 +355,7 @@ class Item extends Controller
                 'item_type_id' => $item_type_id,
                 'name' => $rq->name,
                 'description' => $description,
-                'is_active' => $rq->is_active,
+                // 'is_active' => $rq->is_active,
                 'price' => $rq->price,
                 // 'remarks' => $rq->remarks,
                 'created_by' => $created_by,

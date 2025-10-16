@@ -31,7 +31,7 @@ export var fvNewAccountabilityController =  function (page,param) {
                 'form_no':fv_validator(),
                 'issued_by':fv_validator(),
                 'issued_at':fv_validator(),
-                'received_by':fv_validator(),
+                // 'received_by':fv_validator(),
             },
             plugins: {
             trigger: new FormValidation.plugins.Trigger(),

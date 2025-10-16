@@ -21,12 +21,12 @@
                     <label class="required form-label">Name</label>
                     <input type="text" name="name" class="form-control mb-2" placeholder="Item Name" value="{{ $data->name }}" />
                 </div>
-                @if($data->item_type_id != 1 && $data->item_type_id !=8)
+                {{-- @if($data->item_type_id != 1 && $data->item_type_id !=8)
                     <div class="fv-row mb-7 fv-plugins-icon-container" id="">
                         <label class="fs-6 fw-semibold mb-2 required">Description</label>
                         <textarea class="form-control form-control-solid" rows="5" name="description" placeholder="Description">{{ $data->description }}</textarea>
                     </div>
-                @endif
+                @endif --}}
                 <div class="row mb-7">
                     <div class="fv-row col-6 flex-md-root">
                         <label class="required form-label">Item Type</label>
@@ -57,7 +57,7 @@
                         :options="['1' => 'Active', '2' => 'Inactive']"
                         placeholder="Select an option"
                         selected="{{ $data->is_active }}"
-                        class="fw-bold form-select-solid"
+                        class="fw-bold"
                         data-control="select2"
                         data-placeholder="Select an option"
                         data-minimum-results-for-search="Infinity"

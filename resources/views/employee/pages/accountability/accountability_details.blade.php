@@ -19,7 +19,7 @@
         </div>
         <div class="card-body p-9">
             <div class="row mb-7">
-                <label class="col-lg-4 fw-semibold text-muted">Issued At: </label>
+                <label class="col-lg-4 fw-semibold text-muted">Issued Date: </label>
 
                 <div class="col-lg-8">
                     <span class="fw-bold fs-6 text-gray-800">{{ date('M d, Y',strtotime($data->issued_at)) }}</span>
@@ -27,7 +27,7 @@
             </div>
             @if(isset($data->returned_at))
                 <div class="row mb-7">
-                    <label class="col-lg-4 fw-semibold text-muted">Returned At: </label>
+                    <label class="col-lg-4 fw-semibold text-muted">Returned Date: </label>
 
                     <div class="col-lg-8">
                         <span class="fw-bold fs-6 text-gray-800">{{ date('M d, Y',strtotime($data->returned_at)) }}</span>
@@ -40,12 +40,12 @@
                     <span class="fw-semibold text-gray-800 fs-6">{{ $data->issued_by_emp->fullname() }}</span>
                 </div>
             </div>
-            <div class="row mb-7">
+            {{-- <div class="row mb-7">
                 <label class="col-lg-4 fw-semibold text-muted">Received By: </label>
                 <div class="col-lg-8 fv-row">
                     <span class="fw-semibold text-gray-800 fs-6">{{ $data->received_by_emp->fullname() }}</span>
                 </div>
-            </div>
+            </div> --}}
             <div class="row mb-7">
                 <label class="col-lg-4 fw-semibold text-muted">
                     Accountability Status:
@@ -92,12 +92,6 @@
             </div>
             <div class="card-toolbar">
                 <div class="d-flex align-items-center position-relative my-1">
-                    {{-- <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                    </i>
-                    <input type="text" class="form-control form-control-solid w-250px ps-12 search"
-                        placeholder="Search here ..." /> --}}
                     @if($data->status !=2)
                         <button class="btn btn-primary align-self-center add-item" data-id="{{ Crypt::encrypt($data->id) }}">
                             Add Item
@@ -162,12 +156,12 @@
                             </div>
                             <div class="row">
                                 <div class="fv-row mb-7 col-6 fv-plugins-icon-container">
-                                    <label class="required fw-semibold fs-6 mb-2">Issued At</label>
+                                    <label class="required fw-semibold fs-6 mb-2">Issued Date</label>
                                     <input type="text" name="date_issued" input-control="date-picker" default-date="" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
                                 <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>
                                 <div class="fv-row mb-7 col-6 fv-plugins-icon-container">
-                                    <label class="required fw-semibold fs-6 mb-2">Returned At</label>
+                                    <label class="required fw-semibold fs-6 mb-2">Returned Date</label>
                                     <input type="text" name="returned_at" input-control="date-picker" default-date="" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
                                 <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>
@@ -181,7 +175,7 @@
                                         :options="[]"
                                         placeholder="Select an option"
                                         selected=""
-                                        class="fw-bold form-select-solid"
+                                        class="fw-bold"
                                         data-control="select2"
                                         data-placeholder="Select an option"
                                         data-minimum-results-for-search="Infinity"
@@ -190,7 +184,7 @@
                                     />
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>
-                                <div class="fv-row mb-7 fv-plugins-icon-container">
+                                {{-- <div class="fv-row mb-7 fv-plugins-icon-container">
                                     <x-elements.select
                                         id="received_by"
                                         name="received_by"
@@ -198,7 +192,7 @@
                                         :options="[]"
                                         placeholder="Select an option"
                                         selected=""
-                                        class="fw-bold form-select-solid"
+                                        class="fw-bold"
                                         data-control="select2"
                                         data-placeholder="Select an option"
                                         data-minimum-results-for-search="Infinity"
@@ -206,7 +200,7 @@
                                         disabled="false"
                                     />
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="fv-row mb-7 fv-plugins-icon-container">
                                 <x-elements.select
@@ -216,7 +210,7 @@
                                     :options="['1' => 'Active', '2' => 'Inactive']"
                                     placeholder="Select an option"
                                     selected=""
-                                    class="fw-bold form-select-solid"
+                                    class="fw-bold"
                                     data-control="select2"
                                     data-placeholder="Select an option"
                                     data-minimum-results-for-search="Infinity"
@@ -267,12 +261,12 @@
                             </div>
                             <div class="row">
                                 <div class="fv-row mb-7 fv-plugins-icon-container col-6">
-                                    <label class="required fw-semibold fs-6 mb-2">Issued at</label>
+                                    <label class="required fw-semibold fs-6 mb-2">Issued Date</label>
                                     <input type="text" name="issued_at" input-control="date-picker" default-date="" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>
                                 <div class="fv-row mb-7 fv-plugins-icon-container col-6">
-                                    <label class="fw-semibold fs-6 mb-2">Return at</label>
+                                    <label class="fw-semibold fs-6 mb-2">Return Date</label>
                                     <input type="text" name="returned_at" input-control="date-picker" default-date="" class="form-control form-select-solid mb-3 mb-lg-0 flatpickr">
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>

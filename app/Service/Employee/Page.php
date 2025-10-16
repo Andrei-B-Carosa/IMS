@@ -62,7 +62,7 @@ class Page
     public function new_accountability($rq)
     {
 
-        $issued_by_option = '<option value="'.Crypt::encrypt(Auth::user()->emp_id).'">'.Auth::user()->employee->fullname().'</option>';
+        // $issued_by_option = '<option value="'.Crypt::encrypt(Auth::user()->emp_id).'">'.Auth::user()->employee->fullname().'</option>';
 
         $rq = $rq->merge(['id' => null, 'view'=>'1', 'type'=>'accountability_items']);
         $inventory_options = (new InventoryOption)->list($rq);
@@ -70,6 +70,9 @@ class Page
         $rq = $rq->merge(['id' => null, 'view'=>'1', 'type'=>'employee']);
         $employee_option = (new EmployeeOptions)->list($rq);
 
+        $emp_id = Crypt::encrypt(Auth::user()->emp_id);
+        $rq = $rq->merge(['id' => $emp_id, 'view'=>'1', 'type'=>'mis_personnel']);
+        $issued_by_option = (new EmployeeOptions)->list($rq);
 
         return view('employee.pages.accountability.new_accountability',compact('inventory_options','issued_by_option','employee_option'))->render();
     }

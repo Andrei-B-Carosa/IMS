@@ -40,17 +40,16 @@ export var dtItemType = function (table,param=false) {
                             <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
                                 ${data??'--'}
                             </a>
-                            ${row.item_number ? `<span class="text-muted"># ${row.item_number}</span>` : ``}
                         </div>
                         `;
                     }
                 },
-                {
-                    data: "item_number", name: "item_number", title: "Item Number",
-                    sortable:false,
-                    visible:false,
-                    searchable:false,
-                },
+                // {
+                //     data: "item_number", name: "item_number", title: "Item Number",
+                //     sortable:false,
+                //     visible:false,
+                //     searchable:false,
+                // },
                 {
                     data: "description", name: "description", title: "Description",
                     sortable:false,
