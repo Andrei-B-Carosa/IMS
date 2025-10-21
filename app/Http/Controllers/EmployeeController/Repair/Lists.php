@@ -149,7 +149,7 @@ class Lists extends Controller
                 'accountable_to'=> $query->last_accountable_to,
                 'encrypted_id' =>Crypt::encrypt($query->id),
                 'is_editable' =>Auth::user()->emp_id == $query->created_by??false,
-                'is_submittable'=> $query->status==1??false
+                'is_submittable'=> $query->status==1 || $query->status==4??false
             ];
             return response()->json(['status' => 'success','message'=>'success', 'payload'=>base64_encode(json_encode($payload))]);
         }catch(Exception $e){

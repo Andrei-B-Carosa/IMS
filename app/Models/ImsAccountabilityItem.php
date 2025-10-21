@@ -27,6 +27,7 @@ class ImsAccountabilityItem extends Model
       2= Returned
       3=
       4= Under Repair
+      5= Under Warranty
     */
   protected static function booted()
   {

@@ -224,7 +224,7 @@
                 id="repair_type"
                 name="repair_type"
                 label="Repair Type"
-                :options="['1' => 'Hardware', '2' => 'Software']"
+                :options="['1' => 'Hardware', '2' => 'Software', '3' => 'Both']"
                 placeholder="Select an option"
                 selected="1"
                 class="fw-bold "
@@ -240,7 +240,7 @@
                 id="status"
                 name="status"
                 label="Status"
-                :options="['1' => 'In Progress', '2' => 'Resolved', '3'=>'Not Repairable']"
+                :options="['1' => 'In Progress', '2' => 'Resolved', '3'=>'Not Repairable', '4'=>'Under Warranty']"
                 placeholder="Select an option"
                 selected="1"
                 class="fw-bold "
@@ -248,6 +248,7 @@
                 data-placeholder="Select an option"
                 data-minimum-results-for-search="Infinity"
                 disabled="false"
+                readonly="true"
             />
             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
         </div>

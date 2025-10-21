@@ -96,7 +96,7 @@ export function draw_table(id, container){
     //dt-container dt-bootstrap5 dt-empty-footer
     //
     var table = `<div class="dt-container dt-bootstrap5 dt-empty-footer" id="table_wrapper">
-                    <table class="table  align-middle table-row-dashed fs-6 gy-3 dataTable" id="${id}" style="width:100%;"></table>
+                    <table class="table align-middle table-row-dashed fs-6 gy-3 dataTable" id="${id}" style="width:100%;"></table>
                 </div>`;
     container.html(table);
 }

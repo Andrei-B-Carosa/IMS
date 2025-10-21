@@ -115,6 +115,7 @@ export var dtIssuedItems = function (table,param=false) {
                             2: ["info", "Returned"],
                             3: ["secondary", "Temporary Issued"],
                             4: ["danger", "Under Repair"],
+                            5: ["warning", "Under Warranty"],
 
                         };
                         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
@@ -172,7 +173,7 @@ export var dtIssuedItems = function (table,param=false) {
                     responsivePriority: -1,
                     render: function (data, type, row) {
                         return `${
-                                row.status ==2 || row.status==3 || row.status==4 || row.accountability_status == 2 ?
+                                row.status ==2 || row.status==3 || row.status==4 || row.status==5 || row.accountability_status == 2 ?
                                 ``
                                 :`<div class="d-flex justify-content-center flex-shrink-0">
                                     <a href="javascript:;" class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up view" data-id="${data}"

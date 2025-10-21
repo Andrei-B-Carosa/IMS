@@ -38,12 +38,12 @@ export function fvRepairRequest(_table='#repair-list_table',param=false){
                                 },
                                 callback: {
                                     callback: function(input) {
-                                        if(input.value ==1){ return true; }
+                                        if(input.value ==1 || input.value ==4){ return true; }
                                         const endDate = $(modal_id+' input[name="end_at"]').val(); // or document.querySelector()
                                         if (endDate == '') {
                                             return {
                                                 valid: false,
-                                                message: 'Enter the "end date" if the status is Resolved or Not Repairable',
+                                                message: 'Update the end date if the status is not in progress anymore',
                                             };
                                         }
                                         return true;
@@ -68,7 +68,7 @@ export function fvRepairRequest(_table='#repair-list_table',param=false){
                                         if (statusValue === '1') {
                                             return {
                                                 valid: false,
-                                                message: 'Please update the status to "Resolved" or "Not Repairable" if you entered an end date.',
+                                                message: 'Please update the status if you entered an end date',
                                             };
                                         }
 
@@ -237,6 +237,16 @@ export function fvRepairRequest(_table='#repair-list_table',param=false){
                     blockUI.release();
                 });
             })
+
+            $(modal_id).on('shown.bs.modal', function() {
+                if($(this).find('button.submit').attr('data-id').length <= 0){
+                    $(modal_id+' select[name="status"] option').not('[value="1"]').prop('disabled', true);
+                }else{
+                    $(modal_id+' select[name="status"] option').not('[value="1"]').prop('disabled', false);
+                }
+                $(modal_id+' select[name="status"]').trigger('change.select2');
+            })
+
         }
 
         return {

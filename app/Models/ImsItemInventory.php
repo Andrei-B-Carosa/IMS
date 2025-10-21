@@ -12,6 +12,7 @@ class ImsItemInventory extends Model
     2=Issued
     3=Temporary Issued
     4=Under Repair
+    5=Under Warranty
     */
 
     protected $fillable = [

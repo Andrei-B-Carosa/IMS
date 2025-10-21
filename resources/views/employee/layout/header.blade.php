@@ -8,10 +8,11 @@
                        <i class="ki-outline ki-abstract-14 fs-2"></i>
                    </div>
                </div>
-               <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-18">
+               {{-- <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-18">
                 <div class="symbol symbol-label fs-3 bg-primary text-white">
+                    IMS
                 </div>
-               </div>
+               </div> --}}
                <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1"
                    id="kt_app_header_wrapper">
                    <div class="app-header-menu app-header-mobile-drawer align-items-stretch" data-kt-drawer="true"

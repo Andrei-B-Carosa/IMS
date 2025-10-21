@@ -128,6 +128,7 @@ export var dtInventoryRepair = function (table,param='') {
                             1: ["info", "In Progress"],
                             2: ["success", "Resolved"],
                             3: ["danger", "Not Repairable"],
+                            4: ["warning", "Under Warranty"],
 
                         };
                         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
