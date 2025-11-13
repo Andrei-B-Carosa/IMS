@@ -258,7 +258,7 @@ class Lists extends Controller
             $text_below = $item->tag_number;
             $url = 'http://192.168.0.202:8000/qr/' . base64_encode($id);
 
-            $qrSize = 300;
+            $qrSize = 200;
             $barHeight = 60;
             $textMargin = 10;
             $sidePadding = 40; // ADD this for left and right space
@@ -269,8 +269,8 @@ class Lists extends Controller
             $qrWidth = $qrImage->width();
             $qrHeight = $qrImage->height();
 
-            $canvasWidth = $qrWidth + ($sidePadding * 2); // wider canvas
-            $canvasHeight = $qrHeight + ($barHeight * 2) + 40;
+            $canvasWidth = 420;  // keep constant
+            $canvasHeight = 380; // keep constant
 
             $canvas = Image::create($canvasWidth, $canvasHeight)->fill('#ffffff');
 
@@ -287,12 +287,12 @@ class Lists extends Controller
             });
 
             // Place QR in the center horizontally, just below top bar
-            $canvas->place($qrImage, 'top-left', $sidePadding, $barHeight);
+            $canvas->place($qrImage, 'top-left', $sidePadding+65, $barHeight+10);
 
             // Top Bar Text
-            $canvas->text('PROPERTY OF RVL MOVERS CORPORATION', $canvasWidth / 2, $barHeight / 2, function ($font) {
+            $canvas->text("PROPERTY OF\nRVL MOVERS CORPORATION", $canvasWidth / 2, $barHeight / 2, function ($font) {
                 $font->filename(public_path('assets/font/Roboto-Bold.ttf'));
-                $font->size(18);
+                $font->size(30);
                 $font->color('#ffffff');
                 $font->align('center');
                 $font->valign('middle');
@@ -301,16 +301,16 @@ class Lists extends Controller
             // Bottom Bar Text
             $canvas->text('DO NOT REMOVE', $canvasWidth / 2, $canvasHeight - ($barHeight / 2), function ($font) {
                 $font->filename(public_path('assets/font/Roboto-Bold.ttf'));
-                $font->size(18);
+                $font->size(30);
                 $font->color('#ffffff');
                 $font->align('center');
                 $font->valign('middle');
             });
 
             // Tag number below QR
-            $canvas->text($text_below, $canvasWidth / 2, $barHeight + $qrHeight + $textMargin, function ($font) {
+            $canvas->text($text_below, $canvasWidth / 2, $barHeight + $qrHeight + $textMargin+15, function ($font) {
                 $font->filename(public_path('assets/font/Roboto-Bold.ttf'));
-                $font->size(18);
+                $font->size(30);
                 $font->color('#000000');
                 $font->align('center');
                 $font->valign('top');
