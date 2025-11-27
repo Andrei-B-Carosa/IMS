@@ -57,11 +57,12 @@ class QrDeviceDetails extends Controller
         }
 
         $statusList = [
-            0 => ['warning', 'Disposed'],
-            1 => ['info', 'Available'],
-            2 => ['success', 'Issued'],
-            3 => ['secondary', 'Temporary Issued'],
-            4 => ['danger', 'Under Repair'],
+            '0' => ['warning', 'Disposed'],
+            '1' => ['info', 'Available'],
+            '2' => ['success', 'Issued'],
+            '3' => ['secondary', 'Temporary Issued'],
+            '4' => ['danger', 'Under Repair'],
+            '5' => ['danger', 'Under Warranty'],
         ];
 
         $status = $statusList[$query->status] ?? ['dark', 'Unknown'];
@@ -104,6 +105,7 @@ class QrDeviceDetails extends Controller
             2 => ['info', 'Returned'],
             3 => ['secondary', 'Temporary Issue'],
             4 => ['danger', 'Under Repair'],
+            5 => ['danger', 'Under Warranty'],
         ];
 
         if($data->isNotEmpty()){
@@ -166,7 +168,7 @@ class QrDeviceDetails extends Controller
                     'start_at'=>$row->start_at?Carbon::parse($row->start_at)->format('m-d-Y'):'--',
                     'end_at'=>$row->end_at?Carbon::parse($row->end_at)->format('m-d-Y'):'--',
                     'status'=>$row->status,
-                    'repair_type'=>$row->repair_type ==1 ?'Hardware':'Software',
+                    'repair_type'=>$row->repair_type ==1 ?'Hardware':($row->repair_type==2?'Software':'Both'),
                     'description'=>$row->description,
                     'item_inventory_status'=>$row->item_inventory_status,
                     'initialize_by' =>$row->created_by_emp->fullname(),

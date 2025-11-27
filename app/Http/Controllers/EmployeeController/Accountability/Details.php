@@ -412,7 +412,7 @@ class Details extends Controller
                 . 'OS: ' . $description_array['windows_version'] . '<br>'
                 . $gpu_html
                 . 'Device Name: ' . $description_array['device_name'] . '<br>'
-                . ($item->item_type_id == 8 ? 'Serial Number: ' . $description_array['serial_number'] . '<br>' : '')
+                . ($item->item_type_id == 8 ? 'Serial Number: ' . $item->serial_number ?? $description_array['serial_number'] . '<br>' : '')
                 . '</div>';
             }
 

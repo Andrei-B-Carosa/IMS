@@ -171,12 +171,13 @@
                                     <td>{{ $row['issued_by'] }}</td>
                                     <td>{{ $row['issued_at'] }}</td>
                                     <td>{{ $row['returned_at'] }}</td>
-                                    <td>{{ $row['accountable_to'] }}</td>
                                     <td>
                                         <span class="badge badge-{{ $row['status_badge']['class'] }}">
                                             {{ $row['status_badge']['label'] }}
                                         </span>
                                     </td>
+                                    <td>{{ $row['accountable_to'] }}</td>
+
                                     <td>{{ $row['remarks'] }}</td>
                                 </tr>
                             @endforeach
