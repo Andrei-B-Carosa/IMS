@@ -293,15 +293,15 @@ export var dtRepairHistory = function (table,param='') {
                     searchable:false,
                     className:'text-muted',
                 },
-                {
-                    data: "tag_number", name: "tag_number", title: "Tag Number",
-                    className:'text-muted',
-                    sortable:false,
-                    visible:false,
-                    render: function (data, type, row) {
-                        return `<span class="text-muted fw-bold">${data}</span>`;
-                    },
-                },
+                // {
+                //     data: "tag_number", name: "tag_number", title: "Tag Number",
+                //     className:'text-muted',
+                //     sortable:false,
+                //     visible:false,
+                //     render: function (data, type, row) {
+                //         return `<span class="text-muted fw-bold">${data}</span>`;
+                //     },
+                // },
                 {
                     data: "item_inventory_id", name: "item_inventory_id", title: "Inventory ID",
                     className:'',
@@ -309,53 +309,53 @@ export var dtRepairHistory = function (table,param='') {
                     searchable:false,
                     visible:false,
                 },
-                {
-                    data: "name", name: "name", title: "Device",
-                    sortable:false,
-                    className:'min-w-125px',
-                    render: function (data, type, row) {
-                        if(row.item_type_id == 1 || row.item_type_id == 8){
-                            return `
-                            <div class="d-flex flex-column">
-                                <a href="/inventory-details/${row.item_inventory_id}" class="text-gray-800 text-hover-primary mb-2 fw-bold">
-                                    ${data}
-                                </a>
-                                <span class="text-muted fw-bold">${row.description}</span>
-                                ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
-                                ${row.tag_number ? `<span class="text-muted fw-bold">Tag # : ${row.tag_number}</span>`:``}
-                            </div>
-                            `;
-                        }
-                        return `
-                        <div class="d-flex flex-column">
-                            <a href="/inventory-details/${row.item_inventory_id}" class="text-gray-800 text-hover-primary mb-1 fw-bold">
-                                ${data}
-                            </a>
-                            ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
-                            ${row.tag_number ? `<span class="text-muted fw-bold">Tag # : ${row.tag_number}</span>`:``}
-                        </div>
-                        `;
-                    }
-                },
-                {
-                    data: "serial_number", name: "serial_number", title: "Serial Number",
-                    className:'text-center',
-                    visible:false,
-                    sortable:false,
-                },
-                {
-                    data: "item_type_id", name: "item_type_id", title: "Item Type",
-                    className:'',
-                    sortable:false,
-                    searchable:false,
-                    visible:false,
-                },
-                {
-                    data: "description", name: "description", title: "Description",
-                    className:'',
-                    sortable:false,
-                    visible:false,
-                },
+                // {
+                //     data: "name", name: "name", title: "Device",
+                //     sortable:false,
+                //     className:'min-w-125px',
+                //     render: function (data, type, row) {
+                //         if(row.item_type_id == 1 || row.item_type_id == 8){
+                //             return `
+                //             <div class="d-flex flex-column">
+                //                 <a href="/inventory-details/${row.item_inventory_id}" class="text-gray-800 text-hover-primary mb-2 fw-bold">
+                //                     ${data}
+                //                 </a>
+                //                 <span class="text-muted fw-bold">${row.description}</span>
+                //                 ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
+                //                 ${row.tag_number ? `<span class="text-muted fw-bold">Tag # : ${row.tag_number}</span>`:``}
+                //             </div>
+                //             `;
+                //         }
+                //         return `
+                //         <div class="d-flex flex-column">
+                //             <a href="/inventory-details/${row.item_inventory_id}" class="text-gray-800 text-hover-primary mb-1 fw-bold">
+                //                 ${data}
+                //             </a>
+                //             ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
+                //             ${row.tag_number ? `<span class="text-muted fw-bold">Tag # : ${row.tag_number}</span>`:``}
+                //         </div>
+                //         `;
+                //     }
+                // },
+                // {
+                //     data: "serial_number", name: "serial_number", title: "Serial Number",
+                //     className:'text-center',
+                //     visible:false,
+                //     sortable:false,
+                // },
+                // {
+                //     data: "item_type_id", name: "item_type_id", title: "Item Type",
+                //     className:'',
+                //     sortable:false,
+                //     searchable:false,
+                //     visible:false,
+                // },
+                // {
+                //     data: "description", name: "description", title: "Description",
+                //     className:'',
+                //     sortable:false,
+                //     visible:false,
+                // },
                 {
                     data: "initial_diagnosis", name: "initial_diagnosis", title: "Initial Diagnosis",
                     className:'',
