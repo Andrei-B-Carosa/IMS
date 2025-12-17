@@ -201,8 +201,10 @@ class Page
             $rq = $rq->merge(['id' => Crypt::encrypt($data->company_location_id), 'view'=>'1', 'type'=>'options']);
             $clocation_options = (new CompanyLocationOptions)->list($rq);
 
-            $status = ['0'=>'Disposed','1' => 'Available', '2' => 'Issued'];
+            $status = ['0'=>'Disposed','1' => 'Available','6'=>'Deployed'];
+            if($data->status==2){ $status['2']='Issued'; }
             if($data->status==4){ $status['4']='Under Repair'; }
+            if($data->status==5){ $status['5']='Under Warranty'; }
 
             return view('employee.pages.inventory.inventory_details', compact(
                 'data','array_specs','item_type_options','item_brand_options','mis_personnel_options','supplier_options',

@@ -119,7 +119,7 @@
                             data-placeholder="Select an option"
                             data-minimum-results-for-search="Infinity"
                             data-allow-clear="true"
-                            disabled="{{ $data->status==4?'true':'false' }}"
+                            disabled="{{ $data->status==4 || $data->status==2 || $data->status==5 || $data->status===0?'true':'false' }}"
                         />
                         <div class="alert-status"></div>
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
