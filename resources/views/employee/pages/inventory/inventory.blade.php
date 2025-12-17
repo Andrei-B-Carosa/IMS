@@ -48,6 +48,8 @@
                                                 <option value="1">Available</option>
                                                 <option value="2">Issued</option>
                                                 <option value="4">Under Repair</option>
+                                                <option value="5">Under Warranty</option>
+                                                <option value="6">Deployed</option>
                                             </select>
                                         </div>
                                         <div class="d-flex align-items-center fw-bold">

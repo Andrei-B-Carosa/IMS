@@ -31,9 +31,10 @@ class InventoryOption
 
     public function get_accountability_items($query,$search,$html)
     {
+        //remove item_type_id = router,switch,modem for new accountability
         $data = $query->whereHas('item_type',function($q){
             $q->where('display_to',1)->orWhere('display_to',null);
-        })->get();
+        })->whereNotIn('item_type_id',[10,25,26])->get();
 
         if ($data->isEmpty()) {
             return '<option disabled>No Available Option</option>';

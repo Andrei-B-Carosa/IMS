@@ -29,12 +29,14 @@ class ImsStoredProcedure extends Model
             $filter_status,
             $filter_location,
             $filter_category,
+            $item_inventory_id=null,
     ){
         return static::hydrate(
-            DB::select('call sp_get_repair_logs(?,?,?)',[
+            DB::select('call sp_get_repair_logs(?,?,?,?)',[
                 $filter_status,
                 $filter_location,
                 $filter_category,
+                $item_inventory_id,
             ])
         );
     }
@@ -46,6 +48,16 @@ class ImsStoredProcedure extends Model
         return static::hydrate(
             DB::select('call sp_get_accountability_list(?)',[
                 $filter_status,
+            ])
+        );
+    }
+
+    public static function sp_get_accountability_history(
+            $item_inventory_id,
+    ){
+        return static::hydrate(
+            DB::select('call sp_get_accountability_history(?)',[
+                $item_inventory_id,
             ])
         );
     }

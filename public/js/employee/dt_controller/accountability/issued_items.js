@@ -116,6 +116,7 @@ export var dtIssuedItems = function (table,param=false) {
                             3: ["secondary", "Temporary Issued"],
                             4: ["danger", "Under Repair"],
                             5: ["warning", "Under Warranty"],
+                            6: ["success", "Deployed"],
 
                         };
                         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;

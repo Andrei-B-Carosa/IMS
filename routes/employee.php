@@ -136,6 +136,8 @@ Route::middleware(['auth'])->controller(Page::class)->group(function () {
         Route::post('update-gpu', 'update_gpu');
 
         Route::post('dt-item-logs', 'dt_item_logs');
+        Route::post('dt-accountability-history', 'dt_accountability_history');
+        Route::post('dt-repair-history', 'dt_repair_history');
 
     });
 

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\EmployeeController\Inventory;
 
 use App\Http\Controllers\Controller;
+use App\Models\ImsAccountability;
 use App\Models\ImsItem;
 use App\Models\ImsItemBrand;
 use App\Models\ImsItemInventory;
 use App\Models\ImsItemInventoryLog;
+use App\Models\ImsStoredProcedure;
 use App\Service\Reusable\Datatable;
 use Carbon\Carbon;
 use Exception;
@@ -41,6 +43,75 @@ class Details extends Controller
             $item->emp_fullname = $item->employee->fullname();
 
             $item->encrypted_id = Crypt::encrypt($item->id);
+            return $item;
+        });
+
+        $table = new Datatable($rq, $data);
+        $table->renderTable();
+
+        return response()->json([
+            'draw' => $table->getDraw(),
+            'recordsTotal' => $table->getRecordsTotal(),
+            'recordsFiltered' =>  $table->getRecordsFiltered(),
+            'data' => $table->getRows()
+        ]);
+    }
+
+    public function dt_accountability_history(Request $rq)
+    {
+        // $filter_status = $rq->filter_status && $rq->filter_status != 'all' ? $rq->filter_status : false;
+        $id = Crypt::decrypt($rq->id);
+        $data = ImsStoredProcedure::sp_get_accountability_history($id);
+        $data->transform(function ($item, $key) {
+            $issued_at = Carbon::parse($item->a_issued_at)->format('M d, Y') ?? '--';
+            $returned_at = isset($item->a_returned_at)?Carbon::parse($item->a_returned_at)->format('M d, Y') : '--';
+            $item->count = $key + 1;
+            $item->issued_at =  $issued_at;
+            $item->returned_at =  $returned_at;
+            $item->status =  $item->a_status;
+            $item->issued_by = $item->issued_by_name;
+            $item->issued_to = $item->accountability_issued_to_html;
+
+            $item->encrypted_id = Crypt::encrypt($item->a_id);
+
+            return $item;
+        });
+
+        $table = new Datatable($rq, $data);
+        $table->renderTable();
+
+        return response()->json([
+            'draw' => $table->getDraw(),
+            'recordsTotal' => $table->getRecordsTotal(),
+            'recordsFiltered' =>  $table->getRecordsFiltered(),
+            'data' => $table->getRows()
+        ]);
+    }
+
+    public function dt_repair_history(Request $rq)
+    {
+        // $filter_status = $rq->filter_status && $rq->filter_status != 'all' ? $rq->filter_status : false;
+        $id = Crypt::decrypt($rq->id);
+        $filter_status =  false;
+        $filter_location = false;
+        $filter_category = false;
+        $data = ImsStoredProcedure::sp_get_repair_logs(
+            $filter_status,
+            $filter_location,
+            $filter_category,
+            $id
+        );
+
+        $data->transform(function ($item, $key) {
+            $description = $item->description;
+            $item->count = $key + 1;
+            $item->description = $description;
+            $item->start_at = Carbon::parse($item->start_at)->format('m-d-Y');
+            $item->end_at = isset($item->end_at) ? Carbon::parse($item->end_at)->format('m-d-Y'):'--';
+            $item->location =  $item->company_location;
+            $item->encrypted_id = Crypt::encrypt($item->id);
+            $item->item_inventory_id = Crypt::encrypt($item->item_inventory_id);
+            $item->is_editable = $item->created_by == Auth::user()->emp_id;
             return $item;
         });
 

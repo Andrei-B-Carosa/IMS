@@ -13,6 +13,7 @@ class ImsItemInventory extends Model
     3=Temporary Issued
     4=Under Repair
     5=Under Warranty
+    6=Deployed
     */
 
     protected $fillable = [
@@ -106,6 +107,8 @@ class ImsItemInventory extends Model
             2 => ['success', 'Issued'],
             3 => ['secondary', 'Temporary Issued'],
             4 => ['danger', 'Under Repair'],
+            5 => ['warning', 'Under Warranty'],
+            6 => ['success', 'Deployed'],
         ];
 
         if (!isset($status[$this->status])) {

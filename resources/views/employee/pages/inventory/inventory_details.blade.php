@@ -9,14 +9,14 @@
     {{-- General Details --}}
     <div class="card card-flush py-4 mb-10" id="card-general-details">
         <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_general_details_collapsible">
-            <div class="card-title">General Details @if($data->item_type->display_to == 1) ({{ $data->generate_tag_number() }}) @endif</div>
+            <div class="card-title">@if($data->item_type->display_to == 1) ({{ $data->generate_tag_number() }}) @endif</div>
             <div class="card-toolbar">
                 <div class="card-toolbar rotate-180">
                     <i class="ki-duotone ki-down fs-1"></i>
                 </div>
             </div>
         </div>
-        <div id="card_general_details_collapsible" class="collapse show">
+        <div id="card_general_details_collapsible" class="collapse">
             <div class="card-body pt-0">
                 <form id="form-general-details" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="/inventory-details/update-general-details">
 
@@ -344,6 +344,50 @@
             <div id="card_item_logs_collapsible" class="collapse">
                 <div class="card-body pt-0">
                     <x-elements.datatable id="item-logs" class="table-striped table-sm align-middle table-row-dashed dataTable">
+                    </x-elements.datatable>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-flush py-4 mb-10">
+            <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_accountability_history_collapsible">
+                <div class="card-title">Accountability History</div>
+
+                <div class="card-toolbar">
+                    {{-- <div class="d-flex align-items-center position-relative my-1">
+                        <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
+                        <input type="text" class="form-control form-control-solid w-250px ps-13 search" placeholder="Search here . . ." />
+                    </div> --}}
+                    <div class="card-toolbar rotate-180">
+                        <i class="ki-duotone ki-down fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="card_accountability_history_collapsible" class="collapse">
+                <div class="card-body pt-0">
+                    <x-elements.datatable id="accountability-history" class="table-striped table-sm align-middle table-row-dashed dataTable">
+                    </x-elements.datatable>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-flush py-4 mb-10">
+            <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_repair_history_collapsible">
+                <div class="card-title">Repair History</div>
+
+                <div class="card-toolbar">
+                    {{-- <div class="d-flex align-items-center position-relative my-1">
+                        <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
+                        <input type="text" class="form-control form-control-solid w-250px ps-13 search" placeholder="Search here . . ." />
+                    </div> --}}
+                    <div class="card-toolbar rotate-180">
+                        <i class="ki-duotone ki-down fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="card_repair_history_collapsible" class="collapse">
+                <div class="card-body pt-0">
+                    <x-elements.datatable id="repair-history" class="table-striped table-sm align-middle table-row-dashed dataTable">
                     </x-elements.datatable>
                 </div>
             </div>

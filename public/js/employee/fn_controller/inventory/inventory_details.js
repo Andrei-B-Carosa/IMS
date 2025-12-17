@@ -3,7 +3,7 @@ import { data_bs_components, modal_state, page_state } from "../../../global.js"
 import { get_company_location } from "../../../global/select.js";
 import {RequestHandler} from "../../../global/request.js";
 import { fvGeneralDetails, fvSystemUnitDetails } from "../../fv_controller/inventory/inventory_details.js";
-import { dtItemLogs } from "../../dt_controller/inventory/inventory_details.js";
+import { dtAccountabilityHistory, dtItemLogs, dtRepairHistory } from "../../dt_controller/inventory/inventory_details.js";
 
 export var InventoryDetailsController = function (page, param) {
 
@@ -12,7 +12,8 @@ export var InventoryDetailsController = function (page, param) {
     fvGeneralDetails('',param);
     fvSystemUnitDetails('',param);
     dtItemLogs('item-logs',param).init();
-
+    dtAccountabilityHistory('accountability-history',param).init();
+    dtRepairHistory('repair-history',param).init();
     data_bs_components();
 
     function checkItemStatus()

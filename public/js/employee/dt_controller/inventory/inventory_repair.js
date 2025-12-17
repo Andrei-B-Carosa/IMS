@@ -107,18 +107,18 @@ export var dtInventoryRepair = function (table,param='') {
                     sortable:false,
                     searchable:false,
                 },
-                // {
-                //     data: "start_at", name: "start_at", title: "Start Date",
-                //     className:'min-w-125px',
-                //     sortable:false,
-                //     searchable:false,
-                // },
-                // {
-                //     data: "end_at", name: "end_at", title: "End Date",
-                //     className:'min-w-125px',
-                //     sortable:false,
-                //     searchable:false,
-                // },
+                {
+                    data: "start_at", name: "start_at", title: "Start",
+                    className:'min-w-100px',
+                    sortable:false,
+                    searchable:false,
+                },
+                {
+                    data: "end_at", name: "end_at", title: "End",
+                    className:'min-w-100px',
+                    sortable:false,
+                    searchable:false,
+                },
                 {
                     data: "status", name: "status", title: "Status",
                     sortable:false,
@@ -137,7 +137,7 @@ export var dtInventoryRepair = function (table,param='') {
                 {
                     data: "created_by_name", name: "created_by_name", title: "Repaired By",
                     sortable:false,
-                    className:'min-w-125px',
+                    // className:'min-w-125px',
                     render: function (data, type, row) {
                         if(!data){  return '--';  }
                         return `
@@ -154,7 +154,7 @@ export var dtInventoryRepair = function (table,param='') {
                 {
                     data: "last_accountable_to", name: "last_accountable_to", title: "Requested By",
                     sortable:false,
-                    className:'min-w-125px',
+                    // className:'min-w-125px',
                     render: function (data, type, row) {
                         if(!data){  return '--';  }
                         return `
