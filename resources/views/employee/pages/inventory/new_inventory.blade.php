@@ -76,12 +76,12 @@
                     <div class="alert-status"></div>
                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                 </div>
-                <div class="fv-row mb-7 fv-plugins-icon-container d-none">
+                <div class="fv-row mb-7 fv-plugins-icon-container">
                     <x-elements.select
                         id="status"
                         name="status"
                         label="Status"
-                        :options="['1' => 'Available']"
+                        :options="['1' => 'Available', '6'=>'Deployed']"
                         placeholder="Select an option"
                         selected="1"
                         class="fw-bold"
