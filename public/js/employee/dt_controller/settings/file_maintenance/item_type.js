@@ -122,34 +122,34 @@ export var dtItemType = function (table,param=false) {
                         `
                     }
                 },
-                {
-                    data: "encrypted_id",
-                    name: "encrypted_id",
-                    title: "Action",
-                    sortable:false,
-                    className: "text-center",
-                    responsivePriority: -1,
-                    render: function (data, type, row) {
-                        return `<div class="d-flex justify-content-center flex-shrink-0">
-                            <button class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up view-details" data-id="${data}"
-                            data-bs-toggle="tooltip" title="View Details">
-                                <i class="ki-duotone ki-pencil fs-2x">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                    <span class="path3"></span>
-                                    <span class="path4"></span>
-                                </i>
-                            </button>
-                            <button class="btn btn-icon btn-icon btn-light-danger btn-sm me-1 hover-elevate-up delete" data-id="${data}"
-                            data-bs-toggle="tooltip" title="Delete this record">
-                                <i class="ki-duotone ki-cross fs-2x">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
-                            </button>
-                        </div>`;
-                    },
-                },
+                // {
+                //     data: "encrypted_id",
+                //     name: "encrypted_id",
+                //     title: "Action",
+                //     sortable:false,
+                //     className: "text-center",
+                //     responsivePriority: -1,
+                //     render: function (data, type, row) {
+                //         return `<div class="d-flex justify-content-center flex-shrink-0">
+                //             <button class="btn btn-icon btn-icon btn-light-primary btn-sm me-1 hover-elevate-up view-details" data-id="${data}"
+                //             data-bs-toggle="tooltip" title="View Details">
+                //                 <i class="ki-duotone ki-pencil fs-2x">
+                //                     <span class="path1"></span>
+                //                     <span class="path2"></span>
+                //                     <span class="path3"></span>
+                //                     <span class="path4"></span>
+                //                 </i>
+                //             </button>
+                //             <button class="btn btn-icon btn-icon btn-light-danger btn-sm me-1 hover-elevate-up delete" data-id="${data}"
+                //             data-bs-toggle="tooltip" title="Delete this record">
+                //                 <i class="ki-duotone ki-cross fs-2x">
+                //                     <span class="path1"></span>
+                //                     <span class="path2"></span>
+                //                 </i>
+                //             </button>
+                //         </div>`;
+                //     },
+                // },
             ],
             null,
         );
