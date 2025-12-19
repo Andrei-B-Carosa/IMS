@@ -169,7 +169,8 @@ class IssuedDevices extends Controller
             $item->encrypted_id = Crypt::encrypt($item->id);
             return $item;
         });
-        $filename = 'issued_devices_' . now()->format('Ymd_His') . '.xlsx';
-        return Excel::download(new IssuedDeviceExport($data), $filename);
+        $filename = 'issued_devices_' . now()->format('Ymd_His') . '.csv';
+        return Excel::download(new IssuedDeviceExport($data), $filename, \Maatwebsite\Excel\Excel::CSV);
+
     }
 }
