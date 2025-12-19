@@ -6,9 +6,8 @@ use App\Http\Controllers\RegisterDeviceController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/logtest', function () {
-    Log::info('Test log message!');
-    return 'Log written.';
+Route::get('/vardump', function () {
+    return var_dump(function_exists('deflate_init'));
 });
 
 Route::group(['prefix' => 'device','controller' => RegisterDeviceController::class], function () {
