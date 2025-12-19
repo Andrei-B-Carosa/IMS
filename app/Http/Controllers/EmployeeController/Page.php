@@ -46,7 +46,7 @@ class Page extends Controller
         foreach($query as $data)
         {
             $file = $data->system_file;
-            if($file->status == 0){
+            if($file->status == 0 || $file->status ==2){
                 continue;
             }
 
@@ -55,7 +55,7 @@ class Page extends Controller
             if($layer){
                 foreach($layer as $row)
                 {
-                    if($row->status ==0){
+                    if($row->status ==0 || $row->status ==2){
                         continue;
                     }
                     $file_layer[]=[

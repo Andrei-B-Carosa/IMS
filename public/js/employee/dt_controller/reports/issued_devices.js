@@ -11,6 +11,7 @@ export var dtIssuedDevices = function (table,param=false) {
 
     const _page = '.page-issued-devices';
     const _card = $('.card-issued-devices');
+    const _cardFilter = $('#card-filter');
     const _url = 'reports/issued-devices/';
     const _request = new RequestHandler;
     const dataTableHelper = new DataTableHelper(`${table}_table`,`${table}_wrapper`);
@@ -20,124 +21,159 @@ export var dtIssuedDevices = function (table,param=false) {
         dataTableHelper.initTable(
             _url+'dt',
             {
-                filter_status:'all',
-                id:param,
+                filter_status:_cardFilter.find('select[name="filter_status"]').val(),
+                filter_year:_cardFilter.find('select[name="filter_year"]').val(),
+                filter_month:_cardFilter.find('select[name="filter_month"]').val(),
+                filter_category:_cardFilter.find('select[name="filter_category"]').val(),
+                filter_location:_cardFilter.find('select[name="filter_location"]').val(),
             },
             [
                 {
-                    data: "tag_number",
-                    name: "tag_number",
-                    title: "Tag",
-                    className:"text-muted",
+                    data: "count",
+                    name: "count",
+                    title: " ",
+                    responsivePriority: -3,
+                    searchable:false,
+                    className:'text-muted',
+                },
+                {
+                    data: "tag_number", name: "tag_number", title: "Tag Number",
+                    className:'text-muted',
+                    // sortable:false,
+                    render: function (data, type, row) {
+                        return `<span class="text-muted fw-bold">${data}</span>`;
+                    },
                 },
                 {
                     data: "name", name: "name", title: "Item",
                     sortable:false,
+                    className:'text-start',
                     render: function (data, type, row) {
-                        if(row.serial_number){
+                        if(row.item_type_id == 1 || row.item_type_id == 8){
                             return `
                             <div class="d-flex flex-column">
-                                <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                                <a href="javascript:;" class="text-gray-800 text-hover-primary mb-2 fw-bold">
                                     ${data}
                                 </a>
-                                ${row.serial_number?`<span class="text-muted">S/N: ${row.serial_number}</span>`:``}
+                                <span class="text-muted fw-bold">${row.description}</span>
+                                ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
                             </div>
                             `;
                         }
                         return `
                         <div class="d-flex flex-column">
-                            <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1">
+                            <a href="javascript:;" class="text-gray-800 text-hover-primary mb-1 fw-bold">
                                 ${data}
                             </a>
+                            ${row.serial_number ? `<span class="text-muted fw-bold">S/N : ${row.serial_number}</span>`:``}
                         </div>
                         `;
                     }
                 },
                 {
-                    data: "description", name: "description", title: "Description",
+                    data: "item_name", name: "item_name", title: "Item Name",
                     className:'',
-                    sortable:false,
-                    // searchable:false,
-                    render: function (data, type, row) {
-                        if(!data){
-                            return '--';
-                        }
-                        return data;
-                    },
-                },
-                {
-                    data: "serial_number", name: "serial_number", title: "Serial Number",
                     sortable:false,
                     searchable:false,
                     visible:false,
                 },
                 {
-                    data: "form_no", name: "form_no", title: "Accontability No.",
+                    data: "item_type_id", name: "item_type_id", title: "Item Type",
+                    className:'',
                     sortable:false,
-                    // searchable:false,
-                    render: function (data, type, row) {
-                        if(!data){
-                            return '--';
-                        }
-                        return data;
-                    },
+                    searchable:false,
+                    visible:false,
                 },
                 {
-                    data: "accountability_status", name: "accountability_status", title: "Status",
+                    data: "enable_quick_actions", name: "enable_quick_actions", title: "Enable Quick Action",
+                    className:'',
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
+                },
+                {
+                    data: "description", name: "description", title: "Description",
+                    className:'',
+                    sortable:false,
+                    visible:false,
+                },
+                {
+                    data: "location", name: "location", title: "Location",
+                    className:'',
+                    sortable:false,
+                    searchable:false,
+                },
+                {
+                    data: "serial_number", name: "serial_number", title: "Serial Number",
+                    sortable:false,
+                    className:'text-center',
+                    visible:false,
+                },
+                {
+                    data: "status", name: "status", title: "Status",
                     sortable:false,
                     searchable:false,
                     render: function (data, type, row) {
                         let status = {
-                            1: ["success", "Issued"],
-                            2: ["info", "Returned"],
+                            0: ["warning", "Disposed"],
+                            1: ["info", "Available"],
+                            2: ["success", "Issued"],
                             3: ["secondary", "Temporary Issued"],
                             4: ["danger", "Under Repair"],
-
+                            5: ["warning", "Under Warranty"],
+                            6: ["success", "Deployed"],
                         };
                         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
                     },
                 },
                 {
-                    data: "issued_at", name: "issued_at", title: "Issued at",
+                    data: "form_no", name: "form_no", title: "Form No.",
                     sortable:false,
-                    searchable:false,
-                    render(data,type,row)
-                    {
-                        if(!data){
-                            return '--';
-                        }
-
-                        return data;
-                    }
+                    visible:false,
                 },
                 {
-                    data: "returned_at", name: "returned_at", title: "Returned at",
-                    sortable:false,
+                    data: "received_at", name: "received_at", title: "Purchased Date",
                     searchable:false,
-                    render(data,type,row)
-                    {
-                        if(!data){
-                            return '--';
-                        }
-
+                    className:' text-start min-w-100px',
+                    render: function (data, type, row) {
+                        if(!data){ return '--'; }
                         return data;
-                    }
-                },
-                {
-                    data: "accountable_to", name: "accountable_to", title: "Issued To",
-                    // sortable:false,
-                    // searchable:false,
+                    },
                 },
                 {
                     data: "remarks", name: "remarks", title: "Remarks",
                     sortable:false,
                     searchable:false,
+                    className:'text-start ',
                     render: function (data, type, row) {
                         if(!data){
                             return '--';
                         }
                         return data;
                     },
+                },
+                {
+                    data: "accountability_id", name: "accountability_id", title: "Accountabiity ID",
+                    sortable:false,
+                    searchable:false,
+                    visible:false,
+                },
+                {
+                    data: "accountable_to", name: "accountable_to", title: "Issued To",
+                    sortable:false,
+                    render: function (data, type, row) {
+                        if(!data){  return '--';  }
+                        return `
+                        <a  target="_blank" href="/accountability-details/${row.accountability_id}" class="text-hover-primary">
+                            <div class="d-flex flex-column">
+                                <span class="text-gray-800 fw-bold">
+                                    ${data}
+                                </span>
+                                <span class="text-muted fw-bold">Accountability No : ${row.form_no}</span>
+                            </div>
+                        </a>
+                        `;
+                    }
                 },
             ],
             null,
@@ -145,15 +181,15 @@ export var dtIssuedDevices = function (table,param=false) {
 
         $(`#${table}_table`).ready(function() {
 
-            _card.off();
+            _cardFilter.off();
 
-            // _card.on('change','select.filter_table',function(e){
-            //     e.preventDefault()
-            //     e.stopImmediatePropagation()
-            //     initTable();
-            // })
+            _cardFilter.on('change','select.sfilter',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+                initTable();
+            })
 
-            _card.on('keyup','.search',function(e){
+            _cardFilter.on('keyup','.search',function(e){
                 e.preventDefault()
                 e.stopImmediatePropagation()
                 let searchTerm = $(this).val();
@@ -162,11 +198,16 @@ export var dtIssuedDevices = function (table,param=false) {
                 } else if (e.keyCode === 8 || e.key === 'Backspace') {
                     setTimeout(() => {
                         let updatedSearchTerm = $(this).val();
-                        if (updatedSearchTerm === '') {
-                            dataTableHelper.search('');
-                        }
+                        dataTableHelper.search(updatedSearchTerm);
                     }, 0);
                 }
+            })
+
+            _cardFilter.on('click','.btn-search',function(e){
+                e.preventDefault()
+                e.stopImmediatePropagation()
+                let searchTerm = _cardFilter.find('input.search').val();
+                dataTableHelper.search(searchTerm);
             })
 
             _card.on('click','.export-issued-devices',function(e){
@@ -176,8 +217,12 @@ export var dtIssuedDevices = function (table,param=false) {
                 let _this = $(this);
                 let id    =_this.attr('data-id');
                 let formData = new FormData;
-                formData.append('encrypted_id',id);
-
+                formData.append('filter_status',_cardFilter.find('select[name="filter_status"]').val());
+                formData.append('filter_year',_cardFilter.find('select[name="filter_year"]').val());
+                formData.append('filter_month',_cardFilter.find('select[name="filter_month"]').val());
+                formData.append('filter_category',_cardFilter.find('select[name="filter_category"]').val());
+                formData.append('filter_location',_cardFilter.find('select[name="filter_location"]').val());
+                formData.append('search',_cardFilter.find('input.search').val());
                 _request.postBlob('/' + _url + 'export', formData, true)
                 .then(response => {
                     const blob = response.data;

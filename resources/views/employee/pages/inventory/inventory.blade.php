@@ -22,7 +22,6 @@
                                     <input type="text" class="form-control form-control-solid w-250px ps-13 search" placeholder="Search here . . ." />
                                 </div>
                             </div>
-
                             <div class="card-toolbar">
                                 <div class="d-flex align-items-center position-relative my-1">
                                     <div class="d-flex flex-stack flex-wrap gap-4">

@@ -19,10 +19,12 @@ class IssuedDeviceExport implements FromCollection, WithHeadings
     {
         $statusMap = [
             0 => 'Disposed',
-            1 => 'Issued',
-            2 => 'Returned',
+            1 => 'Available',
+            2 => 'Issued',
             3 => 'Temporary Issued',
             4 => 'Under Repair',
+            5 => 'Under Warranty',
+            6 => 'Deployed',
         ];
 
         // Return only the fields you want in Excel
@@ -30,16 +32,18 @@ class IssuedDeviceExport implements FromCollection, WithHeadings
             return [
                 'Tag Number'            => $item->tag_number,
                 'Name'                  => strip_tags($item->name),
-                'Type'                  => $item->type,
+                'Type'                  => $item->item_type_name,
                 'Description'           => strip_tags($item->description),
                 'Serial Number'         => $item->serial_number,
+                'Location'              => $item->location,
                 'Price'                 => $item->price,
-                'Accountability No.'    => $item->form_no,
-                'Status'                => $statusMap[$item->accountability_status] ?? 'Unknown',
-                'Issued At'             => $item->issued_at,
-                'Returned At'           => $item->returned_at,
-                'Accountable To'        => $item->accountable_to,
+                'Purchased Date'        => $item->received_at,
+                'Status'                => $statusMap[$item->status] ?? 'Unknown',
                 'Remarks'               => $item->remarks,
+                'Accountability No.'    => $item->form_no,
+                'Accountable To'        => $item->accountable_to,
+                'Inventory By'          => $item->created_by_name,
+                'Last Updated By'       => $item->updated_by_name,
             ];
         });
     }
@@ -52,13 +56,15 @@ class IssuedDeviceExport implements FromCollection, WithHeadings
             'Type',
             'Description',
             'Serial Number',
+            'Location',
             'Price',
-            'Accountability No. ',
+            'Purchased Date',
             'Status',
-            'Issued At',
-            'Returned At',
-            'Accountable To',
             'Remarks',
+            'Accountability No. ',
+            'Accountable To',
+            'Inventory By',
+            'Last Updated By',
         ];
     }
 }

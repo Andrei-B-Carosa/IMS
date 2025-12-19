@@ -13,14 +13,16 @@ class ImsStoredProcedure extends Model
             $filter_year,
             $is_consumable,
             $filter_category,
+            $filter_month = 'All',
     ){
         return static::hydrate(
-            DB::select('call sp_get_inventory_accountability(?,?,?,?,?)',[
+            DB::select('call sp_get_inventory_accountability(?,?,?,?,?,?)',[
                 $filter_status,
                 $filter_location,
                 $filter_year,
                 $is_consumable,
                 $filter_category,
+                $filter_month
             ])
         );
     }

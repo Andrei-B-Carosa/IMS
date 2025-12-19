@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\EmployeeAccount;
 use App\Models\ImsRole;
+use App\Models\ImsRoleAccess;
+use App\Models\ImsSystemFileLayer;
 use App\Models\ImsUserRole;
 use App\Service\Reusable\Datatable;
 use Carbon\Carbon;
@@ -26,7 +28,7 @@ class UserManagement extends Controller
                 'user_roles'=> fn($q) => $q->where('is_active', 1)
             ])
             ->when($role_id, fn($q) => $q->where('id', $role_id))
-            ->where('is_active',1)
+            ->where([['is_active',1],['id','!=',1]])
             ->get();
 
             $array = [];
@@ -233,51 +235,51 @@ class UserManagement extends Controller
         ]);
     }
 
-    // public function update_system_file(Request $rq)
-    // {
-    //     try{
-    //         DB::beginTransaction();
-    //         $user_id = Auth::user()->emp_id;
-    //         $file_id = Crypt::decrypt($rq->file_id);
-    //         $role_id = Crypt::decrypt($rq->role_id);
+    public function update_system_file(Request $rq)
+    {
+        try{
+            DB::beginTransaction();
+            $user_id = Auth::user()->emp_id;
+            $file_id = Crypt::decrypt($rq->file_id);
+            $role_id = Crypt::decrypt($rq->role_id);
 
-    //         ImsRoleAccess::where([['file_id',$file_id],['role_id',$role_id]])->update([
-    //             'is_active'=>$rq->status,
-    //             'updated_by' =>$user_id
-    //         ]);
+            ImsRoleAccess::where([['file_id',$file_id],['role_id',$role_id]])->update([
+                'is_active'=>$rq->status,
+                'updated_by' =>$user_id
+            ]);
 
-    //         DB::commit();
-    //         return response()->json(['status' => 'success', 'message'=>'Updated Successfully']);
-    //     }catch(Exception $e){
-    //         DB::rollback();
-    //         return response()->json([
-    //             'status' => 400,
-    //             'message' => $e->getMessage(),
-    //         ]);
-    //     }
-    // }
+            DB::commit();
+            return response()->json(['status' => 'success', 'message'=>'Updated Successfully']);
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 
-    // public function update_file_layer(Request $rq)
-    // {
-    //     try{
-    //         DB::beginTransaction();
-    //         $user_id = Auth::user()->emp_id;
-    //         $layer_id = Crypt::decrypt($rq->layer_id);
-    //         $role_id = Crypt::decrypt($rq->role_id);
+    public function update_file_layer(Request $rq)
+    {
+        try{
+            DB::beginTransaction();
+            $user_id = Auth::user()->emp_id;
+            $layer_id = Crypt::decrypt($rq->layer_id);
+            $role_id = Crypt::decrypt($rq->role_id);
 
-    //         $query = ImsSystemFileLayer::find($layer_id);
-    //         $query->status = $rq->status;
-    //         $query->updated_by = $user_id;
-    //         $query->save();
+            $query = ImsSystemFileLayer::find($layer_id);
+            $query->status = $rq->status;
+            $query->updated_by = $user_id;
+            $query->save();
 
-    //         DB::commit();
-    //         return response()->json(['status' => 'success', 'message'=>'Updated Successfully']);
-    //     }catch(Exception $e){
-    //         DB::rollback();
-    //         return response()->json([
-    //             'status' => 400,
-    //             'message' => $e->getMessage(),
-    //         ]);
-    //     }
-    // }
+            DB::commit();
+            return response()->json(['status' => 'success', 'message'=>'Updated Successfully']);
+        }catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => 400,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 }

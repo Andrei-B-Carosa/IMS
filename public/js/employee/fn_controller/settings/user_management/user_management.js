@@ -73,10 +73,7 @@ export var UserManagementController =  function (page,param) {
                             <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Allows a full access to the system"></i>
                         </td>
                         <td>
-                            <label class="form-check form-check-sm form-check-custom form-check-solid me-9">
-                                <input class="form-check-input" type="checkbox" value="" name="select_all" />
-                                <span class="form-check-label" for="select_all">Select all</span>
-                            </label>
+                       
                         </td>
                     </tr>`;
 
@@ -131,7 +128,7 @@ export var UserManagementController =  function (page,param) {
                 formData.append('file_id',id);
                 formData.append('role_id',role_id);
                 formData.append('status',$(this).is(":checked")?1:2);
-                _request.post('/hris/admin/user_management/role_list/update_system_file',formData)
+                _request.post('/user-management/role-list/update-system-file',formData)
                 .then((res) => {
                     Alert.toast(res.status,res.message);
                 })
@@ -153,7 +150,7 @@ export var UserManagementController =  function (page,param) {
                 formData.append('layer_id',id);
                 formData.append('role_id',role_id);
                 formData.append('status',$(this).is(":checked")?1:2);
-                _request.post('/hris/admin/user_management/role_list/update_file_layer',formData)
+                _request.post('/user-management/role-list/update-file-layer',formData)
                 .then((res) => {
                     Alert.toast(res.status,res.message);
                 })
@@ -166,7 +163,6 @@ export var UserManagementController =  function (page,param) {
 
             $(`#role_details_table`).on('click','input[name="select_all"]',function(e){
                 e.stopImmediatePropagation();
-
             });
 
         })

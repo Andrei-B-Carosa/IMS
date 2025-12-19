@@ -19,7 +19,6 @@ class Lists extends Controller
 {
     public function dt(Request $rq)
     {
-
         $filter_status = $rq->filled('filter_status') && $rq->filter_status != 'all' ? $rq->filter_status : false;
         $filter_location = $rq->filter_location &&  $rq->filter_location != 'all' ? Crypt::decrypt($rq->filter_location) : false;
         $filter_category = $rq->filter_category &&  $rq->filter_category != 'all' ? Crypt::decrypt($rq->filter_category) : false;

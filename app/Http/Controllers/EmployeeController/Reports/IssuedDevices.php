@@ -6,6 +6,7 @@ use App\Exports\IssuedDeviceExport;
 use App\Http\Controllers\Controller;
 use App\Models\ImsAccountabilityItem;
 use App\Models\ImsItemInventory;
+use App\Models\ImsStoredProcedure;
 use App\Service\Reusable\Datatable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,49 +15,35 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class IssuedDevices extends Controller
 {
+    public function sp_get_inventory_accountability($rq)
+    {
+        $filter_status = $rq->filled('filter_status') && $rq->filter_status != 'all' ? $rq->filter_status : null;
+        $filter_location = $rq->filter_location &&  $rq->filter_location != 'all' ? Crypt::decrypt($rq->filter_location) : false;
+        $filter_category = $rq->filter_category &&  $rq->filter_category != 'all' ? Crypt::decrypt($rq->filter_category) : false;
+        $filter_year = $rq->filter_year && $rq->filter_year != 'all' ? $rq->filter_year : false;
+        $filter_month = $rq->filter_month && $rq->filter_month != 'all' ? $rq->filter_month : false;
+        $data = ImsStoredProcedure::sp_get_inventory_accountability(
+            $filter_status,
+            $filter_location,
+            $filter_year,
+            (isset($rq->is_consumable)? 1:0),
+            $filter_category,
+            $filter_month
+        );
+        return $data;
+    }
+
     public function dt(Request $rq)
     {
-        $filter_status = $rq->filter_status != 'all' ? $rq->filter_status : false;
-        $data = ImsItemInventory::with('active_accountability_item.accountable_to')
-        ->when($filter_status,function($q) use($filter_status){
-            $q->where('status',$filter_status);
-        })
-        ->where([['status',2],['is_deleted',null]])
-        ->get();
-
+        $data = $this->sp_get_inventory_accountability($rq);
         $data->transform(function ($item, $key) {
-
-            $acountability_item = $item->active_accountability_item;
-
-            $issued_at = null;
-            if($acountability_item->issued_at != null){
-                $issued_at = Carbon::parse($acountability_item->issued_at)->format('M d, Y');
-            }
-
-            $returned_at = null;
-            if($acountability_item->removed_at != null){
-                $returned_at = Carbon::parse($acountability_item->removed_at)->format('M d, Y');
-            }
-
-            $array_accountable_to = [];
-            $form_no = null;
-
-            foreach($acountability_item->accountable_to as $accountable_to){
-                if($accountable_to->status !=1){
-                    continue;
-                }
-                $array_accountable_to[] = $accountable_to->employee->fullname();
-                if($accountable_to->accountability){
-                    $form_no = $accountable_to->accountability->form_no;
-                }
-            }
-
-            $description = $item->description;
             $item_type = $item->item_type_id;
-            $tag_number = $item->generate_tag_number();
+            $description = $item->description;
+            $enable_quick_actions = $item->display_to == 1 ? true:false ;
+            $received_at = Carbon::parse($item->received_at)->format('M d, Y') ?? '--';
 
             if($item_type == 1 || $item_type == 8) {
-                $array = json_decode($item->description,true);
+                $array = json_decode($description,true);
                 $ram = json_decode($array['ram']);
 
                 $storage = json_decode($array['storage'],true);
@@ -81,35 +68,29 @@ class IssuedDevices extends Controller
                     }
                     $gpu_html .= 'GPU: '.$row['description'].'<br>';
                 };
-
                 $description = '<div class="fs-6">'
-                . ($item_type == 8 ? 'Model: ' . $array['model'] . '<br>' : '')
+                . ($item->item_type_id == 8 ? 'Model: ' . $array['model'] . '<br>' : '')
                 . 'CPU: ' . $array['cpu'] . '<br>'
                 . 'RAM: ' . $ram_html . '<br>'
                 . $storage_html
                 . 'OS: ' . $array['windows_version'] . '<br>'
                 . $gpu_html
                 . 'Device Name: ' . $array['device_name'] . '<br>'
-                . ($item_type == 8 ? 'Serial Number: ' . (isset($array['serial_number'])? $array['serial_number']:($item->serial_number??'--')) . '<br>' : '')
+                // . ($item->item_type_id == 8 ? 'Serial Number: ' . (isset($array['serial_number'])? $array['serial_number']:($item->serial_number??'--')) . '<br>' : '')
                 . '</div>';
             }
 
             $item->count = $key + 1;
-            $item->issued_at = $issued_at;
-            $item->returned_at = $returned_at;
+            $item->enable_quick_actions = $enable_quick_actions;
 
-            $item->accountable_to = implode(', ', $array_accountable_to);
-            $item->form_no = $form_no;
-
-            $item->tag_number = $tag_number;
-            $item->name =  $item->name ?? $description;
             $item->description = $description;
+            $item->location =  $item->company_location;
+            $item->received_at =  $received_at;
+            $item->accountable_to = $item->issued_to_names;
 
-            $item->serial_number = $item->serial_number;
-            $item->price = $item->price;
-            $item->type = $item_type;
-            $item->accountability_status = $acountability_item->status;
             $item->encrypted_id = Crypt::encrypt($item->id);
+            $item->accountability_id = Crypt::encrypt($item->accountability_id);
+
 
             return $item;
         });
@@ -127,43 +108,25 @@ class IssuedDevices extends Controller
 
     public function export(Request $rq)
     {
-        $filter_status = $rq->filter_status != 'all' ? $rq->filter_status : false;
-        $data = ImsItemInventory::with('active_accountability_item.accountable_to')
-        ->when($filter_status, fn($q) => $q->where('status', $filter_status))
-        ->where([['status', 2], ['is_deleted', null]])
-        ->get();
+        $search = trim($rq->search);
+        $data = $this->sp_get_inventory_accountability($rq);
+        if ($search) {
+            $data = $data->filter(function ($item) use ($search) {
+                $search = strtolower($search);
 
-        // Transform like you already do
+                return str_contains(strtolower($item->name), $search)
+                    || str_contains(strtolower($item->serial_number), $search)
+                    || str_contains(strtolower($item->tag_number), $search)
+                    || str_contains(strtolower($item->issued_to_names ?? ''), $search)
+                    || str_contains(strtolower(strip_tags($item->description)), $search);
+            })->values();
+        }
         $data->transform(function ($item, $key) {
-
-            $acountability_item = $item->active_accountability_item;
-
-            $issued_at = null;
-            if($acountability_item->issued_at != null){
-                $issued_at = Carbon::parse($acountability_item->issued_at)->format('M d, Y');
-            }
-
-            $returned_at = null;
-            if($acountability_item->removed_at != null){
-                $returned_at = Carbon::parse($acountability_item->removed_at)->format('M d, Y');
-            }
-
-            $array_accountable_to = [];
-            $form_no = null;
-
-            foreach($acountability_item->accountable_to as $accountable_to){
-                $array_accountable_to[] = $accountable_to->employee->fullname();
-                if($accountable_to->accountability){
-                    $form_no = $accountable_to->accountability->form_no;
-                }
-            }
-
-            $description = $item->description;
             $item_type = $item->item_type_id;
-            $tag_number = $item->generate_tag_number();
-
+            $description = $item->description;
+            $received_at = Carbon::parse($item->received_at)->format('M d, Y') ?? '--';
             if($item_type == 1 || $item_type == 8) {
-                $array = json_decode($item->description,true);
+                $array = json_decode($description,true);
                 $ram = json_decode($array['ram']);
 
                 $storage = json_decode($array['storage'],true);
@@ -188,38 +151,24 @@ class IssuedDevices extends Controller
                     }
                     $gpu_html .= 'GPU: '.$row['description'].'<br>';
                 };
-
                 $description = '<div class="fs-6">'
-                . ($item_type == 8 ? 'Model: ' . $array['model'] . '<br>' : '')
+                . ($item->item_type_id == 8 ? 'Model: ' . $array['model'] . '<br>' : '')
                 . 'CPU: ' . $array['cpu'] . '<br>'
                 . 'RAM: ' . $ram_html . '<br>'
                 . $storage_html
                 . 'OS: ' . $array['windows_version'] . '<br>'
                 . $gpu_html
                 . 'Device Name: ' . $array['device_name'] . '<br>'
-                . ($item_type == 8 ? 'Serial Number: ' . (isset($array['serial_number'])? $array['serial_number']:($item->serial_number??'--')) . '<br>' : '')
                 . '</div>';
             }
-
             $item->count = $key + 1;
-            $item->issued_at = $issued_at;
-            $item->returned_at = $returned_at;
-
-            $item->form_no = $form_no;
-            $item->accountable_to = implode(', ', $array_accountable_to);
-            $item->tag_number = $tag_number;
-            $item->name =  $item->name ?? $description;
             $item->description = $description;
-
-            $item->serial_number = $item->serial_number;
-            $item->price = $item->price;
-            $item->type = $item->item_type->name;
-            $item->accountability_status = $acountability_item->status;
+            $item->location =  $item->company_location;
+            $item->received_at =  $received_at;
+            $item->accountable_to = $item->issued_to_names;
             $item->encrypted_id = Crypt::encrypt($item->id);
-
             return $item;
         });
-
         $filename = 'issued_devices_' . now()->format('Ymd_His') . '.xlsx';
         return Excel::download(new IssuedDeviceExport($data), $filename);
     }
