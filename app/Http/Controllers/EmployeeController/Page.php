@@ -107,6 +107,8 @@ class Page extends Controller
             ->with(['system_layer' => function ($q) use ($view) {
                 $q->where([['status', 1],['href', $view]]);
             }]);
+        },'role_access'=> function($q){
+            $q->where('role_id',2);
         }])
         ->where(function ($query) use ($view) {
             $query->where([['status', 1],['href', $view]])
@@ -119,11 +121,22 @@ class Page extends Controller
         if (!$row || !$row->file_layer) {
             return view("$role.not_found");
         }
+
         $folders = !$row->file_layer->isEmpty()
             ? $row->folder.'.'.$row->file_layer[0]->system_layer->folder
             : $row->folder;
         $file = $row->file_layer[0]->system_layer->href ?? $row->href;
 
+        if($row->file_layer->isEmpty()){
+            if($row->role_access[0]->is_active ==2){
+                return response()->json(['status'=>'404','message' =>'Access Denied <br> Website is refreshing . . .']);
+            }
+        }
+        if($row->file_layer->isNotEmpty()){
+            if($row->file_layer[0]->status ==2){
+                return response()->json(['status'=>'404','message' =>'Access Denied <br> Website is refreshing . . .']);
+            }
+        }
         return response(['page' => view("$role.pages.$folders.$file")->render()], 200);
     }
 

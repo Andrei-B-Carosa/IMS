@@ -2,6 +2,7 @@
 
 import { RequestHandler } from "../global/request.js";
 import {construct_url} from "../global.js";
+import { Alert } from "../global/alert.js";
 
 export function page_content(page, param=null) {
     return new Promise((resolve, reject) => {
@@ -11,6 +12,15 @@ export function page_content(page, param=null) {
         if (param !== false) {  formData.append("id", param);  }
         (new RequestHandler()).post(construct_url("setup-page"), formData)
             .then((response) => {
+                if(response.status=='404'){
+                    Alert.loading('warning',response.message, {
+                        didOpen: ()=>{
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2500);
+                        }
+                    });
+                }
                 if (response.page) {
                     let tt = page.replace(/[^A-Z0-9]+/ig, " ");
                     let url = window.location.pathname;
