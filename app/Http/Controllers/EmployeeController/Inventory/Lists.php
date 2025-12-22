@@ -256,7 +256,7 @@ class Lists extends Controller
             $id = Crypt::decrypt($rq->encrypted_id);
             $item = ImsItemInventory::findOrFail($id);
             $text_below = $item->tag_number;
-            $url = 'http://161.49.90.78/qr/' . base64_encode($id);
+            $url = 'http://161.49.90.78:8000/qr/' . base64_encode($id);
 
             $qrSize = 200;
             $barHeight = 60;
