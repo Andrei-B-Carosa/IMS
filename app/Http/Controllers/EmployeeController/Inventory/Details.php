@@ -160,7 +160,7 @@ class Details extends Controller
 
             $query->serial_number = $rq->serial_number;
             $query->price = $rq->price;
-            $query->status = $rq->status;
+            $query->status = isset($rq->status)?$rq->status:$query->status;
             $query->received_at = isset($rq->received_at) ? Carbon::createFromFormat('m-d-Y', $rq->received_at)->format('Y-m-d') : null;
             $query->warranty_end_at = isset($rq->warranty_end_at) ? Carbon::createFromFormat('m-d-Y', $rq->warranty_end_at)->format('Y-m-d') : null;
             $query->received_by = isset($rq->received_by)? Crypt::decrypt($rq->received_by):null;
