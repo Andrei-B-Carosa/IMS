@@ -7,8 +7,8 @@
     </div>
 
     {{-- General Details --}}
-    <div class="card card-flush py-4 mb-10" id="card-general-details">
-        <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_general_details_collapsible">
+    <div class="card card-flush py-4 mb-10 border border-1" id="card-general-details">
+        <div class="card-header rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_general_details_collapsible">
             <div class="card-title">@if($data->item_type->display_to == 1) ({{ $data->generate_tag_number() }}) @endif</div>
             <div class="card-toolbar">
                 <div class="card-toolbar rotate-180">
@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div id="card_general_details_collapsible" class="collapse">
+        <div id="card_general_details_collapsible" class="collapse show">
             <div class="card-body pt-0">
                 <form id="form-general-details" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="/inventory-details/update-general-details">
 
@@ -327,7 +327,7 @@
 
     {{-- Item Logs --}}
     @if($data->item_type->display_to == 1 || $data->item_type->display_to == 3)
-        <div class="card card-flush py-4 mb-10">
+        <div class="card card-flush py-4 mb-10 border border-1">
             <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_item_logs_collapsible">
                 <div class="card-title">Item Logs</div>
 
@@ -349,7 +349,7 @@
             </div>
         </div>
 
-        <div class="card card-flush py-4 mb-10">
+        <div class="card card-flush py-4 mb-10 border border-1">
             <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_accountability_history_collapsible">
                 <div class="card-title">Accountability History</div>
 
@@ -371,7 +371,7 @@
             </div>
         </div>
 
-        <div class="card card-flush py-4 mb-10">
+        <div class="card card-flush py-4 mb-10 border border-1">
             <div class="card-header border-0 rotate cursor-pointer" data-bs-toggle="collapse" data-bs-target="#card_repair_history_collapsible">
                 <div class="card-title">Repair History</div>
 
