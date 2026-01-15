@@ -129,7 +129,6 @@ export var dtInventoryRepair = function (table,param='') {
                             2: ["success", "Resolved"],
                             3: ["danger", "Not Repairable"],
                             4: ["warning", "Under Warranty"],
-
                         };
                         return `<span class="badge badge-${status[data][0]}">${status[data][1]}</span>`;
                     },
@@ -199,6 +198,21 @@ export var dtInventoryRepair = function (table,param='') {
                                     <span class="path3"></span>
                                     <span class="path4"></span>
                                 </i>
+                            </button>
+                            <button class="btn btn-icon btn-icon btn-sm me-1 hover-elevate-up
+                                ${row.status==2 || row.status==3 ?`remove btn-light-danger`:`btn-secondary`}
+                                " data-id="${data}"
+                                data-bs-toggle="tooltip" title="${row.status==2 || row.status==3 ?
+                                    `Remove from repair request?`
+                                    :`Item is currently under ${row.status==1 ?`repair`:`warranty`}`
+                                }">
+                                    <i class="ki-duotone ki-trash fs-2x">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                    </i>
                             </button>
 
                         </div>`;
